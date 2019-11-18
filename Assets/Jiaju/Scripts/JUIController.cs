@@ -4,12 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.iOS;
 
+public enum FoamState
+{
+    STATE_CREATE,
+    STATE_MANIPULATE,
+    STATE_IDLE,
+    STATE_BUSY
+}
+
 public class JUIController : MonoBehaviour {
 
     public GameObject m_dot;
     private Animator m_dotAnimator;
 
     public Text m_stateIndicator;
+    private FoamState _foamState = FoamState.STATE_IDLE;
+
+    public FoamState FoamState
+    {
+        get { return _foamState; }
+        set { _foamState = value; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +44,7 @@ public class JUIController : MonoBehaviour {
             checkTouch();
             checkMouseClick();
         }
+        Debug.Log("JUIController");
     }
 
     private void checkTouch()
@@ -57,74 +73,19 @@ public class JUIController : MonoBehaviour {
         if (isInsideTri(touchPos, corners[0], corners[1], corners[2]))
         {
             m_stateIndicator.text = "Create";
+            _foamState = FoamState.STATE_CREATE;
 
         }
         else if (isInsideTri(touchPos, corners[2], corners[3], corners[0]))
         {
             m_stateIndicator.text = "Edit";
+            _foamState = FoamState.STATE_MANIPULATE;
 
         }
         else
         {
             m_stateIndicator.text = "Idle";
-        }
-    }
-
-    private bool checkIfInBound(Vector3[] corners, Vector3 touchPos)
-    {
-        float max_x = -99999f;
-        float min_x = 99999f;
-        float max_y = -99999f;
-        float min_y = 99999f;
-
-        for (int i = 0; i < corners.Length; i++)
-        {
-            if (max_x < corners[i].x)
-            {
-                max_x = corners[i].x;
-            }
-
-            if (max_y < corners[i].y)
-            {
-                max_y = corners[i].y;
-            }
-
-            if (min_x > corners[i].x)
-            {
-                min_x = corners[i].x;
-            }
-
-            if (min_y > corners[i].y)
-            {
-                min_y = corners[i].y;
-            }
-        }
-
-        if (touchPos.x >= min_x && touchPos.x <= max_x)
-        {
-            if (touchPos.y >= min_y && touchPos.y <= max_y)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public void onDotPressed()
-    {
-        Debug.Log("dot pressed");
-    }
-
-    void DisplayWorldCorners()
-    {
-        Vector3[] v = new Vector3[4];
-        m_dot.GetComponent<RectTransform>().GetWorldCorners(v);
-
-        Debug.Log("World Corners");
-        for (var i = 0; i < 4; i++)
-        {
-            Debug.Log("World Corner " + i + " : " + v[i]);
+            _foamState = FoamState.STATE_IDLE;
         }
     }
 

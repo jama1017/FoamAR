@@ -6,7 +6,7 @@ using Portalble;
 namespace Portalble.Examples.BasicGrab {
     public class GrabDemoController : PortalbleGeneralController {
         public Transform placePrefab;
-        public float offset = 0.15f;
+        public float offset = 0.01f;
 
         public override void OnARPlaneHit(PortalbleHitResult hit) {
             base.OnARPlaneHit(hit);

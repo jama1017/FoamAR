@@ -130,9 +130,13 @@ namespace Portalble
             m_UnityPlaneInteractionLayer = 0x1 << m_UnityPlaneInteractionLayer;
         }
 
+        // For inherited class
+        protected virtual void OnUpdate() { }
+
         // Update is called once per frame
         protected virtual void Update()
         {
+            OnUpdate();
             // _UpdateApplicationLifecycle();
 
             m_AllPlanes = m_ARSupport.getPlanes();

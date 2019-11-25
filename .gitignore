@@ -65,3 +65,4 @@ crashlytics-build.properties
 # Plugins
 Assets/Plugins/iOS/
 Assets/SVMSupport/
+Assets/SVMSupport.meta

@@ -5,15 +5,13 @@ using UnityEngine;
 public class CreationStateBehavior : StateMachineBehaviour
 {
     private FoamDataManager m_data;
-    private GameObject m_activeHand;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         m_data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
-        m_activeHand = GameObject.FindGameObjectWithTag("hand_r"); // right hand only right now
 
-        m_data.m_createMenu.SetActive(false);
+        m_data.CreateMenu.SetActive(false);
         Debug.Log("FOAMFILTER Creation State entered");
     }
 

@@ -2945,8 +2945,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a935988fb5c949588e365dbdefa77f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_createMenu: {fileID: 443596597}
-  m_maniMenu: {fileID: 1059372737}
+  CreateMenu: {fileID: 443596597}
+  ManiMenu: {fileID: 1059372737}
+  ActiveHand: {fileID: 1614409302}
+  ActiveIndex: {fileID: 0}
 --- !u!4 &1069181528
 Transform:
   m_ObjectHideFlags: 0

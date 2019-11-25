@@ -15,17 +15,12 @@ public class FoamARController : PortalbleGeneralController
     public GameObject m_createMenu;
     public GameObject m_maniMenu;
 
-    private FoamState m_prevFoamState = FoamState.STATE_IDLE;
     private GestureControl m_leftGC;
     private GestureControl m_rightGC;
     private JUIController m_jui;
     private GameObject m_activeHand;
     private GestureControl m_activeGC;
-    private GameObject m_activeIndex;
-    private GameObject m_activeMenu;
 
-    private bool m_isPrimCreated = false;
-    private bool m_isMenuShown = false;
 
     //state machine
     private Animator m_stateMachine;
@@ -56,13 +51,8 @@ public class FoamARController : PortalbleGeneralController
         m_rightGC = m_rightHand.GetComponent<GestureControl>();
         m_jui = JUIController.GetComponent<JUIController>();
 
-        //m_createMenu.SetActive(false);
-        //m_maniMenu.SetActive(false);
-
         m_activeGC = m_rightGC;
         m_activeHand = m_rightHand;
-        m_activeIndex = m_activeHand.transform.GetChild(1).GetChild(2).gameObject;
-        m_activeMenu = null;
 
         //state machine
         m_stateMachine = this.GetComponent<Animator>();
@@ -119,18 +109,11 @@ public class FoamARController : PortalbleGeneralController
 
     private void handleCreate()
     {
-        m_activeMenu = m_createMenu;
-        //toggleActiveMenu();
-
         switchStateBool(m_hash_createBool);
     }
 
     private void handleManipulate()
     {
-        m_activeMenu = m_maniMenu;
-        //toggleActiveMenu();
-
-
         switchStateBool(m_hash_maniBool);
     }
 

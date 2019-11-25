@@ -5,13 +5,11 @@ using UnityEngine;
 public class ManipulationStateBehavior : StateMachineBehaviour
 {
     private FoamDataManager m_data;
-    private GameObject m_activeHand;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         m_data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
-        m_activeHand = GameObject.FindGameObjectWithTag("hand_r"); // right hand only right now
 
         m_data.ManiMenu.SetActive(false);
         Debug.Log("FOAMFILTER Mani State entered");

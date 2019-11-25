@@ -9,9 +9,23 @@ public class FoamDataManager : MonoBehaviour
     public GameObject ActiveHand;
     public GameObject ActiveIndex;
     public GameObject ActivePalm;
-    private float _triggerRadius = 2.0f;
+    private float _triggerRadius = 2.0f;  // size of bounding region
+    private float _middleRadius = 0.020f; // middle region of the menu
 
-    
+    public SpriteRenderer CylinderRenderer;
+    public SpriteRenderer CubeRenderer;
+    public SpriteRenderer ConeRenderer;
+    public SpriteRenderer SphereRenderer;
+
+    public SpriteRenderer ManiUppRenderer;
+    public SpriteRenderer ManiLowRenderer;
+    public SpriteRenderer ManiLeftRenderer;
+    public SpriteRenderer ManiRightRenderer;
+
+    private Color _normalColor = new Color(1f, 1f, 1f, 0.5f);
+    private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +45,21 @@ public class FoamDataManager : MonoBehaviour
     public float TriggerRadius
     {
         get { return _triggerRadius; }
-        set { _triggerRadius = value; }
+    }
+
+    public float MiddleRadius
+    {
+        get { return _middleRadius; }
+    }
+
+    public Color NormalColor
+    {
+        get { return _normalColor; }
+    }
+
+    public Color HoverColor
+    {
+        get { return _hoverColor; }
     }
 
 }

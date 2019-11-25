@@ -22,11 +22,11 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
         m_data.ManiMenu.SetActive(false);
 
         m_palmPos_init = m_data.ActivePalm.transform.position;
-        m_bound_UppL = m_palmPos_init - new Vector3(m_data.TriggerRadius, -m_data.TriggerRadius);
-        m_bound_UppR = m_palmPos_init - new Vector3(-m_data.TriggerRadius, -m_data.TriggerRadius);
+        m_bound_UppL = m_palmPos_init + new Vector3(-m_data.TriggerRadius, m_data.TriggerRadius);
+        m_bound_UppR = m_palmPos_init + new Vector3(m_data.TriggerRadius, m_data.TriggerRadius);
 
-        m_bound_LowL = m_palmPos_init - new Vector3(m_data.TriggerRadius, m_data.TriggerRadius);
-        m_bound_LowR = m_palmPos_init - new Vector3(-m_data.TriggerRadius, m_data.TriggerRadius);
+        m_bound_LowL = m_palmPos_init + new Vector3(-m_data.TriggerRadius, -m_data.TriggerRadius);
+        m_bound_LowR = m_palmPos_init + new Vector3(m_data.TriggerRadius, -m_data.TriggerRadius);
         Debug.Log("FOAMFILTER Creation Menu Open State entered");
     }
 
@@ -35,24 +35,54 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
     {
         Vector3 palmPos_curr = m_data.ActivePalm.transform.position;
 
-        // upper tri
-        if (isInsideTri(palmPos_curr, m_bound_UppL, m_bound_UppR, m_palmPos_init)) {
-            Debug.Log("FOAMFILTER INSIDE UPPER TRI");
+        MenuRegion region = FoamUtils.checkMenuRegion(palmPos_curr, m_palmPos_init, m_bound_UppL, m_bound_UppR, m_bound_LowL, m_bound_LowR, m_data.MiddleRadius);
 
-        // right tri
-        } else if (isInsideTri(palmPos_curr, m_bound_UppR, m_bound_LowR, m_palmPos_init))
+        switch (region)
         {
-            Debug.Log("FOAMFILTER INSIDE RIGHT TRI");
+            case MenuRegion.UPPER:
+                Debug.Log("FOAMFILTER Create Upp");
+                m_data.CubeRenderer.color = m_data.HoverColor;
 
-        // lower tri
-        } else if (isInsideTri(palmPos_curr, m_bound_LowR, m_bound_LowL, m_palmPos_init))
-        {
-            Debug.Log("FOAMFILTER INSIDE LOWER TRI");
+                m_data.CylinderRenderer.color = m_data.NormalColor;
+                m_data.ConeRenderer.color = m_data.NormalColor;
+                m_data.SphereRenderer.color = m_data.NormalColor;
+                break;
 
-        // left tri
-        } else
-        {
-            Debug.Log("FOAMFILTER INSIDE LEFT TRI");
+            case MenuRegion.RIGHT:
+                Debug.Log("FOAMFILTER Create Right");
+                m_data.CubeRenderer.color = m_data.NormalColor;
+
+                m_data.CylinderRenderer.color = m_data.HoverColor;
+
+                m_data.ConeRenderer.color = m_data.NormalColor;
+                m_data.SphereRenderer.color = m_data.NormalColor;
+                break;
+
+            case MenuRegion.LOWER:
+                Debug.Log("FOAMFILTER Create Lower");
+                m_data.CubeRenderer.color = m_data.NormalColor;
+                m_data.CylinderRenderer.color = m_data.NormalColor;
+
+                m_data.ConeRenderer.color = m_data.HoverColor;
+
+                m_data.SphereRenderer.color = m_data.NormalColor;
+                break;
+
+            case MenuRegion.LEFT:
+                Debug.Log("FOAMFILTER Create Left");
+                m_data.CubeRenderer.color = m_data.NormalColor;
+                m_data.CylinderRenderer.color = m_data.NormalColor;
+                m_data.ConeRenderer.color = m_data.NormalColor;
+
+                m_data.SphereRenderer.color = m_data.HoverColor;
+                break;
+
+            case MenuRegion.MIDDLE:
+                m_data.CubeRenderer.color = m_data.NormalColor;
+                m_data.CylinderRenderer.color = m_data.NormalColor;
+                m_data.ConeRenderer.color = m_data.NormalColor;
+                m_data.SphereRenderer.color = m_data.NormalColor;
+                break;
         }
     }
 
@@ -73,17 +103,4 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
-
-    private bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
-    {
-        float as_x = s.x - a.x;
-        float as_y = s.y - a.y;
-
-        bool s_ab = (b.x - a.x) * as_y - (b.y - a.y) * as_x > 0;
-
-        if ((c.x - a.x) * as_y - (c.y - a.y) * as_x > 0 == s_ab) return false;
-        if ((c.x - b.x) * (s.y - b.y) - (c.y - b.y) * (s.x - b.x) > 0 != s_ab) return false;
-
-        return true;
-    }
 }

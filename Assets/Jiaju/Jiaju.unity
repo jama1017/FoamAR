@@ -337,6 +337,12 @@ Transform:
   m_Father: {fileID: 1614409307}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &123255182 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3468872795146756501, guid: f330753fa82b24f64ab3fff3bb3cae23,
+    type: 3}
+  m_PrefabInstance: {fileID: 6086892936752499879}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &135463955
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +515,12 @@ Transform:
   m_Father: {fileID: 1614409307}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &153038525 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3468872796106185902, guid: f330753fa82b24f64ab3fff3bb3cae23,
+    type: 3}
+  m_PrefabInstance: {fileID: 6086892936752499879}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &169920496
 GameObject:
   m_ObjectHideFlags: 0
@@ -1359,6 +1371,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303227958}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!212 &330916329 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 9090619962514267434, guid: a71e98228db98435ea6b9415fbbdba59,
+    type: 3}
+  m_PrefabInstance: {fileID: 9090619962195915273}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &334650777
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,6 +2577,18 @@ Transform:
   m_Father: {fileID: 1614409307}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &711979058 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3468872794904638217, guid: f330753fa82b24f64ab3fff3bb3cae23,
+    type: 3}
+  m_PrefabInstance: {fileID: 6086892936752499879}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &774410420 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 9090619963784620791, guid: a71e98228db98435ea6b9415fbbdba59,
+    type: 3}
+  m_PrefabInstance: {fileID: 9090619962195915273}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &872373782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2949,6 +2979,15 @@ MonoBehaviour:
   ManiMenu: {fileID: 1059372737}
   ActiveHand: {fileID: 1614409302}
   ActiveIndex: {fileID: 0}
+  ActivePalm: {fileID: 0}
+  CylinderRenderer: {fileID: 774410420}
+  CubeRenderer: {fileID: 330916329}
+  ConeRenderer: {fileID: 2055421460}
+  SphereRenderer: {fileID: 1585532432}
+  ManiUppRenderer: {fileID: 153038525}
+  ManiLowRenderer: {fileID: 123255182}
+  ManiLeftRenderer: {fileID: 711979058}
+  ManiRightRenderer: {fileID: 2050319731}
 --- !u!4 &1069181528
 Transform:
   m_ObjectHideFlags: 0
@@ -4069,6 +4108,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1514781018}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!212 &1585532432 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 9090619963695084173, guid: a71e98228db98435ea6b9415fbbdba59,
+    type: 3}
+  m_PrefabInstance: {fileID: 9090619962195915273}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1595389695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4832,6 +4877,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2035928329}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!212 &2050319731 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3468872795220667251, guid: f330753fa82b24f64ab3fff3bb3cae23,
+    type: 3}
+  m_PrefabInstance: {fileID: 6086892936752499879}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &2055421460 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 9090619964010602513, guid: a71e98228db98435ea6b9415fbbdba59,
+    type: 3}
+  m_PrefabInstance: {fileID: 9090619962195915273}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2080395421
 GameObject:
   m_ObjectHideFlags: 0

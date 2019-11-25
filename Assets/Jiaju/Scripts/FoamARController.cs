@@ -27,7 +27,17 @@ public class FoamARController : PortalbleGeneralController
     private bool m_isPrimCreated = false;
     private bool m_isMenuShown = false;
 
-	public override void OnARPlaneHit(PortalbleHitResult hit)
+    //state machine
+    private Animator m_stateMachine;
+
+    private int m_hash_createBool = Animator.StringToHash("CreateStateBool");
+    private int m_hash_maniBool = Animator.StringToHash("ManipulationStateBool");
+    private int m_hash_idleBool = Animator.StringToHash("IdleStateBool");
+    private int m_hash_pinchBool = Animator.StringToHash("PinchBool");
+    private List<int> m_uiState_hashes = new List<int>();
+
+
+    public override void OnARPlaneHit(PortalbleHitResult hit)
 	{
 		base.OnARPlaneHit(hit);
 
@@ -42,19 +52,23 @@ public class FoamARController : PortalbleGeneralController
     protected override void Start()
     {
         base.Start();
-        Debug.Log("initializing Foam AR Controlelr.cs");
-
         m_leftGC = m_leftHand.GetComponent<GestureControl>();
         m_rightGC = m_rightHand.GetComponent<GestureControl>();
         m_jui = JUIController.GetComponent<JUIController>();
 
-        m_createMenu.SetActive(false);
-        m_maniMenu.SetActive(false);
+        //m_createMenu.SetActive(false);
+        //m_maniMenu.SetActive(false);
 
         m_activeGC = m_rightGC;
         m_activeHand = m_rightHand;
         m_activeIndex = m_activeHand.transform.GetChild(1).GetChild(2).gameObject;
         m_activeMenu = null;
+
+        //state machine
+        m_stateMachine = this.GetComponent<Animator>();
+        m_uiState_hashes.Add(m_hash_idleBool);
+        m_uiState_hashes.Add(m_hash_createBool);
+        m_uiState_hashes.Add(m_hash_maniBool);
     }
 
     protected override void OnUpdate()
@@ -82,55 +96,96 @@ public class FoamARController : PortalbleGeneralController
                 break;
         }
 
-        //test
-        //if (!m_isMenuShown && m_activeMenu != null)
+        togglePinchBool();
+
+        //if (Input.GetKey(KeyCode.DownArrow))
         //{
-        //    m_activeMenu.transform.position = m_activeIndex.transform.position;
-        //    //Debug.Log("FOAMFILTER index pos " + m_createMenu.transform.position);
-        //    Debug.Log("FOAMFILTER hand pos" + m_activeIndex.transform.position);
+        //    m_stateMachine.SetBool(m_hash_pinchBool, true);
         //}
+
+        //if (Input.GetKey(KeyCode.UpArrow))
+        //{
+        //    m_stateMachine.SetBool(m_hash_pinchBool, false);
+        //}
+
+
     }
 
     private void handleIdle()
     {
-        // need to handle idle state
-        //m_activeMenu = null;
+        switchStateBool(m_hash_idleBool);
+
     }
 
     private void handleCreate()
     {
-        Debug.Log("CREATING");
-
         m_activeMenu = m_createMenu;
-        toggleActiveMenu();
+        //toggleActiveMenu();
+
+        switchStateBool(m_hash_createBool);
     }
 
     private void handleManipulate()
     {
         m_activeMenu = m_maniMenu;
-        toggleActiveMenu();
+        //toggleActiveMenu();
+
+
+        switchStateBool(m_hash_maniBool);
     }
 
-    private void toggleActiveMenu()
+    //private void toggleActiveMenu()
+    //{
+    //    if (!Grab.Instance.IsGrabbing)
+    //    {
+    //        if (m_activeGC.bufferedGesture() == "pinch")
+    //        {
+    //            if (!m_isMenuShown)
+    //            {
+    //                m_isMenuShown = true;
+    //                m_activeMenu.transform.position = m_activeIndex.transform.position;
+    //                m_activeMenu.SetActive(m_isMenuShown);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (m_isMenuShown)
+    //            {
+    //                m_isMenuShown = false;
+    //                m_activeMenu.SetActive(m_isMenuShown);
+    //            }
+    //        }
+    //    }
+    //}
+
+    private void switchStateBool(int targetState)
+    {
+        for (int i = 0; i < m_uiState_hashes.Count; i++)
+        {
+            if (m_uiState_hashes[i] == targetState)
+            {
+                m_stateMachine.SetBool(m_uiState_hashes[i], true);
+
+            } else
+            {
+                m_stateMachine.SetBool(m_uiState_hashes[i], false);
+
+            }
+        }
+    }
+
+    private void togglePinchBool()
     {
         if (!Grab.Instance.IsGrabbing)
         {
             if (m_activeGC.bufferedGesture() == "pinch")
             {
-                if (!m_isMenuShown)
-                {
-                    m_isMenuShown = true;
-                    m_activeMenu.transform.position = m_activeIndex.transform.position;
-                    m_activeMenu.SetActive(m_isMenuShown);
-                }
-            }
-            else
+                m_stateMachine.SetBool(m_hash_pinchBool, true);
+                Debug.Log("FOAMFILTER pinch bool is true");
+            } else
             {
-                if (m_isMenuShown)
-                {
-                    m_isMenuShown = false;
-                    m_activeMenu.SetActive(m_isMenuShown);
-                }
+                m_stateMachine.SetBool(m_hash_pinchBool, false);
+                Debug.Log("FOAMFILTER pinch bool is false");
             }
         }
     }

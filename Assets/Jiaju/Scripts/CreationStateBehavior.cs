@@ -5,6 +5,7 @@ using UnityEngine;
 public class CreationStateBehavior : StateMachineBehaviour
 {
     private FoamDataManager m_data;
+    private int m_hash_actionBool = Animator.StringToHash("ActionPerformedBool");
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -12,6 +13,8 @@ public class CreationStateBehavior : StateMachineBehaviour
         m_data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
         m_data.CreateMenu.SetActive(false);
+        animator.SetBool(m_hash_actionBool, false);
+
         Debug.Log("FOAMFILTER Creation State entered");
     }
 

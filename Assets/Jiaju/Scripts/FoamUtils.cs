@@ -11,6 +11,24 @@ public enum MenuRegion
     MIDDLE
 }
 
+public enum CreateMenuItem
+{
+    CUBE,
+    SPHERE,
+    CONE,
+    CYLINDER,
+    NULL
+}
+
+public enum ManiMenuItem
+{
+    MOVE,
+    SCALE,
+    ROTATE,
+    COLOR,
+    NULL
+}
+
 public static class FoamUtils
 {
     public static bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
@@ -32,7 +50,7 @@ public static class FoamUtils
         {
             if (isInsideTri(currPos, UppL, UppR, initPos))
             {
-                Debug.Log("FOAMFILTER INSIDE UPPER TRI");
+                //Debug.Log("FOAMFILTER INSIDE UPPER TRI");
                 return MenuRegion.UPPER;
 
 
@@ -40,7 +58,7 @@ public static class FoamUtils
             }
             else if (isInsideTri(currPos, UppR, LowR, initPos))
             {
-                Debug.Log("FOAMFILTER INSIDE RIGHT TRI");
+                //Debug.Log("FOAMFILTER INSIDE RIGHT TRI");
                 return MenuRegion.RIGHT;
 
 
@@ -48,7 +66,7 @@ public static class FoamUtils
             }
             else if (isInsideTri(currPos, LowR, LowL, initPos))
             {
-                Debug.Log("FOAMFILTER INSIDE LOWER TRI");
+                //Debug.Log("FOAMFILTER INSIDE LOWER TRI");
                 return MenuRegion.LOWER;
 
 
@@ -56,7 +74,7 @@ public static class FoamUtils
             }
             else
             {
-                Debug.Log("FOAMFILTER INSIDE LEFT TRI");
+                //Debug.Log("FOAMFILTER INSIDE LEFT TRI");
                 return MenuRegion.LEFT;
             }
         }

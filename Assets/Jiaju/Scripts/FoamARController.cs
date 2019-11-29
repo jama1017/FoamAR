@@ -164,11 +164,11 @@ public class FoamARController : PortalbleGeneralController
             if (m_activeGC.bufferedGesture() == "pinch")
             {
                 m_stateMachine.SetBool(m_hash_pinchBool, true);
-                Debug.Log("FOAMFILTER pinch bool is true");
+                //Debug.Log("FOAMFILTER pinch bool is true");
             } else
             {
                 m_stateMachine.SetBool(m_hash_pinchBool, false);
-                Debug.Log("FOAMFILTER pinch bool is false");
+                //Debug.Log("FOAMFILTER pinch bool is false");
             }
         }
     }

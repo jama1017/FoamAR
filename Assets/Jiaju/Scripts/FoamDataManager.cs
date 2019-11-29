@@ -9,6 +9,7 @@ public class FoamDataManager : MonoBehaviour
     public GameObject ActiveHand;
     public GameObject ActiveIndex;
     public GameObject ActivePalm;
+    public GestureControl ActiveGC;
     private float _triggerRadius = 2.0f;  // size of bounding region
     private float _middleRadius = 0.020f; // middle region of the menu
 
@@ -25,6 +26,9 @@ public class FoamDataManager : MonoBehaviour
     private Color _normalColor = new Color(1f, 1f, 1f, 0.5f);
     private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
 
+    public Transform CubePrefab;
+    private CreateMenuItem _selected_createItem = CreateMenuItem.NULL;
+    private ManiMenuItem _selected_maniItem = ManiMenuItem.NULL;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +38,7 @@ public class FoamDataManager : MonoBehaviour
 
         ActiveIndex = ActiveHand.transform.GetChild(1).GetChild(2).gameObject;
         ActivePalm = ActiveHand.transform.GetChild(5).GetChild(0).gameObject;
+        ActiveGC = ActiveHand.GetComponent<GestureControl>();
     }
 
     // Update is called once per frame
@@ -62,4 +67,15 @@ public class FoamDataManager : MonoBehaviour
         get { return _hoverColor; }
     }
 
+    public CreateMenuItem Selected_createItem
+    {
+        get { return _selected_createItem; }
+        set { _selected_createItem = value; }
+    }
+
+    public ManiMenuItem Selected_maniItem
+    {
+        get { return _selected_maniItem; }
+        set { _selected_maniItem = value; }
+    }
 }

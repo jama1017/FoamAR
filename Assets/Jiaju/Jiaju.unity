@@ -2980,6 +2980,7 @@ MonoBehaviour:
   ActiveHand: {fileID: 1614409302}
   ActiveIndex: {fileID: 0}
   ActivePalm: {fileID: 0}
+  ActiveGC: {fileID: 0}
   CylinderRenderer: {fileID: 774410420}
   CubeRenderer: {fileID: 330916329}
   ConeRenderer: {fileID: 2055421460}
@@ -2988,6 +2989,8 @@ MonoBehaviour:
   ManiLowRenderer: {fileID: 123255182}
   ManiLeftRenderer: {fileID: 711979058}
   ManiRightRenderer: {fileID: 2050319731}
+  CubePrefab: {fileID: 3596028150467614126, guid: a3489e92154e148d4a8b2afabd58f73b,
+    type: 3}
 --- !u!4 &1069181528
 Transform:
   m_ObjectHideFlags: 0

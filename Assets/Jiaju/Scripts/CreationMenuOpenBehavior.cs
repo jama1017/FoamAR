@@ -10,6 +10,8 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
     private Vector3 m_bound_UppR;
     private Vector3 m_bound_LowL;
     private Vector3 m_bound_LowR;
+    private int m_hash_itemSelectedBool = Animator.StringToHash("ItemSelectedBool");
+    private CreateMenuItem m_selectedItem = CreateMenuItem.NULL;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -27,6 +29,8 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
 
         m_bound_LowL = m_palmPos_init + new Vector3(-m_data.TriggerRadius, -m_data.TriggerRadius);
         m_bound_LowR = m_palmPos_init + new Vector3(m_data.TriggerRadius, -m_data.TriggerRadius);
+
+        animator.SetBool(m_hash_itemSelectedBool, false);
         Debug.Log("FOAMFILTER Creation Menu Open State entered");
     }
 
@@ -40,41 +44,53 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
         switch (region)
         {
             case MenuRegion.UPPER:
-                Debug.Log("FOAMFILTER Create Upp");
+                //Debug.Log("FOAMFILTER Create Upp");
                 m_data.CubeRenderer.color = m_data.HoverColor;
 
                 m_data.CylinderRenderer.color = m_data.NormalColor;
                 m_data.ConeRenderer.color = m_data.NormalColor;
                 m_data.SphereRenderer.color = m_data.NormalColor;
+
+                m_selectedItem = CreateMenuItem.CUBE;
+                animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
             case MenuRegion.RIGHT:
-                Debug.Log("FOAMFILTER Create Right");
+                //Debug.Log("FOAMFILTER Create Right");
                 m_data.CubeRenderer.color = m_data.NormalColor;
 
                 m_data.CylinderRenderer.color = m_data.HoverColor;
 
                 m_data.ConeRenderer.color = m_data.NormalColor;
                 m_data.SphereRenderer.color = m_data.NormalColor;
+
+                m_selectedItem = CreateMenuItem.CYLINDER;
+                animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
             case MenuRegion.LOWER:
-                Debug.Log("FOAMFILTER Create Lower");
+                //Debug.Log("FOAMFILTER Create Lower");
                 m_data.CubeRenderer.color = m_data.NormalColor;
                 m_data.CylinderRenderer.color = m_data.NormalColor;
 
                 m_data.ConeRenderer.color = m_data.HoverColor;
 
                 m_data.SphereRenderer.color = m_data.NormalColor;
+
+                m_selectedItem = CreateMenuItem.CONE;
+                animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
             case MenuRegion.LEFT:
-                Debug.Log("FOAMFILTER Create Left");
+                //Debug.Log("FOAMFILTER Create Left");
                 m_data.CubeRenderer.color = m_data.NormalColor;
                 m_data.CylinderRenderer.color = m_data.NormalColor;
                 m_data.ConeRenderer.color = m_data.NormalColor;
 
                 m_data.SphereRenderer.color = m_data.HoverColor;
+
+                m_selectedItem = CreateMenuItem.SPHERE;
+                animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
             case MenuRegion.MIDDLE:
@@ -82,15 +98,20 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
                 m_data.CylinderRenderer.color = m_data.NormalColor;
                 m_data.ConeRenderer.color = m_data.NormalColor;
                 m_data.SphereRenderer.color = m_data.NormalColor;
+
+                m_selectedItem = CreateMenuItem.NULL;            //test
+                animator.SetBool(m_hash_itemSelectedBool, false); //test
                 break;
         }
+
+        m_data.Selected_createItem = m_selectedItem;
+        //Debug.Log("FOAMFILTER selected item in open: " + m_data.Selected_createItem);
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

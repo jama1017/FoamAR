@@ -27,6 +27,9 @@ public class FoamDataManager : MonoBehaviour
     private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
 
     public Transform CubePrefab;
+    public Transform SpherePrefab;
+    public Transform CylinderPrefab;
+    public Transform ConePrefab;
     private CreateMenuItem _selected_createItem = CreateMenuItem.NULL;
     private ManiMenuItem _selected_maniItem = ManiMenuItem.NULL;
 

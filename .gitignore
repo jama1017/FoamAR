@@ -66,3 +66,5 @@ crashlytics-build.properties
 Assets/Plugins/iOS/
 Assets/SVMSupport/
 Assets/SVMSupport.meta
+Assets/DestPrimitives.meta
+Assets/DestPrimitives/

@@ -13,6 +13,8 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
     private Transform m_prim_child = null;
     private bool m_isReleased =  false;
 
+    private float offset = 0.2f;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
@@ -27,13 +29,32 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             case CreateMenuItem.CUBE:
                 Debug.Log("FOAMFILTER CUBE ITEM CREATED");
                 m_prim = Instantiate(m_data.CubePrefab, m_data.ActivePalm.transform.position, Quaternion.identity);
-                m_prim.gameObject.GetComponent<Grabable>().enabled = false;
-                m_prim_child = m_prim.GetChild(0);
-                m_prim_child.gameObject.SetActive(false);
+                break;
+
+            case CreateMenuItem.SPHERE:
+                Debug.Log("FOAMFILTER SPHERE ITEM CREATED");
+                m_prim = Instantiate(m_data.SpherePrefab, m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward, Quaternion.identity);
+                break;
+
+            case CreateMenuItem.CYLINDER:
+                Debug.Log("FOAMFILTER CYLINDER ITEM CREATED");
+                m_prim = Instantiate(m_data.CylinderPrefab, m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward, Quaternion.identity);
+                break;
+
+            case CreateMenuItem.CONE:
+                Debug.Log("FOAMFILTER CONE ITEM CREATED");
+                m_prim = Instantiate(m_data.ConePrefab, m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward, Quaternion.identity);
                 break;
 
             default:
                 break;
+        }
+
+        if (m_prim)
+        {
+            m_prim.gameObject.GetComponent<Grabable>().enabled = false;
+            m_prim_child = m_prim.GetChild(0);
+            m_prim_child.gameObject.SetActive(false);
         }
 
         m_isReleased = false;
@@ -51,7 +72,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             if (!m_isReleased)
             {
                 Debug.Log("FOAMFILTER UPDATING ITEM");
-                m_prim.position = m_data.ActivePalm.transform.position + 0.1f * m_data.ActivePalm.transform.forward;
+                m_prim.position = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward;
                 m_prim.rotation = m_data.ActivePalm.transform.rotation;
             }
 
@@ -60,8 +81,8 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             {
                 Debug.Log("FOAMFILTER ITEM PLACED");
                 m_isReleased = true;
-                //m_prim.gameObject.GetComponent<Grabable>().enabled = true;
-                //m_prim_child.gameObject.SetActive(true);
+                m_prim.gameObject.GetComponent<Grabable>().enabled = true;
+                m_prim_child.gameObject.SetActive(true);
 
                 animator.SetBool(m_hash_actionBool, true);
             }   
@@ -77,6 +98,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 	{
         Debug.Log("EXITING CREATION MENU SELECTED STATE");
         animator.SetBool(m_hash_itemSelectedBool, false);
+        m_prim = null;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

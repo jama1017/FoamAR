@@ -2991,6 +2991,12 @@ MonoBehaviour:
   ManiRightRenderer: {fileID: 2050319731}
   CubePrefab: {fileID: 3596028150467614126, guid: a3489e92154e148d4a8b2afabd58f73b,
     type: 3}
+  SpherePrefab: {fileID: 7254101635669762746, guid: 01b0dd58da57e4d7499fe8a048d82a75,
+    type: 3}
+  CylinderPrefab: {fileID: 1103200049768529566, guid: ada420fea064b47ffb59ead6961b4b1b,
+    type: 3}
+  ConePrefab: {fileID: 4068709197770029280, guid: bf4617e78a0ca4e5b972e81b5bdbdbf5,
+    type: 3}
 --- !u!4 &1069181528
 Transform:
   m_ObjectHideFlags: 0

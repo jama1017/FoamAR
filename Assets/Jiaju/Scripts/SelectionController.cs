@@ -22,6 +22,9 @@ public class SelectionController : PortalbleGeneralController
 
     private bool m_isRecorded = false;
 
+    public string websocketServer = "172.18.136.107"; //lab computer Brown Guest
+    public string websocketPort = "9998";
+    
     public override void OnARPlaneHit(PortalbleHitResult hit)
     {
         base.OnARPlaneHit(hit);
@@ -41,13 +44,35 @@ public class SelectionController : PortalbleGeneralController
         // to update these
         m_activeGC = m_rightGC;
         m_activeHand = m_rightHand;
+
+        setupServer(); 
     }
+
+    private void setupServer()
+    {
+        // Create web socket
+        Debug.Log("Connecting" + websocketServer);
+        string url = "ws://" + websocketServer + ":" + websocketPort;
+        // webSocket = new WebSocketUnity(url, this);
+
+        // Open the connection
+        // webSocket.Open();
+        Jetfire2.Open(url);
+    }
+
 
     protected override void OnUpdate()
     {
         base.OnUpdate();
 
         recordGrabLoc();
+
+        if (Jetfire2.IsConnected())
+        {
+            Jetfire2.SendMsg("hahahah");
+            Debug.Log("JETFIRE HAHA");
+        }
+        
 
         //if (Input.GetMouseButtonDown(0))
         //{

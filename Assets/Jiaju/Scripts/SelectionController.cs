@@ -12,6 +12,8 @@ public class SelectionController : PortalbleGeneralController
 
     public GameObject m_leftHand;
     public GameObject m_rightHand;
+    public Canvas m_canvas;
+    public GameObject m_marker;
 
     private GestureControl m_leftGC;
     private GestureControl m_rightGC;
@@ -47,6 +49,15 @@ public class SelectionController : PortalbleGeneralController
 
         recordGrabLoc();
 
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Vector3 touchPos = Input.mousePosition;
+        //    Vector2 movePos;
+        //    RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas.transform as RectTransform, touchPos, null, out movePos);
+        //    Debug.Log(movePos);
+        //    m_marker.GetComponent<RectTransform>().position = movePos;
+        //}
+
         //if (Input.GetKey(KeyCode.DownArrow))
         //{
         //    Debug.Log("Down");
@@ -66,6 +77,13 @@ public class SelectionController : PortalbleGeneralController
             {
                 Debug.Log("FOCUS grabbing");
                 m_isRecorded = true;
+                Vector3 grabPos = Grab.Instance.GetGrabbingObject().gameObject.transform.position;
+                Debug.Log("FOCUS WORLD POSITION" + grabPos);
+                Debug.Log("FOCUS CAMERA " + Camera.main.WorldToScreenPoint(grabPos));
+                Debug.Log("FOCUS CANVAS " + worldToUISpace(m_canvas, grabPos));
+
+                Vector2 newPos = worldToUISpace(m_canvas, grabPos);
+                m_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
             }
         }
 
@@ -73,5 +91,20 @@ public class SelectionController : PortalbleGeneralController
         {
             m_isRecorded = false;
         }
+    }
+
+    private Vector3 worldToUISpace(Canvas parentCanvas, Vector3 worldPos)
+    {
+        //Convert the world for screen point so that it can be used with ScreenPointToLocalPointInRectangle function
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        Vector2 movePos;
+
+        //Convert the screenpoint to ui rectangle local point
+        //RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, screenPos, parentCanvas.worldCamera, out movePos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, screenPos, null, out movePos);
+
+        //Convert the local point to world point
+        //return parentCanvas.transform.TransformPoint(movePos);
+        return movePos;
     }
 }

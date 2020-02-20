@@ -18,6 +18,7 @@ TagManager:
   - createMenu
   - maniMenu
   - foamDM
+  - Canvas
   layers:
   - Default
   - TransparentFX

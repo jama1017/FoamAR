@@ -13,19 +13,23 @@ public class SelectionController : PortalbleGeneralController
     public GameObject m_leftHand;
     public GameObject m_rightHand;
     public Canvas m_canvas;
-    public GameObject m_marker;
+    public GameObject prefab_marker;
 
     private GestureControl m_leftGC;
     private GestureControl m_rightGC;
     private GameObject m_activeHand;
     private GestureControl m_activeGC;
 
+    // selection specific
     private bool m_isRecorded = false;
+    private List<GameObject> m_markers = new List<GameObject>();
 
+    // ------ IPs----------
     //public string websocketServer = "172.18.136.107"; //lab computer Brown Guest
     public string websocketServer = "10.1.76.168"; // surface book RISD Misc
     //public string websocketServer = "10.1.77.55";
     public string websocketPort = "8765";
+
 
     public override void OnARPlaneHit(PortalbleHitResult hit)
     {
@@ -81,7 +85,7 @@ public class SelectionController : PortalbleGeneralController
         //    Vector2 movePos;
         //    RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas.transform as RectTransform, touchPos, null, out movePos);
         //    Debug.Log(movePos);
-        //    m_marker.GetComponent<RectTransform>().position = movePos;
+        //    prefab_marker.GetComponent<RectTransform>().position = movePos;
         //}
 
         //if (Input.GetKey(KeyCode.DownArrow))
@@ -101,19 +105,22 @@ public class SelectionController : PortalbleGeneralController
         {
             if (Grab.Instance.IsGrabbing && !m_isRecorded)
             {
-                Debug.Log("FOCUS grabbing");
+                //Debug.Log("FOCUS grabbing");
                 m_isRecorded = true;
                 Vector3 grabPos = Grab.Instance.GetGrabbingObject().gameObject.transform.position;
-                Debug.Log("FOCUS WORLD POSITION" + grabPos);
-                Debug.Log("FOCUS CAMERA " + Camera.main.WorldToScreenPoint(grabPos));
-                Debug.Log("FOCUS CANVAS " + worldToUISpace(m_canvas, grabPos));
+                //Debug.Log("FOCUS WORLD POSITION" + grabPos);
+                //Debug.Log("FOCUS CAMERA " + Camera.main.WorldToScreenPoint(grabPos));
+                //Debug.Log("FOCUS CANVAS " + worldToUISpace(m_canvas, grabPos));
 
                 Vector2 newPos = worldToUISpace(m_canvas, grabPos);
-                m_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
+                GameObject new_marker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
+                new_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
+                m_markers.Add(new_marker);
 
                 if (Jetfire.IsConnected2())
                 {
-                    Jetfire.SendMsg2("grabbed something");
+                    string message = "grabbed at " + newPos;
+                    Jetfire.SendMsg2(message);
                     Debug.Log("JETFIRE HAHA");
                 }
             }

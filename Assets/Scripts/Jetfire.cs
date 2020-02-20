@@ -18,7 +18,7 @@ public class Jetfire
     [MonoPInvokeCallback(typeof(JetfireConnectCallback))]
     private static void ConnectCallback()
     {
-        Debug.Log("connect");
+        //Debug.Log("connect");
     }
 
 
@@ -27,14 +27,14 @@ public class Jetfire
     [MonoPInvokeCallback(typeof(JetfireDisConnectCallback))]
     private static void DisConnectCallback(string message)
     {
-        Debug.Log("disconnect: " + message);
+        //Debug.Log("disconnect: " + message);
     }
 
     delegate void JetfireReceiveMessageCallback(string message);
     [MonoPInvokeCallback(typeof(JetfireReceiveMessageCallback))]
     private static void ReceiveMessageCallback(string message)
     {
-        Debug.Log("msg: " + message);
+        //Debug.Log("msg: " + message);
         curr_message = message;
     }
 
@@ -55,7 +55,7 @@ public class Jetfire
     [MonoPInvokeCallback(typeof(JetfireConnectCallback2))]
     private static void ConnectCallback2()
     {
-        Debug.Log("connect");
+        //Debug.Log("connect");
     }
 
 
@@ -64,14 +64,14 @@ public class Jetfire
     [MonoPInvokeCallback(typeof(JetfireDisConnectCallback2))]
     private static void DisConnectCallback2(string message)
     {
-        Debug.Log("disconnect: " + message);
+        //Debug.Log("disconnect: " + message);
     }
 
     delegate void JetfireReceiveMessageCallback2(string message);
     [MonoPInvokeCallback(typeof(JetfireReceiveMessageCallback2))]
     private static void ReceiveMessageCallback2(string message)
     {
-        Debug.Log("msg: " + message);
+        //Debug.Log("msg: " + message);
         curr_message2 = message;
     }
 

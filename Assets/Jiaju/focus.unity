@@ -662,8 +662,8 @@ MonoBehaviour:
   m_rightHand: {fileID: 1614409302}
   m_canvas: {fileID: 1609952903}
   m_marker: {fileID: 1811271863}
-  websocketServer: 172.18.136.107
-  websocketPort: 9998
+  websocketServer: 10.1.76.168
+  websocketPort: 8765
 --- !u!4 &181273680
 Transform:
   m_ObjectHideFlags: 0

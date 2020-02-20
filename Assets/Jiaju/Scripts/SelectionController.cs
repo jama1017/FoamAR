@@ -22,9 +22,11 @@ public class SelectionController : PortalbleGeneralController
 
     private bool m_isRecorded = false;
 
-    public string websocketServer = "172.18.136.107"; //lab computer Brown Guest
-    public string websocketPort = "9998";
-    
+    //public string websocketServer = "172.18.136.107"; //lab computer Brown Guest
+    public string websocketServer = "10.1.76.168"; // surface book RISD Misc
+    //public string websocketServer = "10.1.77.55";
+    public string websocketPort = "8765";
+
     public override void OnARPlaneHit(PortalbleHitResult hit)
     {
         base.OnARPlaneHit(hit);
@@ -53,11 +55,11 @@ public class SelectionController : PortalbleGeneralController
         // Create web socket
         Debug.Log("Connecting" + websocketServer);
         string url = "ws://" + websocketServer + ":" + websocketPort;
-        // webSocket = new WebSocketUnity(url, this);
+        //webSocket = new WebSocketUnity(url, this);
 
         // Open the connection
         // webSocket.Open();
-        Jetfire2.Open(url);
+        Jetfire.Open2(url);
     }
 
 
@@ -67,12 +69,11 @@ public class SelectionController : PortalbleGeneralController
 
         recordGrabLoc();
 
-        if (Jetfire2.IsConnected())
-        {
-            Jetfire2.SendMsg("hahahah");
-            Debug.Log("JETFIRE HAHA");
-        }
-        
+        //if (Jetfire.IsConnected2())
+        //{
+        //    Jetfire.SendMsg2("hahahah");
+        //    Debug.Log("JETFIRE HAHA");
+        //}
 
         //if (Input.GetMouseButtonDown(0))
         //{
@@ -109,6 +110,12 @@ public class SelectionController : PortalbleGeneralController
 
                 Vector2 newPos = worldToUISpace(m_canvas, grabPos);
                 m_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
+
+                if (Jetfire.IsConnected2())
+                {
+                    Jetfire.SendMsg2("grabbed something");
+                    Debug.Log("JETFIRE HAHA");
+                }
             }
         }
 

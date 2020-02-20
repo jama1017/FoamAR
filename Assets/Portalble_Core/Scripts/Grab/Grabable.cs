@@ -202,7 +202,7 @@ namespace Portalble.Functions.Grab {
                 cd.isTrigger = false;
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null) {
-                //rb.useGravity = true; //disabled for FoamAR
+                rb.useGravity = true; //disabled for FoamAR, enabled for selection
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 rb.velocity = releaseVelocity * m_throwPower;

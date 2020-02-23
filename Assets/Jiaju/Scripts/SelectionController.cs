@@ -23,6 +23,7 @@ public class SelectionController : PortalbleGeneralController
     // selection specific
     private bool m_isRecorded = false;
     private List<GameObject> m_markers = new List<GameObject>();
+    private bool m_isMarkerDisplayed = false;
 
     // ------ IPs----------
     //public string websocketServer = "172.18.136.107"; //lab computer Brown Guest
@@ -116,7 +117,8 @@ public class SelectionController : PortalbleGeneralController
                 GameObject new_marker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
                 new_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
                 m_markers.Add(new_marker);
-
+                new_marker.SetActive(m_isMarkerDisplayed);
+                
                 if (Jetfire.IsConnected2())
                 {
                     string message = "grabbed at," + newPos + "," + worldToScreenSpace(grabPos);
@@ -152,5 +154,14 @@ public class SelectionController : PortalbleGeneralController
         //Convert the local point to world point
         //return parentCanvas.transform.TransformPoint(movePos);
         return movePos;
+    }
+
+    public void toggleMarkerVisibility()
+    {
+        m_isMarkerDisplayed = !m_isMarkerDisplayed;
+        for (int i = 0; i < m_markers.Count; i++)
+        {
+            m_markers[i].SetActive(m_isMarkerDisplayed);
+        }
     }
 }

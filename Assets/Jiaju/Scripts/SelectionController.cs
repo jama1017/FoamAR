@@ -119,7 +119,7 @@ public class SelectionController : PortalbleGeneralController
 
                 if (Jetfire.IsConnected2())
                 {
-                    string message = "grabbed at " + newPos;
+                    string message = "grabbed at," + newPos + "," + worldToScreenSpace(grabPos);
                     Jetfire.SendMsg2(message);
                     Debug.Log("JETFIRE HAHA");
                 }
@@ -131,6 +131,13 @@ public class SelectionController : PortalbleGeneralController
             m_isRecorded = false;
         }
     }
+
+
+    private Vector3 worldToScreenSpace(Vector3 worldPos)
+    {
+        return Camera.main.WorldToScreenPoint(worldPos);
+    }
+
 
     private Vector3 worldToUISpace(Canvas parentCanvas, Vector3 worldPos)
     {

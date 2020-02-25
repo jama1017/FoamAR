@@ -14,7 +14,7 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
 
     // Web Socket for Unity
     // private WebSocketUnity webSocket;
-    public string websocketServer = "10.38.20.104";
+    public string websocketServer;
     public string websocketPort = "9999";
     [SerializeField]
     private GameObject hand_l, hand_r;

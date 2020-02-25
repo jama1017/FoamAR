@@ -27,7 +27,7 @@ public class SelectionController : PortalbleGeneralController
 
     // ------ IPs----------
     //public string websocketServer = "172.18.136.107"; //lab computer Brown Guest
-    public string websocketServer = "10.1.76.168"; // surface book RISD Misc
+    public GameObject WSManager;
     //public string websocketServer = "10.1.77.55";
     public string websocketPort = "8765";
 
@@ -67,15 +67,14 @@ public class SelectionController : PortalbleGeneralController
     private void setupServer()
     {
         // Create web socket
-        Debug.Log("Connecting" + websocketServer);
-        string url = "ws://" + websocketServer + ":" + websocketPort;
+        Debug.Log("Connecting" + WSManager.GetComponent<WSManager>().websocketServer);
+        string url = "ws://" + WSManager.GetComponent<WSManager>().websocketServer + ":" + websocketPort;
         //webSocket = new WebSocketUnity(url, this);
 
         // Open the connection
-        // webSocket.Open();
+        //webSocket.Open();
         Jetfire.Open2(url);
     }
-
 
     protected override void OnUpdate()
     {

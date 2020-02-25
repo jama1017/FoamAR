@@ -794,7 +794,7 @@ MonoBehaviour:
   m_canvas: {fileID: 1609952903}
   prefab_marker: {fileID: 3122170803118657689, guid: 356c5ea17858a4e55a3531eaf9d87132,
     type: 3}
-  websocketServer: 10.1.76.197
+  WSManager: {fileID: 1218827172}
   websocketPort: 8765
 --- !u!4 &181273680
 Transform:
@@ -3051,7 +3051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb0d880e191a0e488efcb2b787f9a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  websocketServer: 10.1.76.197
+  websocketServer: 10.1.76.228
   websocketPort: 9999
   hand_l: {fileID: 1949621240}
   hand_r: {fileID: 1614409302}

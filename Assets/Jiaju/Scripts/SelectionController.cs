@@ -38,7 +38,16 @@ public class SelectionController : PortalbleGeneralController
 
         if (placePrefab != null)
         {
-            Instantiate(placePrefab, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
+            Transform cen = Instantiate(placePrefab, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
+
+            // for focus center test purposes
+            int num = 2;
+            float offset_test = 0.2f;
+            for (int i = 1; i < num + 1; i++)
+            {
+                Instantiate(placePrefab, cen.position - cen.right * offset_test * i, cen.rotation);
+                Instantiate(placePrefab, cen.position + cen.right * offset_test * i, cen.rotation);
+            }
         }
     }
 

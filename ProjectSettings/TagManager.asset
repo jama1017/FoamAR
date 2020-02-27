@@ -19,6 +19,7 @@ TagManager:
   - maniMenu
   - foamDM
   - Canvas
+  - ARPlane
   layers:
   - Default
   - TransparentFX

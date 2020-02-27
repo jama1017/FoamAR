@@ -796,6 +796,8 @@ MonoBehaviour:
     type: 3}
   WSManager: {fileID: 1218827172}
   websocketPort: 8765
+  m_focusCylinderPrefab: {fileID: 8244608730356315005, guid: 6f8931ec902c7416f9257cdd5e51dac8,
+    type: 3}
 --- !u!4 &181273680
 Transform:
   m_ObjectHideFlags: 0

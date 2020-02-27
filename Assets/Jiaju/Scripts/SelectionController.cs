@@ -25,6 +25,7 @@ public class SelectionController : PortalbleGeneralController
     private List<GameObject> m_markers = new List<GameObject>();
     private List<Vector3> m_markers_screenPos = new List<Vector3>();
     private bool m_isMarkerDisplayed = false;
+    public SelectionDataManager m_selectionDM;
 
     // ------ IPs----------
     //public string websocketServer = "172.18.136.107"; //lab computer Brown Guest
@@ -38,8 +39,6 @@ public class SelectionController : PortalbleGeneralController
     private Transform m_focusCylinder;
     private float m_v = 0f;
     private float m_h = 0f;
-
-    private Camera cam;
 
     public override void OnARPlaneHit(PortalbleHitResult hit)
     {
@@ -63,7 +62,6 @@ public class SelectionController : PortalbleGeneralController
     protected override void Start()
     {
         base.Start();
-        cam = Camera.main;
 
         m_leftGC = m_leftHand.GetComponent<GestureControl>();
         m_rightGC = m_rightHand.GetComponent<GestureControl>();
@@ -163,6 +161,8 @@ public class SelectionController : PortalbleGeneralController
         //GameObject new_marker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
         //new_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
         ////m_markers.Add(new_marker);
+        ///
+        Debug.Log("FOCUSED num: " + m_selectionDM.FocusedObjects.Count);
 
     }
 

@@ -31,6 +31,12 @@ public class SelectionController : PortalbleGeneralController
     //public string websocketServer = "10.1.77.55";
     public string websocketPort = "8765";
 
+    // selection cylinder
+    private Transform m_cubeTest;
+    private float m_v = 0f;
+    private float m_h = 0f;
+
+    private Camera cam;
 
     public override void OnARPlaneHit(PortalbleHitResult hit)
     {
@@ -54,6 +60,8 @@ public class SelectionController : PortalbleGeneralController
     protected override void Start()
     {
         base.Start();
+        cam = Camera.main;
+
         m_leftGC = m_leftHand.GetComponent<GestureControl>();
         m_rightGC = m_rightHand.GetComponent<GestureControl>();
 
@@ -61,12 +69,19 @@ public class SelectionController : PortalbleGeneralController
         m_activeGC = m_rightGC;
         m_activeHand = m_rightHand;
 
-        setupServer(); 
+        setupServer();
+
+        //test. to be removed
+        m_cubeTest = Instantiate(placePrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
+        m_cubeTest.gameObject.GetComponent<Collider>().attachedRigidbody.useGravity = false;
+
+
     }
 
     private void setupServer()
     {
         // Create web socket
+      
         Debug.Log("Connecting" + WSManager.GetComponent<WSManager>().websocketServer);
         string url = "ws://" + WSManager.GetComponent<WSManager>().websocketServer + ":" + websocketPort;
         //webSocket = new WebSocketUnity(url, this);
@@ -76,11 +91,65 @@ public class SelectionController : PortalbleGeneralController
         Jetfire.Open2(url);
     }
 
+    private void placementTest()
+    {
+        //Debug.Log("SELCAM: " + m_FirstPersonCamera.transform.position);
+        //m_cubeTest.LookAt(m_FirstPersonCamera.transform);
+
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Vector3 touchPos = Input.mousePosition;
+        //    Debug.Log(touchPos);
+        //    Debug.Log(Camera.main.ScreenToWorldPoint(Vector3.zero));
+        //    //Debug.Log(Camera.main.pixelHeight); // screen height in px
+        //    //Debug.Log(Camera.main.pixelWidth);  // screen width in px
+        //}
+
+       
+        if (Input.touchCount > 0)
+        {
+            Vector3 touchPos = Input.GetTouch(0).position;
+            Vector3 center = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0);
+
+            Vector2 distance_vec = touchPos - center;
+
+            m_v = distance_vec.y / 10000f;
+            m_h = distance_vec.x / 10000f;
+
+            Debug.Log("SEM: m_v:" + m_v);
+            Debug.Log("SEM: m_h:" + m_h);
+
+            //Debug.Log("SEM touchPos: " + touchPos);
+            //Debug.Log("SEM touchPos world: " + Camera.main.ScreenToWorldPoint(touchPos));
+            //Debug.Log("SEM touchPos zero: " + Camera.main.ScreenToWorldPoint(center));
+
+            //Debug.Log("SEM touchPos distance: " + Vector3.Distance(Camera.main.ScreenToWorldPoint(touchPos), Camera.main.ScreenToWorldPoint(center)).ToString("F3"));
+            //Debug.Log(Camera.main.pixelHeight); // screen height in px
+            //Debug.Log(Camera.main.pixelWidth);  // screen width in px
+        }
+
+        //Vector3 cameraOffset = screenToWorldSpace(m_canvas, m_touchPosTest);
+
+        //float fac = placePrefab.gameObject.GetComponent<Renderer>().bounds.size[0];
+
+        m_cubeTest.position = m_FirstPersonCamera.transform.position + 0.5f * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+        m_cubeTest.LookAt(m_cubeTest.position - (m_FirstPersonCamera.transform.position - m_cubeTest.position));
+
+        //Vector2 newPos = worldToUISpace(m_canvas, m_FirstPersonCamera.transform.position);
+        //Debug.Log("SELCAM: " + newPos);
+        //GameObject new_marker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
+        //new_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
+        ////m_markers.Add(new_marker);
+
+    }
+
     protected override void OnUpdate()
     {
         base.OnUpdate();
 
         recordGrabLoc();
+
+        placementTest();
 
         //if (Jetfire.IsConnected2())
         //{
@@ -164,6 +233,19 @@ public class SelectionController : PortalbleGeneralController
         return movePos;
     }
 
+    //private Vector3 screenToWorldSpace(Canvas parentCanvas, Vector2 screenPos)
+    //{
+    //    Vector2 movePos;
+
+    //    //Convert the screenpoint to ui rectangle local point
+    //    //RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, screenPos, parentCanvas.worldCamera, out movePos);
+    //    RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, screenPos, null, out movePos);
+
+    //    //Convert the local points to world point
+    //    //return parentCanvas.transform.TransformPoint(movePos);
+    //    return movePos;
+    //}
+
     public void toggleMarkerVisibility()
     {
         m_isMarkerDisplayed = !m_isMarkerDisplayed;
@@ -171,5 +253,17 @@ public class SelectionController : PortalbleGeneralController
         {
             m_markers[i].SetActive(m_isMarkerDisplayed);
         }
+    }
+
+    public float UnitsPerPixel()
+    {
+        var p1 = Camera.main.ScreenToWorldPoint(Vector3.zero);
+        var p2 = Camera.main.ScreenToWorldPoint(Vector3.right);
+        return Vector3.Distance(p1, p2);
+    }
+
+    public float PixelsPerUnit()
+    {
+        return 1 / UnitsPerPixel();
     }
 }

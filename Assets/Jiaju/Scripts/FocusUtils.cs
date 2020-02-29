@@ -42,4 +42,34 @@ public static class FocusUtils
 
         return new Vector3(x_sum / markers.Count, y_sum / markers.Count, 0f);
     }
+
+    public static GameObject rankFocusedObjects(List<GameObject> focusedObjects, Vector3 camPosition)
+    {
+
+        if (focusedObjects.Count == 0)
+        {
+            return null;
+        }
+
+        GameObject num_one = null;
+        float min_dis = 9999999f;
+
+        for (int i = 0; i < focusedObjects.Count; i++)
+        {
+            float dis = Vector3.Distance(focusedObjects[i].transform.position, camPosition);
+            if (dis < min_dis)
+            {
+                min_dis = dis;
+                num_one = focusedObjects[i];
+            }
+        }
+
+        return num_one;
+    }
+
+    public static void UpdateLinePos(LineRenderer line, Collider other, GameObject ActivePalm)
+    {
+        line.SetPosition(0, ActivePalm.transform.position);
+        line.SetPosition(1, other.gameObject.transform.position);
+    }
 }

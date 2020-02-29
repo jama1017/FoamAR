@@ -5,11 +5,14 @@ using UnityEngine;
 public class SelectionDataManager : MonoBehaviour
 {
     public GameObject ActiveHand;
+    public Camera FirstPersonCamera;
+    public GameObject FocusInkPrefab;
     private List<GameObject> _focusedObjects;
     private GameObject _activeIndex;
     private GameObject _activeThumb;
     private GameObject _activePalm;
     private GestureControl _activeGC;
+    private Dictionary<GameObject, GameObject> _focusedObjectToLine = new Dictionary<GameObject, GameObject>();
     
     // Start is called before the first frame update
     void Start()
@@ -51,5 +54,10 @@ public class SelectionDataManager : MonoBehaviour
     public GestureControl ActiveGC
     {
         get { return _activeGC; }
+    }
+
+    public Dictionary<GameObject, GameObject> FocusedObjectToLine
+    {
+        get { return _focusedObjectToLine; }
     }
 }

@@ -19,6 +19,7 @@ public class SelectionController : PortalbleGeneralController
     private List<Vector3> m_markers_screenPos = new List<Vector3>();
     private bool m_isMarkerDisplayed = false;
     public SelectionDataManager m_selectionDM;
+    private LineRenderer m_guideLine;
 
     // websocket
     public GameObject WSManager;
@@ -27,20 +28,24 @@ public class SelectionController : PortalbleGeneralController
     // selection cylinder
     public Transform m_focusCylinderPrefab;
     private Transform m_focusCylinder;
+    private Vector3 m_focusCylinderCenterPos = Vector3.zero;
     private float m_v = 0f;
     private float m_h = 0f;
 
     protected override void Start()
     {
         base.Start();
-        setupServer();
+        SetupServer();
 
         //m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
         m_focusCylinder = Instantiate(m_focusCylinderPrefab);
         m_focusCylinder.gameObject.GetComponent<Collider>().attachedRigidbody.useGravity = false;
+        m_guideLine = Instantiate(m_selectionDM.FocusInkPrefab).GetComponent<LineRenderer>();
+        m_guideLine.positionCount = 2;
+        m_guideLine.gameObject.SetActive(false);
     }
 
-    private void setupServer()
+    private void SetupServer()
     {
         // Create web socket
         Debug.Log("Connecting" + WSManager.GetComponent<WSManager>().websocketServer);
@@ -49,21 +54,8 @@ public class SelectionController : PortalbleGeneralController
         Jetfire.Open2(url);
     }
 
-    private void updateFocusCylinder()
+    private void UpdateFocusCylinder()
     {
-        //Debug.Log("SELCAM: " + m_FirstPersonCamera.transform.position);
-        //m_cubeTest.LookAt(m_FirstPersonCamera.transform);
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Vector3 touchPos = Input.mousePosition;
-        //    Debug.Log(touchPos);
-        //    Debug.Log(Camera.main.ScreenToWorldPoint(Vector3.zero));
-        //    //Debug.Log(Camera.main.pixelHeight); // screen height in px
-        //    //Debug.Log(Camera.main.pixelWidth);  // screen width in px
-        //}
-
-
         //if (Input.touchCount > 0)
         //{
         //    Vector3 touchPos = Input.GetTouch(0).position;
@@ -104,22 +96,19 @@ public class SelectionController : PortalbleGeneralController
 
         m_focusCylinder.position = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
         m_focusCylinder.LookAt(m_focusCylinder.position - (m_FirstPersonCamera.transform.position - m_focusCylinder.position));
-        //m_focusCylinder.LookAt(m_FirstPersonCamera.transform.position);
         m_focusCylinder.Rotate(90.0f, 0.0f, 0.0f, Space.Self);
 
+        m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
 
-        Debug.Log("CYLINDERR rotate: " + m_focusCylinder.transform.localRotation);
 
         //setting scale
-        float initial_width = Camera.main.pixelWidth / (2 * 10000f); //change back to 2
+        float initial_width = Camera.main.pixelWidth / (2 * 10000f);
         m_focusCylinder.localScale = new Vector3(initial_width, m_focusCylinder.localScale[1], initial_width);
 
-        updateCylinderRadius(initial_width);
-
-        Debug.Log("FOCUSED num: " + m_selectionDM.FocusedObjects.Count);
+        UpdateCylinderRadius(initial_width);
     }
 
-    private void updateCylinderRadius(float maxWidth)
+    private void UpdateCylinderRadius(float maxWidth)
     {
         float dis = Vector3.Distance(m_selectionDM.ActiveIndex.transform.position, m_selectionDM.ActiveThumb.transform.position);
         if (dis > maxWidth) dis = maxWidth;
@@ -127,43 +116,13 @@ public class SelectionController : PortalbleGeneralController
 
     }
 
-    //private void centerTest()
-    //{
-    //    Debug.Log("centerTest!!!!");
-    //    List<Vector3> sampleData = new List<Vector3>
-    //    {
-    //        new Vector3(20f, 20f, 0f),
-    //        new Vector3(20f, -20f, 0f),
-    //        new Vector3(-20f, -20f, 0f),
-    //        new Vector3(-120f, 40f, 0f),
-    //        new Vector3(-20f, -40f, 0f),
-    //        new Vector3(-41f, -40f, 0f),
-    //        new Vector3(124f, 240f, 0f),
-    //    };
-
-    //    for (int i = 0; i < sampleData.Count; i++)
-    //    {
-    //        GameObject new_marker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
-    //        new_marker.GetComponent<RectTransform>().anchoredPosition = new Vector2(sampleData[i].x, sampleData[i].y);
-    //    }
-
-    //    GameObject center = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
-    //    center.GetComponent<RectTransform>().anchoredPosition = FocusUtils.calcFocusCenter(sampleData);
-    //    center.GetComponent<RectTransform>().localScale = new Vector3(2, 2, 0);
-    //}
-
     protected override void OnUpdate()
     {
         base.OnUpdate();
 
-        recordGrabLoc();
-        updateFocusCylinder();
-
-        //if (Jetfire.IsConnected2())
-        //{
-        //    Jetfire.SendMsg2("hahahah");
-        //    Debug.Log("JETFIRE HAHA");
-        //}
+        RecordGrabLoc();
+        UpdateFocusCylinder();
+        AidSelection();
 
         //if (Input.GetMouseButtonDown(0))
         //{
@@ -185,7 +144,23 @@ public class SelectionController : PortalbleGeneralController
         //}
     }
 
-    private void recordGrabLoc()
+    private void AidSelection()
+    {
+        GameObject num_one = FocusUtils.rankFocusedObjects(m_selectionDM.FocusedObjects, m_focusCylinderCenterPos);
+
+        if (!num_one)
+        {
+            m_guideLine.gameObject.SetActive(false);
+            return;
+        }
+
+        m_guideLine.gameObject.SetActive(true);
+        //LineRenderer line = m_selectionDM.FocusedObjectToLine[num_one].GetComponent<LineRenderer>();
+
+        FocusUtils.UpdateLinePos(m_guideLine, num_one.GetComponent<Collider>(), m_selectionDM.ActivePalm);
+    }
+
+    private void RecordGrabLoc()
     {
         if (m_selectionDM.ActiveGC.bufferedGesture() == "pinch")
         {

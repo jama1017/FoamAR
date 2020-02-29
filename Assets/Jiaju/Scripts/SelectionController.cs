@@ -33,10 +33,10 @@ public class SelectionController : PortalbleGeneralController
     protected override void Start()
     {
         base.Start();
-
         setupServer();
 
-        m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
+        //m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
+        m_focusCylinder = Instantiate(m_focusCylinderPrefab);
         m_focusCylinder.gameObject.GetComponent<Collider>().attachedRigidbody.useGravity = false;
     }
 
@@ -63,7 +63,7 @@ public class SelectionController : PortalbleGeneralController
         //    //Debug.Log(Camera.main.pixelWidth);  // screen width in px
         //}
 
-       
+
         //if (Input.touchCount > 0)
         //{
         //    Vector3 touchPos = Input.GetTouch(0).position;
@@ -100,11 +100,15 @@ public class SelectionController : PortalbleGeneralController
             Debug.Log("SEM m_h: " + m_h);
         }
 
-        float fac = m_focusCylinderPrefab.gameObject.GetComponent<Renderer>().bounds.size[1];
+        float fac = m_focusCylinder.transform.localScale[1] * 1.34f; //1.2f if y is 0.5. 1.31f is y is 0.3. 2.f is y is 0.1
 
         m_focusCylinder.position = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
         m_focusCylinder.LookAt(m_focusCylinder.position - (m_FirstPersonCamera.transform.position - m_focusCylinder.position));
+        //m_focusCylinder.LookAt(m_FirstPersonCamera.transform.position);
         m_focusCylinder.Rotate(90.0f, 0.0f, 0.0f, Space.Self);
+
+
+        Debug.Log("CYLINDERR rotate: " + m_focusCylinder.transform.localRotation);
 
         //setting scale
         float initial_width = Camera.main.pixelWidth / (2 * 10000f); //change back to 2

@@ -22,7 +22,7 @@ public class FocusCylinder : MonoBehaviour
     {
         Debug.Log("FOCUSED on object " + other.tag);
 
-        if (other.tag != "ARPlane") // ignore ARPlane prefab
+        if (other.tag == "InteractableObj") // ignore ARPlane prefab
         {
             other.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
             _selectionDM.FocusedObjects.Add(other.gameObject);
@@ -32,7 +32,7 @@ public class FocusCylinder : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag != "ARPlane") // ignore ARPlane prefab
+        if (other.tag == "InteractableObj") // ignore ARPlane prefab
         {
             other.gameObject.GetComponent<Renderer>().material.color = Color.white;
             _selectionDM.FocusedObjects.Remove(other.gameObject);

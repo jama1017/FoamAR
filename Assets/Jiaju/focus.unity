@@ -789,8 +789,6 @@ MonoBehaviour:
   placePrefab: {fileID: 3596028150467614126, guid: 6886d08497b573648b8195cfdd979096,
     type: 3}
   offset: 0.01
-  m_leftHand: {fileID: 1949621240}
-  m_rightHand: {fileID: 1614409302}
   m_canvas: {fileID: 1609952903}
   prefab_marker: {fileID: 3122170803118657689, guid: 356c5ea17858a4e55a3531eaf9d87132,
     type: 3}
@@ -2318,6 +2316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb818a415227849e0a54f9287edb42cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ActiveHand: {fileID: 1614409302}
 --- !u!4 &669091745
 Transform:
   m_ObjectHideFlags: 0
@@ -3097,7 +3096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb0d880e191a0e488efcb2b787f9a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  websocketServer: 10.1.76.228
+  websocketServer: 192.168.0.5
   websocketPort: 9999
   hand_l: {fileID: 1949621240}
   hand_r: {fileID: 1614409302}

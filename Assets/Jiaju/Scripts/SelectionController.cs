@@ -65,22 +65,10 @@ public class SelectionController : PortalbleGeneralController
 
         //    m_v = distance_vec.y / 10000f;
         //    m_h = distance_vec.x / 10000f;
-
-        //    Debug.Log("SEM: m_v:" + m_v);
-        //    Debug.Log("SEM: m_h:" + m_h);
-
-        //    //Debug.Log("SEM touchPos: " + touchPos);
-        //    //Debug.Log("SEM touchPos world: " + Camera.main.ScreenToWorldPoint(touchPos));
-        //    //Debug.Log("SEM touchPos zero: " + Camera.main.ScreenToWorldPoint(center));
-
-        //    //Debug.Log("SEM touchPos distance: " + Vector3.Distance(Camera.main.ScreenToWorldPoint(touchPos), Camera.main.ScreenToWorldPoint(center)).ToString("F3"));
-        //    //Debug.Log(Camera.main.pixelHeight); // screen height in px
-        //    //Debug.Log(Camera.main.pixelWidth);  // screen width in px
         //}
 
         if (m_markers_screenPos.Count > 0) {
             Vector3 center = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0);
-            //Vector3 focusPos = m_markers_screenPos[m_markers_screenPos.Count - 1];
             Vector3 focusPos = FocusUtils.calcFocusCenter(m_markers_screenPos);
 
             Vector2 distance_vec = focusPos - center;
@@ -92,7 +80,7 @@ public class SelectionController : PortalbleGeneralController
             Debug.Log("SEM m_h: " + m_h);
         }
 
-        float fac = m_focusCylinder.transform.localScale[1] * 1.34f; //1.2f if y is 0.5. 1.31f is y is 0.3. 2.f is y is 0.1
+        float fac = m_focusCylinder.transform.localScale[1] * 2f; //1.2f if y is 0.5. 1.31f is y is 0.3. 2.f is y is 0.1
 
         m_focusCylinder.position = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
         m_focusCylinder.LookAt(m_focusCylinder.position - (m_FirstPersonCamera.transform.position - m_focusCylinder.position));

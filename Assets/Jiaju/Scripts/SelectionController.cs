@@ -197,15 +197,24 @@ public class SelectionController : PortalbleGeneralController
         if (placePrefab != null)
         {
             Transform cen = Instantiate(placePrefab, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
+            List<Transform> cens = new List<Transform>();
 
             // for focus center test purposes
             int num = 2;
-            float offset_test = 0.2f;
-            for (int i = 1; i < num + 1; i++)
+            float offset_test = placePrefab.transform.localScale[0] * 1.2f;
+
+            for (int i = -num; i < num + 1; i++)
             {
-                Instantiate(placePrefab, cen.position - cen.right * offset_test * i, cen.rotation);
-                Instantiate(placePrefab, cen.position + cen.right * offset_test * i, cen.rotation);
+                for (int j = -num; j < num + 1; j++)
+                {
+                    if (i == 0 && j == 0) continue;
+                    cens.Add(Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation));
+                }
             }
+
+            int idx = Random.Range(0, cens.Count);
+            cens[idx].gameObject.GetComponent<Renderer>().material.color = Color.blue;
+
         }
     }
 }

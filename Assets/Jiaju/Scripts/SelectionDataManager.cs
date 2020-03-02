@@ -13,6 +13,7 @@ public class SelectionDataManager : MonoBehaviour
     private GameObject _activePalm;
     private GestureControl _activeGC;
     private Dictionary<GameObject, GameObject> _focusedObjectToLine = new Dictionary<GameObject, GameObject>();
+    private Dictionary<Collider, Color> _focusedObjectToColor = new Dictionary<Collider, Color>();
     
     // Start is called before the first frame update
     void Start()
@@ -59,5 +60,10 @@ public class SelectionDataManager : MonoBehaviour
     public Dictionary<GameObject, GameObject> FocusedObjectToLine
     {
         get { return _focusedObjectToLine; }
+    }
+
+    public Dictionary<Collider, Color> FocusedObjectToColor
+    {
+        get { return _focusedObjectToColor; }
     }
 }

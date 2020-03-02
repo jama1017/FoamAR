@@ -24,7 +24,21 @@ public class FocusCylinder : MonoBehaviour
 
         if (other.tag == "InteractableObj") // ignore ARPlane prefab
         {
-            other.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+            Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
+            Color objOGColor = objRenderer.material.color;
+
+            _selectionDM.FocusedObjectToColor.Add(other, objOGColor);
+
+            if (objOGColor == Color.white)
+            {
+                objRenderer.material.color = Color.yellow;
+            }
+            else
+            {
+                objRenderer.material.color = Color.red;
+            }
+
+
             _selectionDM.FocusedObjects.Add(other.gameObject);
 
             //GameObject lineObj = Instantiate(_selectionDM.FocusInkPrefab);
@@ -58,7 +72,11 @@ public class FocusCylinder : MonoBehaviour
     {
         if (other.tag == "InteractableObj") // ignore ARPlane prefab
         {
-            other.gameObject.GetComponent<Renderer>().material.color = Color.white;
+            //Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
+
+            other.gameObject.GetComponent<Renderer>().material.color = _selectionDM.FocusedObjectToColor[other];
+
+            _selectionDM.FocusedObjectToColor.Remove(other);
             _selectionDM.FocusedObjects.Remove(other.gameObject);
             //GameObject.Destroy(_selectionDM.FocusedObjectToLine[other.gameObject]);
             //_selectionDM.FocusedObjectToLine.Remove(other.gameObject);

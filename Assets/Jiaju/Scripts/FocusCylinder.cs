@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Portalble;
+using Portalble.Functions.Grab;
 
 public class FocusCylinder : MonoBehaviour
 {
@@ -24,22 +26,18 @@ public class FocusCylinder : MonoBehaviour
 
         if (other.tag == "InteractableObj") // ignore ARPlane prefab
         {
-            Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
-            Color objOGColor = objRenderer.material.color;
+            _selectionDM.FocusedObjects.Add(other.gameObject);
 
-            _selectionDM.FocusedObjectToColor.Add(other, objOGColor);
-
-            if (objOGColor == Color.white)
+            if (!Grab.Instance.IsGrabbing)
             {
-                objRenderer.material.color = Color.yellow;
+                HighlightObjColor(other);
             }
+            // when grabbing
             else
             {
-                objRenderer.material.color = Color.red;
+                ChangeObjToOGColor(other);
             }
 
-
-            _selectionDM.FocusedObjects.Add(other.gameObject);
 
             //GameObject lineObj = Instantiate(_selectionDM.FocusInkPrefab);
             //LineRenderer line = lineObj.GetComponent<LineRenderer>();
@@ -48,7 +46,6 @@ public class FocusCylinder : MonoBehaviour
             //FocusUtils.UpdateLinePos(line, other, _selectionDM.ActivePalm);
             //_selectionDM.FocusedObjectToLine.Add(other.gameObject, lineObj);
         }
-        //material.color = Color.blue
     }
 
     private void OnTriggerStay(Collider other)
@@ -57,14 +54,21 @@ public class FocusCylinder : MonoBehaviour
         {
             // draw line on every collider
             //LineRenderer line = _selectionDM.FocusedObjectToLine[other.gameObject].GetComponent<LineRenderer>();
-
-
+            if (!Grab.Instance.IsGrabbing)
+            {
+                HighlightObjColor(other);
+            }
+            // when grabbing
+            else
+            {
+                ChangeObjToOGColor(other);
+            }
             // on highest ranked collider
             //GameObject num_one = FocusUtils.rankFocusedObjects(_selectionDM.FocusedObjects, _selectionDM.FirstPersonCamera.transform.position);
             //LineRenderer line = _selectionDM.FocusedObjectToLine[num_one].GetComponent<LineRenderer>();
 
             //FocusUtils.UpdateLinePos(line, other, _selectionDM.ActivePalm);
-            Debug.Log("LINEE dic size: " + _selectionDM.FocusedObjectToLine.Count);
+            Debug.Log("LINEE COLOR size: " + _selectionDM.FocusedObjectToColor.Count);
         }
     }
 
@@ -72,15 +76,45 @@ public class FocusCylinder : MonoBehaviour
     {
         if (other.tag == "InteractableObj") // ignore ARPlane prefab
         {
-            //Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
-
-            other.gameObject.GetComponent<Renderer>().material.color = _selectionDM.FocusedObjectToColor[other];
-
-            _selectionDM.FocusedObjectToColor.Remove(other);
             _selectionDM.FocusedObjects.Remove(other.gameObject);
+
+            ChangeObjToOGColor(other);
+
+
+            //_selectionDM.FocusedObjectToColor.Remove(other);
             //GameObject.Destroy(_selectionDM.FocusedObjectToLine[other.gameObject]);
             //_selectionDM.FocusedObjectToLine.Remove(other.gameObject);
         }
         //material.color = Color.blue
+    }
+
+    private void ChangeObjToOGColor(Collider other)
+    {
+        Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
+        Color objOGColor = objRenderer.material.color;
+
+        if (objOGColor == _selectionDM.ObjTargetFocusedColor || objOGColor == _selectionDM.ObjTargetColor)
+        {
+            objRenderer.material.color = _selectionDM.ObjTargetColor;
+        }
+        else
+        {
+            objRenderer.material.color = _selectionDM.ObjNormalColor;
+        }
+    }
+
+    private void HighlightObjColor(Collider other)
+    {
+        Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
+        Color objOGColor = objRenderer.material.color;
+
+        if (objOGColor == _selectionDM.ObjTargetColor || objOGColor == _selectionDM.ObjTargetFocusedColor)
+        {
+            objRenderer.material.color = _selectionDM.ObjTargetFocusedColor;
+        }
+        else
+        {
+            objRenderer.material.color = _selectionDM.ObjFocusedColor;
+        }
     }
 }

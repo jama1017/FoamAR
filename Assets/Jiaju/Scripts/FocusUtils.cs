@@ -4,13 +4,13 @@ using UnityEngine;
 
 public static class FocusUtils
 {
-    public static Vector3 worldToScreenSpace(Vector3 worldPos)
+    public static Vector3 WorldToScreenSpace(Vector3 worldPos)
     {
         return Camera.main.WorldToScreenPoint(worldPos);
     }
 
 
-    public static Vector3 worldToUISpace(Canvas parentCanvas, Vector3 worldPos)
+    public static Vector3 WorldToUISpace(Canvas parentCanvas, Vector3 worldPos)
     {
         //Convert the world for screen point so that it can be used with ScreenPointToLocalPointInRectangle function
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
@@ -24,7 +24,7 @@ public static class FocusUtils
         return movePos;
     }
 
-    public static Vector3 calcFocusCenter(List<Vector3> markers)
+    public static Vector3 CalcFocusCenter(List<Vector3> markers)
     {
         if (markers.Count == 0)
         {
@@ -43,7 +43,7 @@ public static class FocusUtils
         return new Vector3(x_sum / markers.Count, y_sum / markers.Count, 0f);
     }
 
-    public static GameObject rankFocusedObjects(List<GameObject> focusedObjects, Vector3 camPosition)
+    public static GameObject RankFocusedObjects(List<GameObject> focusedObjects, Vector3 cylinderPosition)
     {
 
         if (focusedObjects.Count == 0)
@@ -56,7 +56,33 @@ public static class FocusUtils
 
         for (int i = 0; i < focusedObjects.Count; i++)
         {
-            float dis = Vector3.Distance(focusedObjects[i].transform.position, camPosition);
+            float dis = Vector3.Distance(WorldToScreenSpace(focusedObjects[i].transform.position), WorldToScreenSpace(cylinderPosition));
+
+            if (dis < min_dis)
+            {
+                min_dis = dis;
+                num_one = focusedObjects[i];
+            }
+        }
+
+        return num_one;
+    }
+
+    public static GameObject RankFocusedObjects(List<GameObject> focusedObjects, Vector3 cylinderPosition, Canvas canvas)
+    {
+
+        if (focusedObjects.Count == 0)
+        {
+            return null;
+        }
+
+        GameObject num_one = null;
+        float min_dis = 9999999f;
+
+        for (int i = 0; i < focusedObjects.Count; i++)
+        {
+            float dis = Vector3.Distance(WorldToUISpace(canvas, focusedObjects[i].transform.position), WorldToUISpace(canvas, cylinderPosition));
+
             if (dis < min_dis)
             {
                 min_dis = dis;

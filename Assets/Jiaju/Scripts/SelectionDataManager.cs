@@ -14,7 +14,14 @@ public class SelectionDataManager : MonoBehaviour
     private GestureControl _activeGC;
     private Dictionary<GameObject, GameObject> _focusedObjectToLine = new Dictionary<GameObject, GameObject>();
     private Dictionary<Collider, Color> _focusedObjectToColor = new Dictionary<Collider, Color>();
-    
+
+    //colors for user task and selection aid
+    private Color _objNormalColor = new Color(150f / 255f, 100f / 255f, 0f, 1f);
+    private Color _objFocusedColor = new Color(1f, 200f / 255f, 0f, 1f);
+
+    private Color _objTargetColor = new Color(18f / 255f, 20f / 255f, 125f /255f, 1f);
+    private Color _objTargetFocusedColor = new Color(85f / 255f, 180f / 255f, 1f, 1f);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,5 +72,25 @@ public class SelectionDataManager : MonoBehaviour
     public Dictionary<Collider, Color> FocusedObjectToColor
     {
         get { return _focusedObjectToColor; }
+    }
+
+    public Color ObjNormalColor
+    {
+        get { return _objNormalColor; }
+    }
+
+    public Color ObjFocusedColor
+    {
+        get { return _objFocusedColor; }
+    }
+
+    public Color ObjTargetColor
+    {
+        get { return _objTargetColor; }
+    }
+
+    public Color ObjTargetFocusedColor
+    {
+        get { return _objTargetFocusedColor; }
     }
 }

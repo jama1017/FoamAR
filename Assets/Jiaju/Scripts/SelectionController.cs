@@ -29,8 +29,13 @@ public class SelectionController : PortalbleGeneralController
     public Transform m_focusCylinderPrefab;
     private Transform m_focusCylinder;
     private Vector3 m_focusCylinderCenterPos = Vector3.zero;
+    private Renderer m_focusCylinderRenderer;
     private float m_v = 0f;
     private float m_h = 0f;
+
+    // test distance calculation
+    private GameObject m_marker1;
+    private GameObject m_marker2;
 
     protected override void Start()
     {
@@ -40,9 +45,13 @@ public class SelectionController : PortalbleGeneralController
         //m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
         m_focusCylinder = Instantiate(m_focusCylinderPrefab);
         m_focusCylinder.gameObject.GetComponent<Collider>().attachedRigidbody.useGravity = false;
+        m_focusCylinderRenderer = m_focusCylinder.gameObject.GetComponent<Renderer>();
+
         m_guideLine = Instantiate(m_selectionDM.FocusInkPrefab).GetComponent<LineRenderer>();
         m_guideLine.positionCount = 2;
         m_guideLine.gameObject.SetActive(false);
+
+        
     }
 
     private void SetupServer()
@@ -52,8 +61,14 @@ public class SelectionController : PortalbleGeneralController
         string url = "ws://" + WSManager.GetComponent<WSManager>().websocketServer + ":" + websocketPort;
 
         Jetfire.Open2(url);
+
+        //m_marker1 = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
+        //m_marker2 = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
     }
 
+    /// <summary>
+    /// updates the location, scale, and rotation of the focus cylinder
+    /// </summary>
     private void UpdateFocusCylinder()
     {
         //if (Input.touchCount > 0)
@@ -69,7 +84,7 @@ public class SelectionController : PortalbleGeneralController
 
         if (m_markers_screenPos.Count > 0) {
             Vector3 center = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0);
-            Vector3 focusPos = FocusUtils.calcFocusCenter(m_markers_screenPos);
+            Vector3 focusPos = FocusUtils.CalcFocusCenter(m_markers_screenPos);
 
             Vector2 distance_vec = focusPos - center;
 
@@ -86,7 +101,8 @@ public class SelectionController : PortalbleGeneralController
         m_focusCylinder.LookAt(m_focusCylinder.position - (m_FirstPersonCamera.transform.position - m_focusCylinder.position));
         m_focusCylinder.Rotate(90.0f, 0.0f, 0.0f, Space.Self);
 
-        m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+        //m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+        m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
 
 
         //setting scale
@@ -112,6 +128,15 @@ public class SelectionController : PortalbleGeneralController
         UpdateFocusCylinder();
         AidSelection();
 
+        if (!Grab.Instance.IsGrabbing) // if not grabbing, enable focus cylinder
+        {
+            TurnOnSelectionAid();
+        }
+        else // if grabbing. do not detect candidate objects
+        {
+            TurnOffSelectionAid();
+        }
+
         //if (Input.GetMouseButtonDown(0))
         //{
         //    Vector3 touchPos = Input.mousePosition;
@@ -132,18 +157,46 @@ public class SelectionController : PortalbleGeneralController
         //}
     }
 
+    /// <summary>
+    /// Turn on the visuals of selection aid
+    /// </summary>
+    private void TurnOnSelectionAid()
+    {
+        if (!m_focusCylinderRenderer.enabled)
+        {
+            m_focusCylinderRenderer.enabled = true;
+        }
+
+        m_guideLine.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Turn off the visuals of selection aid
+    /// </summary>
+    private void TurnOffSelectionAid()
+    {
+        if (m_focusCylinderRenderer.enabled)
+        {
+            m_focusCylinderRenderer.enabled = false;
+        }
+
+        m_guideLine.gameObject.SetActive(false);
+    }
+
     private void AidSelection()
     {
-        GameObject num_one = FocusUtils.rankFocusedObjects(m_selectionDM.FocusedObjects, m_focusCylinderCenterPos);
-
+        GameObject num_one = FocusUtils.RankFocusedObjects(m_selectionDM.FocusedObjects, m_focusCylinderCenterPos, m_canvas);
+        
         if (!num_one)
         {
             m_guideLine.gameObject.SetActive(false);
             return;
         }
 
+        //m_marker1.GetComponent<RectTransform>().anchoredPosition = FocusUtils.WorldToUISpace(m_canvas, m_focusCylinderCenterPos);
+        //m_marker2.GetComponent<RectTransform>().anchoredPosition = FocusUtils.WorldToUISpace(m_canvas, num_one.transform.position);
+
         m_guideLine.gameObject.SetActive(true);
-        //LineRenderer line = m_selectionDM.FocusedObjectToLine[num_one].GetComponent<LineRenderer>();
 
         FocusUtils.UpdateLinePos(m_guideLine, num_one.GetComponent<Collider>(), m_selectionDM.ActivePalm);
     }
@@ -158,17 +211,17 @@ public class SelectionController : PortalbleGeneralController
                 m_isRecorded = true;
                 Vector3 grabPos = Grab.Instance.GetGrabbingObject().gameObject.transform.position;
 
-                Vector2 newPos = FocusUtils.worldToUISpace(m_canvas, grabPos);
+                Vector2 newPos = FocusUtils.WorldToUISpace(m_canvas, grabPos);
                 GameObject new_marker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
 
                 new_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
                 m_markers.Add(new_marker);
-                m_markers_screenPos.Add(FocusUtils.worldToScreenSpace(grabPos));
+                m_markers_screenPos.Add(FocusUtils.WorldToScreenSpace(grabPos));
                 new_marker.SetActive(m_isMarkerDisplayed);
                 
                 if (Jetfire.IsConnected2())
                 {
-                    string message = "grabbed at," + newPos + "," + FocusUtils.worldToScreenSpace(grabPos);
+                    string message = "grabbed at," + newPos + "," + FocusUtils.WorldToScreenSpace(grabPos);
                     Jetfire.SendMsg2(message);
                     Debug.Log("JETFIRE HAHA");
                 }
@@ -197,6 +250,7 @@ public class SelectionController : PortalbleGeneralController
         if (placePrefab != null)
         {
             Transform cen = Instantiate(placePrefab, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
+            cen.gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjNormalColor;
             List<Transform> cens = new List<Transform>();
 
             // for focus center test purposes
@@ -208,12 +262,14 @@ public class SelectionController : PortalbleGeneralController
                 for (int j = -num; j < num + 1; j++)
                 {
                     if (i == 0 && j == 0) continue;
-                    cens.Add(Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation));
+                    Transform obj = Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation);
+                    obj.gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjNormalColor;
+                    cens.Add(obj);
                 }
             }
 
             int idx = Random.Range(0, cens.Count);
-            cens[idx].gameObject.GetComponent<Renderer>().material.color = Color.blue;
+            cens[idx].gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjTargetColor;
 
         }
     }

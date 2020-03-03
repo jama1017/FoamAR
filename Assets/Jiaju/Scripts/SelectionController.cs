@@ -37,6 +37,9 @@ public class SelectionController : PortalbleGeneralController
     private GameObject m_marker1;
     private GameObject m_marker2;
 
+    private HashSet<int> m_targetObjIDs = new HashSet<int>();
+    //private bool m_useSelectionAid = true;
+
     protected override void Start()
     {
         base.Start();
@@ -128,7 +131,7 @@ public class SelectionController : PortalbleGeneralController
         UpdateFocusCylinder();
         AidSelection();
 
-        if (!Grab.Instance.IsGrabbing) // if not grabbing, enable focus cylinder
+        if (!Grab.Instance.IsGrabbing && m_selectionDM.UseSelectionAid) // if not grabbing, enable focus cylinder
         {
             TurnOnSelectionAid();
         }
@@ -144,16 +147,6 @@ public class SelectionController : PortalbleGeneralController
         //    RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas.transform as RectTransform, touchPos, null, out movePos);
         //    Debug.Log(movePos);
         //    prefab_marker.GetComponent<RectTransform>().position = movePos;
-        //}
-
-        //if (Input.GetKey(KeyCode.DownArrow))
-        //{
-        //    Debug.Log("Down");
-        //}
-
-        //if (Input.GetKey(KeyCode.UpArrow))
-        //{
-        //    Debug.Log("Up");
         //}
     }
 
@@ -209,7 +202,8 @@ public class SelectionController : PortalbleGeneralController
             {
                 //Debug.Log("FOCUS grabbing");
                 m_isRecorded = true;
-                Vector3 grabPos = Grab.Instance.GetGrabbingObject().gameObject.transform.position;
+                GameObject grabbedObj = Grab.Instance.GetGrabbingObject().gameObject;
+                Vector3 grabPos = grabbedObj.transform.position;
 
                 Vector2 newPos = FocusUtils.WorldToUISpace(m_canvas, grabPos);
                 GameObject new_marker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
@@ -221,9 +215,20 @@ public class SelectionController : PortalbleGeneralController
                 
                 if (Jetfire.IsConnected2())
                 {
-                    string message = "grabbed at," + newPos + "," + FocusUtils.WorldToScreenSpace(grabPos);
+                    string message = "Object grabbed," + newPos + "," + FocusUtils.WorldToScreenSpace(grabPos) + "," + FocusUtils.AddTimeStamp();
+
+                    Color objColor = grabbedObj.GetComponent<Renderer>().material.color;
+                    if (m_targetObjIDs.Contains(grabbedObj.GetInstanceID()))
+                    {
+                        message += ", target obj";
+                    }
+                    else
+                    {
+                        message += ", normal obj";
+                    }
+
                     Jetfire.SendMsg2(message);
-                    Debug.Log("JETFIRE HAHA");
+                    Debug.Log("JETFIREE" + objColor);
                 }
             }
         }
@@ -234,7 +239,7 @@ public class SelectionController : PortalbleGeneralController
         }
     }
 
-    public void toggleMarkerVisibility()
+    public void ToggleMarkerVisibility()
     {
         m_isMarkerDisplayed = !m_isMarkerDisplayed;
         for (int i = 0; i < m_markers.Count; i++)
@@ -242,6 +247,13 @@ public class SelectionController : PortalbleGeneralController
             m_markers[i].SetActive(m_isMarkerDisplayed);
         }
     }
+
+
+    public void ToggleUseSelectionAid()
+    {
+        m_selectionDM.UseSelectionAid = !m_selectionDM.UseSelectionAid;
+    }
+
 
     public override void OnARPlaneHit(PortalbleHitResult hit)
     {
@@ -270,7 +282,12 @@ public class SelectionController : PortalbleGeneralController
 
             int idx = Random.Range(0, cens.Count);
             cens[idx].gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjTargetColor;
-
+            m_targetObjIDs.Add(cens[idx].gameObject.GetInstanceID());
         }
+    }
+
+    public void ToggleTimeStamp(bool isStart)
+    {
+        FocusUtils.ToggleTimeStamp(isStart);
     }
 }

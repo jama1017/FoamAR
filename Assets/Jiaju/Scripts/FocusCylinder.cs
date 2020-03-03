@@ -28,7 +28,7 @@ public class FocusCylinder : MonoBehaviour
         {
             _selectionDM.FocusedObjects.Add(other.gameObject);
 
-            if (!Grab.Instance.IsGrabbing)
+            if (!Grab.Instance.IsGrabbing && _selectionDM.UseSelectionAid)
             {
                 HighlightObjColor(other);
             }
@@ -54,7 +54,7 @@ public class FocusCylinder : MonoBehaviour
         {
             // draw line on every collider
             //LineRenderer line = _selectionDM.FocusedObjectToLine[other.gameObject].GetComponent<LineRenderer>();
-            if (!Grab.Instance.IsGrabbing)
+            if (!Grab.Instance.IsGrabbing && _selectionDM.UseSelectionAid)
             {
                 HighlightObjColor(other);
             }

@@ -14,6 +14,7 @@ public class SelectionDataManager : MonoBehaviour
     private GestureControl _activeGC;
     private Dictionary<GameObject, GameObject> _focusedObjectToLine = new Dictionary<GameObject, GameObject>();
     private Dictionary<Collider, Color> _focusedObjectToColor = new Dictionary<Collider, Color>();
+    private bool _useSelectionAid = true;
 
     //colors for user task and selection aid
     private Color _objNormalColor = new Color(150f / 255f, 100f / 255f, 0f, 1f);
@@ -92,5 +93,11 @@ public class SelectionDataManager : MonoBehaviour
     public Color ObjTargetFocusedColor
     {
         get { return _objTargetFocusedColor; }
+    }
+
+    public bool UseSelectionAid
+    {
+        get { return _useSelectionAid;  }
+        set { _useSelectionAid = value; }
     }
 }

@@ -98,4 +98,33 @@ public static class FocusUtils
         line.SetPosition(0, ActivePalm.transform.position);
         line.SetPosition(1, other.gameObject.transform.position);
     }
+
+    public static void ToggleTimeStamp(bool isStart)
+    {
+        if (Jetfire.IsConnected2())
+        {
+            string message = "";
+
+            if (isStart)
+            {
+                message += "Time start,";
+            }
+            else
+            {
+                message += "Time end,";
+            }
+
+            message += AddTimeStamp();
+
+
+            Jetfire.SendMsg2(message);
+            Debug.Log("JETFIRE start/end");
+        }
+
+    }
+
+    public static string AddTimeStamp()
+    {
+        return System.DateTime.Now.ToString("MM / dd / yyyy hh: mm: ss") + " , " + System.DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+    }
 }

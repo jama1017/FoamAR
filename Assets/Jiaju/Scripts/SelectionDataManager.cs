@@ -28,6 +28,8 @@ public class SelectionDataManager : MonoBehaviour
     {
         _focusedObjects = new List<GameObject>();
 
+        //ActiveHand = this.
+
         _activeIndex = ActiveHand.transform.GetChild(1).GetChild(2).gameObject;
         _activeThumb = ActiveHand.transform.GetChild(0).GetChild(2).gameObject;
         _activePalm = ActiveHand.transform.GetChild(5).GetChild(0).gameObject;
@@ -37,7 +39,23 @@ public class SelectionDataManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    }
+
+    public void updateActiveObjects()
+    {
+        if (!ActiveHand) // if no hand
+        {
+            _activeIndex = null;
+            _activeThumb = null;
+            _activePalm = null;
+            _activeGC = null;
+            return;
+        }
+
+        _activeIndex = ActiveHand.transform.GetChild(1).GetChild(2).gameObject;
+        _activeThumb = ActiveHand.transform.GetChild(0).GetChild(2).gameObject;
+        _activePalm = ActiveHand.transform.GetChild(5).GetChild(0).gameObject;
+        _activeGC = ActiveHand.GetComponent<GestureControl>();
     }
 
     public List<GameObject> FocusedObjects

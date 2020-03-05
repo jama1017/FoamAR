@@ -117,6 +117,8 @@ public class SelectionController : PortalbleGeneralController
 
     private void UpdateCylinderRadius(float maxWidth)
     {
+        if (!ActiveHandManager) return;
+
         float dis = Vector3.Distance(m_selectionDM.ActiveIndex.transform.position, m_selectionDM.ActiveThumb.transform.position);
         if (dis > maxWidth) dis = maxWidth;
         m_focusCylinder.localScale = new Vector3(dis, m_focusCylinder.localScale[1], dis);
@@ -126,6 +128,8 @@ public class SelectionController : PortalbleGeneralController
     protected override void Update()
     {
         base.Update();
+
+        UpdateActiveHandData();
 
         RecordGrabLoc();
         UpdateFocusCylinder();
@@ -180,7 +184,7 @@ public class SelectionController : PortalbleGeneralController
     {
         GameObject num_one = FocusUtils.RankFocusedObjects(m_selectionDM.FocusedObjects, m_focusCylinderCenterPos, m_canvas);
         
-        if (!num_one)
+        if (!num_one || !ActiveHandManager)
         {
             m_guideLine.gameObject.SetActive(false);
             return;
@@ -196,7 +200,7 @@ public class SelectionController : PortalbleGeneralController
 
     private void RecordGrabLoc()
     {
-        if (m_selectionDM.ActiveGC.bufferedGesture() == "pinch")
+        if (ActiveHandGesture == "pinch")
         {
             if (Grab.Instance.IsGrabbing && !m_isRecorded)
             {
@@ -289,5 +293,20 @@ public class SelectionController : PortalbleGeneralController
     public void ToggleTimeStamp(bool isStart)
     {
         FocusUtils.ToggleTimeStamp(isStart);
+    }
+
+    private void UpdateActiveHandData()
+    {
+        HandManager activeHM = this.ActiveHandManager;
+        if (activeHM)
+        {
+            m_selectionDM.ActiveHand = activeHM.gameObject;
+        }
+        else
+        {
+            m_selectionDM.ActiveHand = null;
+        }
+        
+        m_selectionDM.updateActiveObjects();
     }
 }

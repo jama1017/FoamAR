@@ -52,8 +52,8 @@ public class Sync : MonoBehaviour {
     private int smoothingBuffer = 1;
 	private int smoothingBuffer_idx;
   
-    // For 1+6
-    private Vector3 leapMotionOffset = new Vector3(0f, -0.04f, -0.01f);
+    // For Jiaju's iPhone
+    private Vector3 leapMotionOffset = new Vector3(-0.03f, -0.06f, -0.01f); // change this to change hand offset
     // For Samsung S9+
     //private Vector3 leapMotionOffset = new Vector3(0f, -0.08f, -0.01f);
     private Vector3 LOffset = new Vector3(0.035f, 0.04f, 0f);

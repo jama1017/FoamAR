@@ -37,14 +37,6 @@ public class FocusCylinder : MonoBehaviour
             {
                 ChangeObjToOGColor(other);
             }
-
-
-            //GameObject lineObj = Instantiate(_selectionDM.FocusInkPrefab);
-            //LineRenderer line = lineObj.GetComponent<LineRenderer>();
-            //line.positionCount = 2;
-
-            //FocusUtils.UpdateLinePos(line, other, _selectionDM.ActivePalm);
-            //_selectionDM.FocusedObjectToLine.Add(other.gameObject, lineObj);
         }
     }
 
@@ -63,12 +55,6 @@ public class FocusCylinder : MonoBehaviour
             {
                 ChangeObjToOGColor(other);
             }
-            // on highest ranked collider
-            //GameObject num_one = FocusUtils.rankFocusedObjects(_selectionDM.FocusedObjects, _selectionDM.FirstPersonCamera.transform.position);
-            //LineRenderer line = _selectionDM.FocusedObjectToLine[num_one].GetComponent<LineRenderer>();
-
-            //FocusUtils.UpdateLinePos(line, other, _selectionDM.ActivePalm);
-            Debug.Log("LINEE COLOR size: " + _selectionDM.FocusedObjectToColor.Count);
         }
     }
 
@@ -79,11 +65,6 @@ public class FocusCylinder : MonoBehaviour
             _selectionDM.FocusedObjects.Remove(other.gameObject);
 
             ChangeObjToOGColor(other);
-
-
-            //_selectionDM.FocusedObjectToColor.Remove(other);
-            //GameObject.Destroy(_selectionDM.FocusedObjectToLine[other.gameObject]);
-            //_selectionDM.FocusedObjectToLine.Remove(other.gameObject);
         }
         //material.color = Color.blue
     }
@@ -91,30 +72,30 @@ public class FocusCylinder : MonoBehaviour
     private void ChangeObjToOGColor(Collider other)
     {
         Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
-        Color objOGColor = objRenderer.material.color;
+        //Color objOGColor = objRenderer.material.color;
 
-        if (objOGColor == _selectionDM.ObjTargetFocusedColor || objOGColor == _selectionDM.ObjTargetColor)
+        if (_selectionDM.TargetObjIDs.Contains(other.gameObject.GetInstanceID()))
         {
-            objRenderer.material.color = _selectionDM.ObjTargetColor;
+            objRenderer.material.color = new Color(_selectionDM.ObjTargetColor.r, _selectionDM.ObjTargetColor.g, _selectionDM.ObjTargetColor.b, objRenderer.material.color.a);
         }
         else
         {
-            objRenderer.material.color = _selectionDM.ObjNormalColor;
+            objRenderer.material.color = new Color(_selectionDM.ObjNormalColor.r, _selectionDM.ObjNormalColor.g, _selectionDM.ObjNormalColor.b, objRenderer.material.color.a); ;
         }
     }
 
     private void HighlightObjColor(Collider other)
     {
         Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
-        Color objOGColor = objRenderer.material.color;
+        //Color objOGColor = objRenderer.material.color;
 
-        if (objOGColor == _selectionDM.ObjTargetColor || objOGColor == _selectionDM.ObjTargetFocusedColor)
+        if (_selectionDM.TargetObjIDs.Contains(other.gameObject.GetInstanceID()))
         {
-            objRenderer.material.color = _selectionDM.ObjTargetFocusedColor;
+            objRenderer.material.color = new Color(_selectionDM.ObjTargetFocusedColor.r, _selectionDM.ObjTargetFocusedColor.g, _selectionDM.ObjTargetFocusedColor.b, objRenderer.material.color.a);
         }
         else
         {
-            objRenderer.material.color = _selectionDM.ObjFocusedColor;
+            objRenderer.material.color = new Color(_selectionDM.ObjFocusedColor.r, _selectionDM.ObjFocusedColor.g, _selectionDM.ObjFocusedColor.b, objRenderer.material.color.a); ;
         }
     }
 }

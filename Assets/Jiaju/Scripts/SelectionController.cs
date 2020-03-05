@@ -37,8 +37,10 @@ public class SelectionController : PortalbleGeneralController
     private GameObject m_marker1;
     private GameObject m_marker2;
 
-    private HashSet<int> m_targetObjIDs = new HashSet<int>();
-    //private bool m_useSelectionAid = true;
+    // depth cue related;
+    private readonly float m_farDis = 0.3f;   // to be adjusted based on user preference
+    private readonly float m_nearDis = 0.1f;  // to be adjusted based on user preference
+    private readonly float m_farAlpha = 0.2f;
 
     protected override void Start()
     {
@@ -131,6 +133,7 @@ public class SelectionController : PortalbleGeneralController
 
         UpdateActiveHandData();
 
+        UpdateDepthCues();
         RecordGrabLoc();
         UpdateFocusCylinder();
         AidSelection();
@@ -143,6 +146,9 @@ public class SelectionController : PortalbleGeneralController
         {
             TurnOffSelectionAid();
         }
+
+        // usually hand is 0.3f in front of camera at most
+        //Debug.Log("TRANSPP :" + Vector3.Distance(m_FirstPersonCamera.transform.position, ActiveHandTransform.position).ToString("F10"));
 
         //if (Input.GetMouseButtonDown(0))
         //{
@@ -222,7 +228,7 @@ public class SelectionController : PortalbleGeneralController
                     string message = "Object grabbed," + newPos + "," + FocusUtils.WorldToScreenSpace(grabPos) + "," + FocusUtils.AddTimeStamp();
 
                     Color objColor = grabbedObj.GetComponent<Renderer>().material.color;
-                    if (m_targetObjIDs.Contains(grabbedObj.GetInstanceID()))
+                    if (m_selectionDM.TargetObjIDs.Contains(grabbedObj.GetInstanceID()))
                     {
                         message += ", target obj";
                     }
@@ -243,6 +249,44 @@ public class SelectionController : PortalbleGeneralController
         }
     }
 
+
+    private void UpdateDepthCues()
+    {
+        int numIter = m_selectionDM.SceneObjects.Count;
+
+        Vector3 visPos = m_FirstPersonCamera.transform.position;
+
+        for (int i = 0; i < numIter; i++)
+        {
+            GameObject curr = m_selectionDM.SceneObjects[i];
+            Renderer currRenderer = curr.GetComponent<Renderer>();
+            float objVisDis = Vector3.Distance(curr.transform.position, visPos);
+
+            if (objVisDis > m_farDis) // far from far dis
+            {
+                FocusUtils.UpdateMaterialAlpha(currRenderer, m_farAlpha);
+                //Color currColor = curr.GetComponent<Renderer>().material.color;
+                //curr.GetComponent<Renderer>().material.color = new Vector4(currColor.r, currColor.g, currbColor.b, m_farAlpha);
+            }
+            else if (objVisDis < m_farDis && objVisDis > m_nearDis) // in between far and near dis
+            {
+                float alpha = FocusUtils.LinearMap(m_farDis - objVisDis, m_nearDis, m_farDis, m_farAlpha, 1.0f); // mapping from m_nearDis - m_farDis to m_farAlpha - 1.0f to 
+                FocusUtils.UpdateMaterialAlpha(currRenderer, alpha);
+
+                //Color currColor = curr.GetComponent<Renderer>().material.color;
+                //curr.GetComponent<Renderer>().material.color = new Color(currColor.r, currColor.g, currColor.b, alpha);
+
+                Debug.Log("TRANSPP alpha: " + alpha);
+            }
+            else
+            {
+                FocusUtils.UpdateMaterialAlpha(currRenderer, 1.0f);
+            }
+        }
+    }
+
+
+    // functional functions
     public void ToggleMarkerVisibility()
     {
         m_isMarkerDisplayed = !m_isMarkerDisplayed;
@@ -267,6 +311,8 @@ public class SelectionController : PortalbleGeneralController
         {
             Transform cen = Instantiate(placePrefab, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
             cen.gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjNormalColor;
+            m_selectionDM.SceneObjects.Add(cen.gameObject);
+
             List<Transform> cens = new List<Transform>();
 
             // for focus center test purposes
@@ -281,12 +327,13 @@ public class SelectionController : PortalbleGeneralController
                     Transform obj = Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation);
                     obj.gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjNormalColor;
                     cens.Add(obj);
+                    m_selectionDM.SceneObjects.Add(obj.gameObject);
                 }
             }
 
             int idx = Random.Range(0, cens.Count);
             cens[idx].gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjTargetColor;
-            m_targetObjIDs.Add(cens[idx].gameObject.GetInstanceID());
+            m_selectionDM.TargetObjIDs.Add(cens[idx].gameObject.GetInstanceID());
         }
     }
 

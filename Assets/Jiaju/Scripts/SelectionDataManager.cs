@@ -12,15 +12,17 @@ public class SelectionDataManager : MonoBehaviour
     private GameObject _activeThumb;
     private GameObject _activePalm;
     private GestureControl _activeGC;
-    private Dictionary<GameObject, GameObject> _focusedObjectToLine = new Dictionary<GameObject, GameObject>();
-    private Dictionary<Collider, Color> _focusedObjectToColor = new Dictionary<Collider, Color>();
     private bool _useSelectionAid = true;
+
+    private List<GameObject> _sceneObjects = new List<GameObject>();
+    private HashSet<int> _targetObjIDs = new HashSet<int>();
+
 
     //colors for user task and selection aid
     private Color _objNormalColor = new Color(150f / 255f, 100f / 255f, 0f, 1f);
     private Color _objFocusedColor = new Color(1f, 200f / 255f, 0f, 1f);
 
-    private Color _objTargetColor = new Color(18f / 255f, 20f / 255f, 125f /255f, 1f);
+    private Color _objTargetColor = new Color(18f / 255f, 20f / 255f, 125f / 255f, 1f);
     private Color _objTargetFocusedColor = new Color(85f / 255f, 180f / 255f, 1f, 1f);
 
     // Start is called before the first frame update
@@ -83,16 +85,6 @@ public class SelectionDataManager : MonoBehaviour
         get { return _activeGC; }
     }
 
-    public Dictionary<GameObject, GameObject> FocusedObjectToLine
-    {
-        get { return _focusedObjectToLine; }
-    }
-
-    public Dictionary<Collider, Color> FocusedObjectToColor
-    {
-        get { return _focusedObjectToColor; }
-    }
-
     public Color ObjNormalColor
     {
         get { return _objNormalColor; }
@@ -115,7 +107,17 @@ public class SelectionDataManager : MonoBehaviour
 
     public bool UseSelectionAid
     {
-        get { return _useSelectionAid;  }
+        get { return _useSelectionAid; }
         set { _useSelectionAid = value; }
+    }
+
+    public List<GameObject> SceneObjects
+    {
+        get { return _sceneObjects; }
+    }
+
+    public HashSet<int> TargetObjIDs
+    {
+        get { return _targetObjIDs; }
     }
 }

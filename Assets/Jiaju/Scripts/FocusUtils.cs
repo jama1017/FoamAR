@@ -127,4 +127,16 @@ public static class FocusUtils
     {
         return System.DateTime.Now.ToString("MM / dd / yyyy hh: mm: ss") + " , " + System.DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
     }
+
+    public static float LinearMap(float input, float ogMin, float ogMax, float tarMin, float tarMax)
+    {
+        float t = (input - ogMin) / (ogMax - ogMin);
+        return Mathf.Lerp(tarMin, tarMax, t);
+    }
+
+    public static void UpdateMaterialAlpha(Renderer renderer, float alpha)
+    {
+        Color currColor = renderer.material.color;
+        renderer.material.color = new Vector4(currColor.r, currColor.g, currColor.b, alpha);
+    }
 }

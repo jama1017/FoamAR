@@ -128,9 +128,9 @@ public static class FocusUtils
         return System.DateTime.Now.ToString("MM / dd / yyyy hh: mm: ss") + " , " + System.DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
     }
 
-    public static float LinearMap(float input, float ogMin, float ogMax, float tarMin, float tarMax)
+    public static float LinearMapReverse(float input, float ogMin, float ogMax, float tarMin, float tarMax)
     {
-        float t = (input - ogMin) / (ogMax - ogMin);
+        float t = Mathf.Abs(ogMax - input) / Mathf.Abs(ogMax - ogMin);
         return Mathf.Lerp(tarMin, tarMax, t);
     }
 

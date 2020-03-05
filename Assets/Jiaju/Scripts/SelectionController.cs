@@ -34,12 +34,15 @@ public class SelectionController : PortalbleGeneralController
     private float m_h = 0f;
 
     // test distance calculation
-    private GameObject m_marker1;
-    private GameObject m_marker2;
+    //private GameObject m_marker1;
+    //private GameObject m_marker2;
+    //private Transform _tempTar;
 
     // depth cue related;
-    private readonly float m_farDis = 0.3f;   // to be adjusted based on user preference
-    private readonly float m_nearDis = 0.1f;  // to be adjusted based on user preference
+    private readonly float m_farDis = 0.3f;       // to be adjusted based on user preference. far distance to be reached
+    private readonly float m_nearDis = 0.1f;      // to be adjusted based on user preference. near distance to be reached
+    private readonly float m_nearHandDis = 0.11f; // to be adjusted based on user preference.
+    private readonly float m_farHandDis = 0.21f;  // to be adjusted based on user preference.
     private readonly float m_farAlpha = 0.2f;
 
     protected override void Start()
@@ -196,9 +199,6 @@ public class SelectionController : PortalbleGeneralController
             return;
         }
 
-        //m_marker1.GetComponent<RectTransform>().anchoredPosition = FocusUtils.WorldToUISpace(m_canvas, m_focusCylinderCenterPos);
-        //m_marker2.GetComponent<RectTransform>().anchoredPosition = FocusUtils.WorldToUISpace(m_canvas, num_one.transform.position);
-
         m_guideLine.gameObject.SetActive(true);
 
         FocusUtils.UpdateLinePos(m_guideLine, num_one.GetComponent<Collider>(), m_selectionDM.ActivePalm);
@@ -270,19 +270,32 @@ public class SelectionController : PortalbleGeneralController
             }
             else if (objVisDis < m_farDis && objVisDis > m_nearDis) // in between far and near dis
             {
-                float alpha = FocusUtils.LinearMap(m_farDis - objVisDis, m_nearDis, m_farDis, m_farAlpha, 1.0f); // mapping from m_nearDis - m_farDis to m_farAlpha - 1.0f to 
+                float alpha = FocusUtils.LinearMapReverse(objVisDis, m_nearDis, m_farDis, m_farAlpha, 1.0f); // mapping from m_nearDis - m_farDis to m_farAlpha - 1.0f to
+
+                // hand distance from obj is usually from 0.09 to 0.20
+
+                alpha += AddHandDistanceAlpha(curr, alpha);
+
                 FocusUtils.UpdateMaterialAlpha(currRenderer, alpha);
-
-                //Color currColor = curr.GetComponent<Renderer>().material.color;
-                //curr.GetComponent<Renderer>().material.color = new Color(currColor.r, currColor.g, currColor.b, alpha);
-
-                Debug.Log("TRANSPP alpha: " + alpha);
             }
             else
             {
                 FocusUtils.UpdateMaterialAlpha(currRenderer, 1.0f);
             }
         }
+
+        //Debug.Log("TRANSPP :" + Vector3.Distance(ActiveHandTransform.position, _tempTar.position).ToString("F10"));
+
+    }
+
+    private float AddHandDistanceAlpha(GameObject curr, float alpha)
+    {
+        float objHandDis = m_farHandDis;
+
+        if (ActiveHandManager) objHandDis = Vector3.Distance(ActiveHandTransform.position, curr.transform.position);
+        if (objHandDis > m_farHandDis) objHandDis = m_farHandDis;
+
+        return FocusUtils.LinearMapReverse(objHandDis, m_nearHandDis, m_farHandDis, 0.0f, 1 - alpha); // add hand distance into consideration
     }
 
 

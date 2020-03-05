@@ -61,9 +61,9 @@ public class FoamARController : PortalbleGeneralController
         m_uiState_hashes.Add(m_hash_maniBool);
     }
 
-    protected override void OnUpdate()
+    protected override void Update()
     {
-        base.OnUpdate();
+        base.Update();
 
         m_maniMenu.transform.LookAt(Camera.main.transform);
         m_createMenu.transform.LookAt(Camera.main.transform);

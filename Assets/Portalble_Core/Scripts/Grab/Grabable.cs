@@ -35,6 +35,8 @@ namespace Portalble.Functions.Grab {
 
         private Material m_unselectedMaterial;
 
+        private List<GrabCollider> m_grabColliders;
+
         /// <summary>
         /// True if it's ready for grab, it doesn't mean the user is grabbing this.
         /// It only shows that user can grab it. e.g. the hand is in the grab collider.
@@ -67,6 +69,8 @@ namespace Portalble.Functions.Grab {
                 Debug.Log("Create Grab Config");
                 m_configuration = new GrabableConfig(m_initialLock);
             }
+
+            m_grabColliders = new List<GrabCollider>();
         }
 
         // Update is called once per frame
@@ -74,7 +78,7 @@ namespace Portalble.Functions.Grab {
 
         }
 
-        internal void OnGrabTriggerEnter(bool isLeft) {
+        internal void OnGrabTriggerEnter(GrabCollider notifier, bool isLeft) {
             // already waiting for grabbing. It's inavailable.
             if (IsReadyForGrab)
                 return;
@@ -82,6 +86,8 @@ namespace Portalble.Functions.Grab {
             Debug.Log("Grabable:On Grab Trigger Enter");
             m_isLeftHanded = isLeft;
             Grab.Instance.WaitForGrabbing(this);
+
+            m_grabColliders.Add(notifier);
             /*
             if (GlobalLogIO.m_timeManager != null) {
                 string currHand = null;
@@ -110,6 +116,12 @@ namespace Portalble.Functions.Grab {
 
             Debug.Log("Grabable:On Grab Trigger Exit");
             Grab.Instance.ExitGrabbingQueue(this);
+
+            foreach (GrabCollider gc in m_grabColliders) {
+                gc.SetLock(false);
+            }
+
+            m_grabColliders.Clear();
 
             /*
             if (GlobalLogIO.m_timeManager != null) {
@@ -191,6 +203,10 @@ namespace Portalble.Functions.Grab {
                     GetComponent<Renderer>().material = m_grabbedMaterial;
                 }
             }
+
+            foreach(GrabCollider gc in m_grabColliders) {
+                gc.SetLock(true);
+            }
         }
 
         /// <summary>
@@ -202,7 +218,7 @@ namespace Portalble.Functions.Grab {
                 cd.isTrigger = false;
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null) {
-                rb.useGravity = true; //disabled for FoamAR, enabled for selection
+                rb.useGravity = true;
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 rb.velocity = releaseVelocity * m_throwPower;

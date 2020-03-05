@@ -26,6 +26,10 @@ namespace Portalble
     public class PortalbleGeneralController : MonoBehaviour
     {
         /// <summary>
+        /// A static object refering to current portalble controller.
+        /// </summary>
+        public static PortalbleGeneralController main;
+        /// <summary>
         /// The first-person camera being used to render the passthrough camera image
         /// </summary>
         public Camera m_FirstPersonCamera;
@@ -84,14 +88,176 @@ namespace Portalble
         protected bool m_IsQuitting = false;
 
         /// <summary>
-        /// Left hand transform (might be null if controller doesn't use any information of hand transformation)
+        /// Left Hand Manager
+        /// </summary>
+        protected HandManager m_LeftHandMgr;
+        /// <summary>
+        /// Left Hand Gesture Control
+        /// </summary>
+        protected GestureControl m_LeftHandGestureControl;
+        /// <summary>
+        /// Left Hand Transform (its palm transform, use m_LeftHandMgr for hand object)
         /// </summary>
         protected Transform m_tLeftHand;
 
         /// <summary>
-        /// Right hand transform (might be null if controller doesn't use any information of hand transformation)
+        /// Get hand manager of left hand
+        /// </summary>
+        public HandManager LeftHandManager
+        {
+            get
+            {
+                if (m_LeftHandMgr == null)
+                {
+                    UpdateHandReference();
+                }
+                return m_LeftHandMgr;
+            }
+        }
+
+        /// <summary>
+        /// Get left hand (palm) transform
+        /// </summary>
+        public Transform LeftHandTransform
+        {
+            get
+            {
+                if (m_tLeftHand == null)
+                {
+                    UpdateHandReference();
+                }
+                return m_tLeftHand;
+            }
+        }
+        /// <summary>
+        /// Get left hand gesture
+        /// </summary>
+        public string LeftHandGesture
+        {
+            get
+            {
+                if (m_LeftHandGestureControl == null)
+                    UpdateHandReference();
+                return m_LeftHandGestureControl.bufferedGesture();
+            }
+        }
+
+        /// <summary>
+        /// Right Hand Manager
+        /// </summary>
+        protected HandManager m_RightHandMgr;
+        /// <summary>
+        /// Right Hand Gesture Control
+        /// </summary>
+        protected GestureControl m_RightHandGestureControl;
+        /// <summary>
+        /// Right Hand Transform (its palm transform, use m_LeftHandMgr for hand object)
         /// </summary>
         protected Transform m_tRightHand;
+
+        /// <summary>
+        /// Get hand manager of right hand
+        /// </summary>
+        public HandManager RightHandManager
+        {
+            get
+            {
+                if (m_RightHandMgr == null)
+                {
+                    UpdateHandReference();
+                }
+                return m_RightHandMgr;
+            }
+        }
+
+        /// <summary>
+        /// Get right hand (palm) transform
+        /// </summary>
+        public Transform RightHandTransform
+        {
+            get
+            {
+                if (m_tRightHand == null)
+                {
+                    UpdateHandReference();
+                }
+                return m_tRightHand;
+            }
+        }
+
+        /// <summary>
+        /// Get left hand gesture
+        /// </summary>
+        public string RightHandGesture
+        {
+            get
+            {
+                if (m_RightHandGestureControl == null)
+                    UpdateHandReference();
+                return m_RightHandGestureControl.bufferedGesture();
+            }
+        }
+
+        /// <summary>
+        /// Get hand manager of active hand
+        /// </summary>
+        public HandManager ActiveHandManager
+        {
+            get
+            {
+                string active = WebSocketManager.getActiveHand();
+                switch (active)
+                {
+                case "NO_HAND":
+                    return null;
+                case "LEFT_HAND":
+                    return LeftHandManager;
+                case "RIGHT_HAND":
+                    return RightHandManager;
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// Get hand (palm) transform of active hand
+        /// </summary>
+        public Transform ActiveHandTransform
+        {
+            get
+            {
+                string active = WebSocketManager.getActiveHand();
+                switch (active)
+                {
+                    case "NO_HAND":
+                        return null;
+                    case "LEFT_HAND":
+                        return LeftHandTransform;
+                    case "RIGHT_HAND":
+                        return RightHandTransform;
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// Get active hand gesture
+        /// </summary>
+        public string ActiveHandGesture
+        {
+            get
+            {
+                string active = WebSocketManager.getActiveHand();
+                switch (active)
+                {
+                    case "NO_HAND":
+                        return null;
+                    case "LEFT_HAND":
+                        return LeftHandGesture;
+                    case "RIGHT_HAND":
+                        return RightHandGesture;
+                }
+                return null;
+            }
+        }
 
         /// <summary>
         /// Used for red screen distance check.
@@ -107,6 +273,21 @@ namespace Portalble
         /// Websocket Manager
         /// </summary>
         protected WSManager m_WSManager;
+
+        /// <summary>
+        /// Get Web socket manager.
+        /// </summary>
+        public WSManager WebSocketManager
+        {
+            get
+            {
+                if (m_WSManager == null)
+                {
+                    m_WSManager = GameObject.FindObjectOfType<WSManager>();
+                }
+                return m_WSManager;
+            }
+        }
 
         /// <summary>
         /// Transparent material for planes
@@ -128,22 +309,29 @@ namespace Portalble
         {
             // Empty
             m_UnityPlaneInteractionLayer = 0x1 << m_UnityPlaneInteractionLayer;
-        }
 
-        // For inherited class
-        protected virtual void OnUpdate() { }
+            if (main != null && main != this)
+            {
+                Debug.LogWarning("Warning: two or more portalble controllers detected.");
+            }
+            main = this;
+        }
 
         // Update is called once per frame
         protected virtual void Update()
         {
-            OnUpdate();
             // _UpdateApplicationLifecycle();
+            if (m_ARSupport == null)
+                return;
 
             m_AllPlanes = m_ARSupport.getPlanes();
 
             // If Interaction with ARCore planes is available.
             if (m_EnableARPlaneInteraction)
             {
+                if (Input.touchCount == 0)
+                    return;
+
                 Touch touch = Input.GetTouch(0);
                 // if current touch is valid. (notice: here is a ! mark before the logic)
                 if (!(Input.touchCount < 1 || touch.phase != TouchPhase.Began))
@@ -314,6 +502,28 @@ namespace Portalble
                     m_tRightHand = gobj.transform.Find("palm");
                 }
             }
+        }
+
+        /// <summary>
+        /// Update member variable references to hands
+        /// </summary>
+        private void UpdateHandReference()
+        {
+            GameObject gobj = GameObject.Find("Hand_l");
+            if (gobj != null)
+            {
+                m_LeftHandMgr = gobj.GetComponent<HandManager>();
+                m_LeftHandGestureControl = gobj.GetComponent<GestureControl>();
+            }
+            m_tLeftHand = gobj.transform.Find("palm");
+
+            gobj = GameObject.Find("Hand_r");
+            if (gobj != null)
+            {
+                m_RightHandMgr = gobj.GetComponent<HandManager>();
+                m_RightHandGestureControl = gobj.GetComponent<GestureControl>();
+            }
+            m_tRightHand = gobj.transform.Find("palm");
         }
 
         /// <summary>

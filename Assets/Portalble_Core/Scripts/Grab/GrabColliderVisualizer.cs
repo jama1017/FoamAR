@@ -16,6 +16,17 @@ namespace Portalble.Functions.Grab {
         private GameObject m_visualizer;
         private Collider m_collider;
 
+        /// <summary>
+        /// A static global function for visibility setting.
+        /// </summary>
+        /// <param name="visibility"></param>
+        static public void SetVisible(bool visibility) {
+            GrabColliderVisualizer[] gcvs = Resources.FindObjectsOfTypeAll<GrabColliderVisualizer>();
+            foreach (GrabColliderVisualizer gcv in gcvs) {
+                gcv.gameObject.SetActive(visibility);
+            }
+        }
+
         // Start is called before the first frame update
         void Start() {
             m_collider = GetComponent<Collider>();

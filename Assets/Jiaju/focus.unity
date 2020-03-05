@@ -3345,7 +3345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb0d880e191a0e488efcb2b787f9a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  websocketServer: 10.1.76.191
+  websocketServer: 10.1.76.214
   websocketPort: 9999
   hand_l: {fileID: 1949621240}
   hand_r: {fileID: 1614409302}
@@ -4382,7 +4382,7 @@ MonoBehaviour:
   materialPrototypes:
   - {fileID: 2100000, guid: 52c992b288e16f64a8ac2ccf28093f4c, type: 2}
   - {fileID: 2100000, guid: cbaaf44db5d1af24685052651371ec6b, type: 2}
-  - {fileID: 2100000, guid: a0631de1075036b4580b0c788a584166, type: 2}
+  - {fileID: 0}
   currentColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &1614409306
 MonoBehaviour:

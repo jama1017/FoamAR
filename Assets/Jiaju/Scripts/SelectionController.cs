@@ -123,9 +123,9 @@ public class SelectionController : PortalbleGeneralController
 
     }
 
-    protected override void OnUpdate()
+    protected override void Update()
     {
-        base.OnUpdate();
+        base.Update();
 
         RecordGrabLoc();
         UpdateFocusCylinder();

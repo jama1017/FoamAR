@@ -2,7 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*todo, add last grabbed object */
 namespace Portalble.Functions.Grab {
+    /// <summary>
+    /// Release event, triggered when user released an object.
+    /// </summary>
+    /// <param name="hand">The hand(palm) transform</param>
+    /// <param name="grab_object">The object just released</param>
+    public delegate void OnReleaseEvent(Transform hand, Grabable grab_object);
+
     /// <summary>
     /// This class is a data structure used by Grab System.
     /// </summary>
@@ -116,6 +124,23 @@ namespace Portalble.Functions.Grab {
         /// </summary>
         private List<Grabable> m_leftHandQueue;
         private List<Grabable> m_rightHandQueue;
+
+        /// <summary>
+        /// The last grabbed object
+        /// </summary>
+        private Grabable m_lastGrabObject;
+        public Grabable LastGrabbedObject
+        {
+            get
+            {
+                return m_lastGrabObject;
+            }
+        }
+
+        /// <summary>
+        /// Release Event.
+        /// </summary>
+        public OnReleaseEvent OnRelease;
 
         /// <summary>
         /// A flag for whether using different material for manipulation feedback
@@ -432,6 +457,9 @@ namespace Portalble.Functions.Grab {
             m_selectObj.OnGrabStop(m_grabInfo.ReleaseRawVelocity);
             m_isGrabbing = false;
             m_regrabCooldown = REGRAB_COOLDOWN;
+
+            OnRelease(m_selectObj.IsLeftHanded ? m_tLeftHand.Find("palm") : m_tRightHand.Find("palm"), m_selectObj);
+            m_lastGrabObject = m_selectObj;
         }
 
         /// <summary>

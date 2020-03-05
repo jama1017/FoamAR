@@ -54,6 +54,10 @@ namespace Portalble.Functions.Grab {
         /// Flag, if it's expanded, it's true.
         /// </summary>
         private bool m_expanded = false;
+        /// <summary>
+        /// Whether it's able to expand itself.
+        /// </summary>
+        private bool m_ableToExpand = true;
 
 
         // Use this for initialization
@@ -98,10 +102,14 @@ namespace Portalble.Functions.Grab {
             if (m_entered)
                 return;
 
+            // if it's locked, don't change anything
+            if (m_ableToExpand == false)
+                return;
+
             if (m_leftHandFingerIn >= FINGER_THRESHOLD) {
                 // Tell it to be grabbed
                 if (m_grabObj != null) {
-                    m_grabObj.OnGrabTriggerEnter(true);
+                    m_grabObj.OnGrabTriggerEnter(this, true);
                     m_entered = true;
                     Expand(other.transform.parent.parent);
                 }
@@ -109,7 +117,7 @@ namespace Portalble.Functions.Grab {
             else if (m_rightHandFingerIn >= FINGER_THRESHOLD) {
                 // Tell it to be grabbed
                 if (m_grabObj != null) {
-                    m_grabObj.OnGrabTriggerEnter(false);
+                    m_grabObj.OnGrabTriggerEnter(this, false);
                     m_entered = true;
                     Expand(other.transform.parent.parent);
                 }
@@ -178,6 +186,14 @@ namespace Portalble.Functions.Grab {
             if (m_expanded) {
                 transform.localScale = transform.localScale / m_expandScalor;
                 m_expanded = false;
+            }
+        }
+
+        public void SetLock(bool lock_flag) {
+            m_ableToExpand = !lock_flag;
+
+            if (m_expanded && lock_flag) {
+                DeExpand();
             }
         }
     }

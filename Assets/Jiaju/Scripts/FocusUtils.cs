@@ -24,7 +24,7 @@ public static class FocusUtils
         return movePos;
     }
 
-    public static Vector3 CalcFocusCenter(List<Vector3> markers)
+    public static Vector3 CalcFocusCenter(Queue<Vector2> markers)
     {
         if (markers.Count == 0)
         {
@@ -34,11 +34,19 @@ public static class FocusUtils
         float x_sum = 0f;
         float y_sum = 0f;
 
-        for (int i = 0; i < markers.Count; i++)
+        IEnumerator<Vector2> marker_enum = markers.GetEnumerator();
+        while (marker_enum.MoveNext())
         {
-            x_sum += markers[i].x;
-            y_sum += markers[i].y;
+
+            x_sum += marker_enum.Current.x;
+            y_sum += marker_enum.Current.y;
         }
+
+        //for (int i = 0; i < markers.Count; i++)
+        //{
+        //    x_sum += markers[i].x;
+        //    y_sum += markers[i].y;
+        //}
 
         return new Vector3(x_sum / markers.Count, y_sum / markers.Count, 0f);
     }

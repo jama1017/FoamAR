@@ -16,8 +16,9 @@ public class SelectionController : PortalbleGeneralController
     // selection specific
     private bool m_isRecorded = false;
     private List<GameObject> m_markers = new List<GameObject>();
-    private List<Vector3> m_markers_screenPos = new List<Vector3>();
-    private bool m_isMarkerDisplayed = false;
+    private Queue<Vector2> m_markers_screenPos = new Queue<Vector2>();
+    private int m_markerQueueLimit = 5;
+    private bool m_isMarkerDisplayed = true;
     public SelectionDataManager m_sDM;
     private LineRenderer m_guideLine;
 
@@ -36,7 +37,6 @@ public class SelectionController : PortalbleGeneralController
     // test distance calculation
     //private GameObject m_marker1;
     //private GameObject m_marker2;
-    //private Transform _tempTar;
 
 
     protected override void Start()
@@ -44,10 +44,14 @@ public class SelectionController : PortalbleGeneralController
         base.Start();
         SetupServer();
 
+        // set up focus cylinder
         //m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
         m_focusCylinder = Instantiate(m_focusCylinderPrefab);
         m_focusCylinder.gameObject.GetComponent<Collider>().attachedRigidbody.useGravity = false;
         m_focusCylinderRenderer = m_focusCylinder.gameObject.GetComponent<Renderer>();
+        float initial_width = Camera.main.pixelWidth / (2 * 10000f);
+        m_focusCylinder.localScale = new Vector3(initial_width, m_focusCylinder.localScale[1], initial_width);
+
 
         m_guideLine = Instantiate(m_sDM.FocusInkPrefab).GetComponent<LineRenderer>();
         m_guideLine.positionCount = 2;
@@ -65,63 +69,6 @@ public class SelectionController : PortalbleGeneralController
 
         //m_marker1 = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
         //m_marker2 = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
-    }
-
-    /// <summary>
-    /// updates the location, scale, and rotation of the focus cylinder
-    /// </summary>
-    private void UpdateFocusCylinder()
-    {
-        //if (Input.touchCount > 0)
-        //{
-        //    Vector3 touchPos = Input.GetTouch(0).position;
-        //    Vector3 center = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0); // clean up
-
-        //    Vector2 distance_vec = touchPos - center;
-
-        //    m_v = distance_vec.y / 10000f;
-        //    m_h = distance_vec.x / 10000f;
-        //}
-
-        if (m_markers_screenPos.Count > 0) {
-            Vector3 center = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0);
-            Vector3 focusPos = FocusUtils.CalcFocusCenter(m_markers_screenPos);
-
-            Vector2 distance_vec = focusPos - center;
-
-            m_v = distance_vec.y / 10000f;
-            m_h = distance_vec.x / 10000f;
-
-            Debug.Log("SEM m_v: " + m_v);
-            Debug.Log("SEM m_h: " + m_h);
-        }
-
-        float fac = m_focusCylinder.transform.localScale[1] * 2f; //1.2f if y is 0.5. 1.31f is y is 0.3. 2.f is y is 0.1
-
-        m_focusCylinder.position = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
-        m_focusCylinder.LookAt(m_focusCylinder.position - (m_FirstPersonCamera.transform.position - m_focusCylinder.position));
-        m_focusCylinder.Rotate(90.0f, 0.0f, 0.0f, Space.Self);
-
-        //m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
-        m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
-
-
-        //setting scale
-        float initial_width = Camera.main.pixelWidth / (2 * 10000f);
-        m_focusCylinder.localScale = new Vector3(initial_width, m_focusCylinder.localScale[1], initial_width);
-
-        UpdateCylinderRadius(initial_width);
-    }
-
-    private void UpdateCylinderRadius(float maxWidth)
-    {
-        if (!ActiveHandManager) return;
-
-        float dis = Vector3.Distance(m_sDM.ActiveIndex.transform.position, m_sDM.ActiveThumb.transform.position);
-        if (dis > maxWidth) dis = maxWidth;
-        // disabled cylinder radius adjustment
-        //m_focusCylinder.localScale = new Vector3(dis, m_focusCylinder.localScale[1], dis);
-
     }
 
     protected override void Update()
@@ -166,7 +113,6 @@ public class SelectionController : PortalbleGeneralController
         {
             m_focusCylinderRenderer.enabled = true;
         }
-
         m_guideLine.gameObject.SetActive(true);
     }
 
@@ -179,9 +125,63 @@ public class SelectionController : PortalbleGeneralController
         {
             m_focusCylinderRenderer.enabled = false;
         }
-
         m_guideLine.gameObject.SetActive(false);
     }
+
+
+    /// <summary>
+    /// updates the location, scale, and rotation of the focus cylinder
+    /// </summary>
+    private void UpdateFocusCylinder()
+    {
+        float fac = m_focusCylinder.transform.localScale[1] * 2f; //1.2f if y is 0.5. 1.31f is y is 0.3. 2.f is y is 0.1
+
+        m_focusCylinder.position = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+        m_focusCylinder.LookAt(m_focusCylinder.position - (m_FirstPersonCamera.transform.position - m_focusCylinder.position));
+        m_focusCylinder.Rotate(90.0f, 0.0f, 0.0f, Space.Self);
+
+        //m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+        m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+
+        // disabled cylinder radius adjustment
+        //UpdateCylinderRadius(initial_width);
+    }
+
+
+
+
+    private void UpdateCylinderCenter()
+    {
+        if (m_markers_screenPos.Count > 0 && m_markers_screenPos.Count <= 5)
+        {
+            Debug.Log("CYLINDERR q count: " + m_markers_screenPos.Count);
+            Vector2 center = new Vector2(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2);
+            Vector2 focusPos = FocusUtils.CalcFocusCenter(m_markers_screenPos);
+
+            Vector2 distance_vec = focusPos - center;
+
+            m_v = distance_vec.y / 10000f;
+            m_h = distance_vec.x / 10000f;
+
+            Debug.Log("SEM m_v: " + m_v);
+            Debug.Log("SEM m_h: " + m_h);
+        }
+    }
+
+
+
+
+    private void UpdateCylinderRadius(float maxWidth)
+    {
+        if (!ActiveHandManager) return;
+
+        float dis = Vector3.Distance(m_sDM.ActiveIndex.transform.position, m_sDM.ActiveThumb.transform.position);
+        if (dis > maxWidth) dis = maxWidth;
+        m_focusCylinder.localScale = new Vector3(dis, m_focusCylinder.localScale[1], dis);
+
+    }
+
+
 
     private void AidSelection()
     {
@@ -197,6 +197,8 @@ public class SelectionController : PortalbleGeneralController
 
         FocusUtils.UpdateLinePos(m_guideLine, num_one.GetComponent<Collider>(), m_sDM.ActivePalm);
     }
+
+
 
     private void RecordGrabLoc()
     {
@@ -214,9 +216,21 @@ public class SelectionController : PortalbleGeneralController
 
                 new_marker.GetComponent<RectTransform>().anchoredPosition = newPos;
                 m_markers.Add(new_marker);
-                m_markers_screenPos.Add(FocusUtils.WorldToScreenSpace(grabPos));
                 new_marker.SetActive(m_isMarkerDisplayed);
-                
+
+                if (m_markers.Count < m_markerQueueLimit)
+                {
+                    m_markers_screenPos.Enqueue(FocusUtils.WorldToScreenSpace(grabPos));
+                }
+                else
+                {
+                    m_markers_screenPos.Dequeue();
+                    m_markers_screenPos.Enqueue(FocusUtils.WorldToScreenSpace(grabPos));
+                }
+
+                UpdateCylinderCenter();
+
+                // transmit data
                 if (Jetfire.IsConnected2())
                 {
                     string message = "Object grabbed," + newPos + "," + FocusUtils.WorldToScreenSpace(grabPos) + "," + FocusUtils.AddTimeStamp();
@@ -280,9 +294,6 @@ public class SelectionController : PortalbleGeneralController
 
             }
         }
-        
-        //Debug.Log("TRANSPP :" + Vector3.Distance(ActiveHandTransform.position, _tempTar.position).ToString("F10"));
-
     }
 
     private float AddHandDistanceAlpha(GameObject curr, float alpha)
@@ -347,10 +358,14 @@ public class SelectionController : PortalbleGeneralController
         }
     }
 
+
+
     public void ToggleTimeStamp(bool isStart)
     {
         FocusUtils.ToggleTimeStamp(isStart);
     }
+
+
 
     private void UpdateActiveHandData()
     {
@@ -367,3 +382,15 @@ public class SelectionController : PortalbleGeneralController
         m_sDM.updateActiveObjects();
     }
 }
+
+
+//if (Input.touchCount > 0)
+//{
+//    Vector3 touchPos = Input.GetTouch(0).position;
+//    Vector3 center = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0); // clean up
+
+//    Vector2 distance_vec = touchPos - center;
+
+//    m_v = distance_vec.y / 10000f;
+//    m_h = distance_vec.x / 10000f;
+//}

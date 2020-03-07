@@ -18,7 +18,7 @@ public class SelectionController : PortalbleGeneralController
     private List<GameObject> m_markers = new List<GameObject>();
     private List<Vector3> m_markers_screenPos = new List<Vector3>();
     private bool m_isMarkerDisplayed = false;
-    public SelectionDataManager m_selectionDM;
+    public SelectionDataManager m_sDM;
     private LineRenderer m_guideLine;
 
     // websocket
@@ -38,12 +38,6 @@ public class SelectionController : PortalbleGeneralController
     //private GameObject m_marker2;
     //private Transform _tempTar;
 
-    // depth cue related;
-    private readonly float m_farDis = 0.3f;       // to be adjusted based on user preference. far distance to be reached
-    private readonly float m_nearDis = 0.1f;      // to be adjusted based on user preference. near distance to be reached
-    private readonly float m_nearHandDis = 0.11f; // to be adjusted based on user preference.
-    private readonly float m_farHandDis = 0.21f;  // to be adjusted based on user preference.
-    private readonly float m_farAlpha = 0.2f;
 
     protected override void Start()
     {
@@ -55,11 +49,10 @@ public class SelectionController : PortalbleGeneralController
         m_focusCylinder.gameObject.GetComponent<Collider>().attachedRigidbody.useGravity = false;
         m_focusCylinderRenderer = m_focusCylinder.gameObject.GetComponent<Renderer>();
 
-        m_guideLine = Instantiate(m_selectionDM.FocusInkPrefab).GetComponent<LineRenderer>();
+        m_guideLine = Instantiate(m_sDM.FocusInkPrefab).GetComponent<LineRenderer>();
         m_guideLine.positionCount = 2;
         m_guideLine.gameObject.SetActive(false);
-
-        
+  
     }
 
     private void SetupServer()
@@ -124,9 +117,10 @@ public class SelectionController : PortalbleGeneralController
     {
         if (!ActiveHandManager) return;
 
-        float dis = Vector3.Distance(m_selectionDM.ActiveIndex.transform.position, m_selectionDM.ActiveThumb.transform.position);
+        float dis = Vector3.Distance(m_sDM.ActiveIndex.transform.position, m_sDM.ActiveThumb.transform.position);
         if (dis > maxWidth) dis = maxWidth;
-        m_focusCylinder.localScale = new Vector3(dis, m_focusCylinder.localScale[1], dis);
+        // disabled cylinder radius adjustment
+        //m_focusCylinder.localScale = new Vector3(dis, m_focusCylinder.localScale[1], dis);
 
     }
 
@@ -141,7 +135,7 @@ public class SelectionController : PortalbleGeneralController
         UpdateFocusCylinder();
         AidSelection();
 
-        if (!Grab.Instance.IsGrabbing && m_selectionDM.UseSelectionAid) // if not grabbing, enable focus cylinder
+        if (!Grab.Instance.IsGrabbing && m_sDM.UseSelectionAid) // if not grabbing, enable focus cylinder
         {
             TurnOnSelectionAid();
         }
@@ -191,7 +185,7 @@ public class SelectionController : PortalbleGeneralController
 
     private void AidSelection()
     {
-        GameObject num_one = FocusUtils.RankFocusedObjects(m_selectionDM.FocusedObjects, m_focusCylinderCenterPos, m_canvas);
+        GameObject num_one = FocusUtils.RankFocusedObjects(m_sDM.FocusedObjects, m_focusCylinderCenterPos, m_canvas);
         
         if (!num_one || !ActiveHandManager)
         {
@@ -201,7 +195,7 @@ public class SelectionController : PortalbleGeneralController
 
         m_guideLine.gameObject.SetActive(true);
 
-        FocusUtils.UpdateLinePos(m_guideLine, num_one.GetComponent<Collider>(), m_selectionDM.ActivePalm);
+        FocusUtils.UpdateLinePos(m_guideLine, num_one.GetComponent<Collider>(), m_sDM.ActivePalm);
     }
 
     private void RecordGrabLoc()
@@ -228,7 +222,7 @@ public class SelectionController : PortalbleGeneralController
                     string message = "Object grabbed," + newPos + "," + FocusUtils.WorldToScreenSpace(grabPos) + "," + FocusUtils.AddTimeStamp();
 
                     Color objColor = grabbedObj.GetComponent<Renderer>().material.color;
-                    if (m_selectionDM.TargetObjIDs.Contains(grabbedObj.GetInstanceID()))
+                    if (m_sDM.TargetObjIDs.Contains(grabbedObj.GetInstanceID()))
                     {
                         message += ", target obj";
                     }
@@ -252,50 +246,53 @@ public class SelectionController : PortalbleGeneralController
 
     private void UpdateDepthCues()
     {
-        int numIter = m_selectionDM.SceneObjects.Count;
+        //List<GameObject> cuedObjs = m_sDM.SceneObjects;
+        List<GameObject> cuedObjs = m_sDM.FocusedObjects;
+
+        int numIter = cuedObjs.Count;
 
         Vector3 visPos = m_FirstPersonCamera.transform.position;
 
         for (int i = 0; i < numIter; i++)
         {
-            GameObject curr = m_selectionDM.SceneObjects[i];
+            GameObject curr = cuedObjs[i];
             Renderer currRenderer = curr.GetComponent<Renderer>();
             float objVisDis = Vector3.Distance(curr.transform.position, visPos);
 
-            if (objVisDis > m_farDis) // far from far dis
+            if (objVisDis > m_sDM.FarDis) // far from far dis
             {
-                FocusUtils.UpdateMaterialAlpha(currRenderer, m_farAlpha);
-                //Color currColor = curr.GetComponent<Renderer>().material.color;
-                //curr.GetComponent<Renderer>().material.color = new Vector4(currColor.r, currColor.g, currbColor.b, m_farAlpha);
+                FocusUtils.UpdateMaterialAlpha(currRenderer, m_sDM.FarAlpha);
+
             }
-            else if (objVisDis < m_farDis && objVisDis > m_nearDis) // in between far and near dis
+            else if (objVisDis < m_sDM.FarDis && objVisDis > m_sDM.NearDis) // in between far and near dis
             {
-                float alpha = FocusUtils.LinearMapReverse(objVisDis, m_nearDis, m_farDis, m_farAlpha, 1.0f); // mapping from m_nearDis - m_farDis to m_farAlpha - 1.0f to
+                float alpha = FocusUtils.LinearMapReverse(objVisDis, m_sDM.NearDis, m_sDM.FarDis, m_sDM.FarAlpha, m_sDM.NearAlpha); // mapping from m_sDM.NearDis - m_sDM.FarDis to m_sDM.FarAlpha - 1.0f to
 
                 // hand distance from obj is usually from 0.09 to 0.20
-
                 alpha += AddHandDistanceAlpha(curr, alpha);
 
                 FocusUtils.UpdateMaterialAlpha(currRenderer, alpha);
+
             }
             else
             {
-                FocusUtils.UpdateMaterialAlpha(currRenderer, 1.0f);
+                FocusUtils.UpdateMaterialAlpha(currRenderer, m_sDM.NearAlpha);
+
             }
         }
-
+        
         //Debug.Log("TRANSPP :" + Vector3.Distance(ActiveHandTransform.position, _tempTar.position).ToString("F10"));
 
     }
 
     private float AddHandDistanceAlpha(GameObject curr, float alpha)
     {
-        float objHandDis = m_farHandDis;
+        float objHandDis = m_sDM.FarHandDis;
 
         if (ActiveHandManager) objHandDis = Vector3.Distance(ActiveHandTransform.position, curr.transform.position);
-        if (objHandDis > m_farHandDis) objHandDis = m_farHandDis;
+        if (objHandDis > m_sDM.FarHandDis) objHandDis = m_sDM.FarHandDis;
 
-        return FocusUtils.LinearMapReverse(objHandDis, m_nearHandDis, m_farHandDis, 0.0f, 1 - alpha); // add hand distance into consideration
+        return FocusUtils.LinearMapReverse(objHandDis, m_sDM.NearHandDis, m_sDM.FarHandDis, 0.0f, m_sDM.NearAlpha - alpha); // add hand distance into consideration
     }
 
 
@@ -312,7 +309,7 @@ public class SelectionController : PortalbleGeneralController
 
     public void ToggleUseSelectionAid()
     {
-        m_selectionDM.UseSelectionAid = !m_selectionDM.UseSelectionAid;
+        m_sDM.UseSelectionAid = !m_sDM.UseSelectionAid;
     }
 
 
@@ -323,8 +320,8 @@ public class SelectionController : PortalbleGeneralController
         if (placePrefab != null)
         {
             Transform cen = Instantiate(placePrefab, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
-            cen.gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjNormalColor;
-            m_selectionDM.SceneObjects.Add(cen.gameObject);
+            cen.gameObject.GetComponent<Renderer>().material.color = m_sDM.ObjNormalColor;
+            m_sDM.SceneObjects.Add(cen.gameObject);
 
             List<Transform> cens = new List<Transform>();
 
@@ -338,15 +335,15 @@ public class SelectionController : PortalbleGeneralController
                 {
                     if (i == 0 && j == 0) continue;
                     Transform obj = Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation);
-                    obj.gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjNormalColor;
+                    obj.gameObject.GetComponent<Renderer>().material.color = m_sDM.ObjNormalColor;
                     cens.Add(obj);
-                    m_selectionDM.SceneObjects.Add(obj.gameObject);
+                    m_sDM.SceneObjects.Add(obj.gameObject);
                 }
             }
 
             int idx = Random.Range(0, cens.Count);
-            cens[idx].gameObject.GetComponent<Renderer>().material.color = m_selectionDM.ObjTargetColor;
-            m_selectionDM.TargetObjIDs.Add(cens[idx].gameObject.GetInstanceID());
+            cens[idx].gameObject.GetComponent<Renderer>().material.color = m_sDM.ObjTargetColor;
+            m_sDM.TargetObjIDs.Add(cens[idx].gameObject.GetInstanceID());
         }
     }
 
@@ -360,13 +357,13 @@ public class SelectionController : PortalbleGeneralController
         HandManager activeHM = this.ActiveHandManager;
         if (activeHM)
         {
-            m_selectionDM.ActiveHand = activeHM.gameObject;
+            m_sDM.ActiveHand = activeHM.gameObject;
         }
         else
         {
-            m_selectionDM.ActiveHand = null;
+            m_sDM.ActiveHand = null;
         }
         
-        m_selectionDM.updateActiveObjects();
+        m_sDM.updateActiveObjects();
     }
 }

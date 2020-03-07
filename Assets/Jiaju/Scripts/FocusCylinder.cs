@@ -76,11 +76,13 @@ public class FocusCylinder : MonoBehaviour
 
         if (_selectionDM.TargetObjIDs.Contains(other.gameObject.GetInstanceID()))
         {
-            objRenderer.material.color = new Color(_selectionDM.ObjTargetColor.r, _selectionDM.ObjTargetColor.g, _selectionDM.ObjTargetColor.b, objRenderer.material.color.a);
+            //objRenderer.material.color = new Color(_selectionDM.ObjTargetColor.r, _selectionDM.ObjTargetColor.g, _selectionDM.ObjTargetColor.b, objRenderer.material.color.a);
+            objRenderer.material.color = _selectionDM.ObjFocusedColor;
         }
         else
         {
-            objRenderer.material.color = new Color(_selectionDM.ObjNormalColor.r, _selectionDM.ObjNormalColor.g, _selectionDM.ObjNormalColor.b, objRenderer.material.color.a); ;
+            //objRenderer.material.color = new Color(_selectionDM.ObjNormalColor.r, _selectionDM.ObjNormalColor.g, _selectionDM.ObjNormalColor.b, objRenderer.material.color.a); ;
+            objRenderer.material.color = _selectionDM.ObjNormalColor;
         }
     }
 

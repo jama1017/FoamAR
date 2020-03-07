@@ -68,3 +68,6 @@ Assets/SVMSupport/
 Assets/SVMSupport.meta
 Assets/DestPrimitives.meta
 Assets/DestPrimitives/
+
+# mono crash
+mono_crash.*

@@ -17,11 +17,18 @@ public class SelectionDataManager : MonoBehaviour
     private List<GameObject> _sceneObjects = new List<GameObject>();
     private HashSet<int> _targetObjIDs = new HashSet<int>();
 
+    // depth cue related;
+    private float _farDis = 0.3f;       // to be adjusted based on user preference. far distance to be reached
+    private float _nearDis = 0.1f;      // to be adjusted based on user preference. near distance to be reached
+    private readonly float _nearHandDis = 0.11f; // to be adjusted based on user preference.
+    private readonly float _farHandDis = 0.21f;  // to be adjusted based on user preference.
+    private readonly float _farAlpha = 0.2f;
+    private readonly float _nearAlpha = 1.0f;
+
 
     //colors for user task and selection aid
     private Color _objNormalColor = new Color(150f / 255f, 100f / 255f, 0f, 1f);
     private Color _objFocusedColor = new Color(1f, 200f / 255f, 0f, 1f);
-
     private Color _objTargetColor = new Color(18f / 255f, 20f / 255f, 125f / 255f, 1f);
     private Color _objTargetFocusedColor = new Color(85f / 255f, 180f / 255f, 1f, 1f);
 
@@ -36,6 +43,11 @@ public class SelectionDataManager : MonoBehaviour
         _activeThumb = ActiveHand.transform.GetChild(0).GetChild(2).gameObject;
         _activePalm = ActiveHand.transform.GetChild(5).GetChild(0).gameObject;
         _activeGC = ActiveHand.GetComponent<GestureControl>();
+
+        _objNormalColor.a = _farAlpha;
+        _objFocusedColor.a = _farAlpha;
+        _objTargetColor.a = _farAlpha;
+        _objTargetFocusedColor.a = _farAlpha;
     }
 
     // Update is called once per frame
@@ -119,5 +131,35 @@ public class SelectionDataManager : MonoBehaviour
     public HashSet<int> TargetObjIDs
     {
         get { return _targetObjIDs; }
+    }
+
+    public float NearDis
+    {
+        get { return _nearDis; }
+    }
+
+    public float FarDis
+    {
+        get { return _farDis; }
+    }
+
+    public float NearHandDis
+    {
+        get { return _nearHandDis; }
+    }
+
+    public float FarHandDis
+    {
+        get { return _farHandDis; }
+    }
+
+    public float FarAlpha
+    {
+        get { return _farAlpha; }
+    }
+
+    public float NearAlpha
+    {
+        get { return _nearAlpha; }
     }
 }

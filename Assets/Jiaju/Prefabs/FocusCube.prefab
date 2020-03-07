@@ -140,8 +140,8 @@ GameObject:
   - component: {fileID: 6883654013516728274}
   - component: {fileID: 8681764652337219987}
   - component: {fileID: 7802926144547594352}
-  - component: {fileID: 4077074041861455213}
-  - component: {fileID: 4938311880373079356}
+  - component: {fileID: 8050388128355618429}
+  - component: {fileID: 9001189498997887423}
   m_Layer: 0
   m_Name: GrabCollider
   m_TagString: Untagged
@@ -192,7 +192,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4077074041861455213
+--- !u!114 &8050388128355618429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -204,9 +204,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a992f50e41b78aa459bf9aa6ad272990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_automaticExpand: 1
+  m_automaticExpand: 0
   m_grabObj: {fileID: 2025040672824105385}
---- !u!114 &4938311880373079356
+--- !u!114 &9001189498997887423
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -43,7 +43,11 @@ public class SelectionController : PortalbleGeneralController
     protected override void Start()
     {
         base.Start();
+
+        //Debug.Log("HAHAHAH " + placePrefab.GetChild(0).gameObject.GetComponent<Portalble.Functions.Grab.GrabCollider>().m_automaticExpand);
+
         SetupServer();
+
 
         // set up focus cylinder
         //m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
@@ -57,6 +61,7 @@ public class SelectionController : PortalbleGeneralController
         m_guideLine = Instantiate(m_sDM.FocusInkPrefab).GetComponent<LineRenderer>();
         m_guideLine.positionCount = 2;
         m_guideLine.gameObject.SetActive(false);
+
     }
 
     private void SetupServer()
@@ -324,6 +329,31 @@ public class SelectionController : PortalbleGeneralController
     public void ToggleUseSelectionAid()
     {
         m_sDM.UseSelectionAid = !m_sDM.UseSelectionAid;
+
+        //if (!m_sDM.UseSelectionAid) // if not using Aid, normal Portal-ble
+        //{
+
+        //    int numObj = m_sDM.SceneObjects.Count;
+        //    Debug.Log("CRABB functions boolF count: " + m_sDM.SceneObjects.Count);
+        //    for (int i = 0; i < numObj; i++)
+        //    {
+        //        //m_sDM.SceneObjects[i].
+        //        //m_sDM.SceneObjects[i].GetComponentInChildren<Portalble.Functions.Grab.GrabCollider>().m_automaticExpand = true;
+        //        m_sDM.SceneObjects[i].transform.GetChild(0).gameObject.GetComponent<Portalble.Functions.Grab.GrabCollider>().m_automaticExpand = true;
+        //        Debug.Log("CRABB functions grab boolF: " + m_sDM.SceneObjects[i].transform.GetChild(0).gameObject.GetComponent<Portalble.Functions.Grab.GrabCollider>().m_automaticExpand);
+        //    }
+        //}
+        //else
+        //{
+        //    int numObj = m_sDM.SceneObjects.Count;
+        //    Debug.Log("CRABB functions boolT count: " + m_sDM.SceneObjects.Count);
+        //    for (int i = 0; i < numObj; i++)
+        //    {
+        //        //m_sDM.SceneObjects[i].GetComponentInChildren<Portalble.Functions.Grab.GrabCollider>().m_automaticExpand = false;
+        //        m_sDM.SceneObjects[i].transform.GetChild(0).gameObject.GetComponent<Portalble.Functions.Grab.GrabCollider>().m_automaticExpand = false;
+        //        Debug.Log("CRABB functions grab boolTrue: " + m_sDM.SceneObjects[i].transform.GetChild(0).gameObject.GetComponent<Portalble.Functions.Grab.GrabCollider>().m_automaticExpand);
+        //    }
+        //}
     }
 
 

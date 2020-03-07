@@ -30,6 +30,7 @@ public class SelectionController : PortalbleGeneralController
     public Transform m_focusCylinderPrefab;
     private Transform m_focusCylinder;
     private Vector3 m_focusCylinderCenterPos = Vector3.zero;
+    private Vector3 m_focusCylinderCenterPos_noOffset = Vector3.zero;
     private Renderer m_focusCylinderRenderer;
     private float m_v = 0f;
     private float m_h = 0f;
@@ -56,7 +57,6 @@ public class SelectionController : PortalbleGeneralController
         m_guideLine = Instantiate(m_sDM.FocusInkPrefab).GetComponent<LineRenderer>();
         m_guideLine.positionCount = 2;
         m_guideLine.gameObject.SetActive(false);
-  
     }
 
     private void SetupServer()
@@ -78,6 +78,7 @@ public class SelectionController : PortalbleGeneralController
         UpdateActiveHandData();
 
         UpdateDepthCues();
+
         RecordGrabLoc();
         UpdateFocusCylinder();
         AidSelection();
@@ -93,15 +94,6 @@ public class SelectionController : PortalbleGeneralController
 
         // usually hand is 0.3f in front of camera at most
         //Debug.Log("TRANSPP :" + Vector3.Distance(m_FirstPersonCamera.transform.position, ActiveHandTransform.position).ToString("F10"));
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Vector3 touchPos = Input.mousePosition;
-        //    Vector2 movePos;
-        //    RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas.transform as RectTransform, touchPos, null, out movePos);
-        //    Debug.Log(movePos);
-        //    prefab_marker.GetComponent<RectTransform>().position = movePos;
-        //}
     }
 
     /// <summary>
@@ -136,12 +128,13 @@ public class SelectionController : PortalbleGeneralController
     {
         float fac = m_focusCylinder.transform.localScale[1] * 2f; //1.2f if y is 0.5. 1.31f is y is 0.3. 2.f is y is 0.1
 
-        m_focusCylinder.position = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+        m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+        m_focusCylinderCenterPos_noOffset = m_FirstPersonCamera.transform.position + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
+
+        m_focusCylinder.position = m_focusCylinderCenterPos;
         m_focusCylinder.LookAt(m_focusCylinder.position - (m_FirstPersonCamera.transform.position - m_focusCylinder.position));
         m_focusCylinder.Rotate(90.0f, 0.0f, 0.0f, Space.Self);
 
-        //m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
-        m_focusCylinderCenterPos = m_FirstPersonCamera.transform.position + fac * m_FirstPersonCamera.transform.forward + m_h * m_FirstPersonCamera.transform.right + m_v * m_FirstPersonCamera.transform.up;
 
         // disabled cylinder radius adjustment
         //UpdateCylinderRadius(initial_width);
@@ -163,8 +156,8 @@ public class SelectionController : PortalbleGeneralController
             m_v = distance_vec.y / 10000f;
             m_h = distance_vec.x / 10000f;
 
-            Debug.Log("SEM m_v: " + m_v);
-            Debug.Log("SEM m_h: " + m_h);
+            //Debug.Log("SEM m_v: " + m_v);
+            //Debug.Log("SEM m_h: " + m_h);
         }
     }
 
@@ -230,6 +223,9 @@ public class SelectionController : PortalbleGeneralController
 
                 UpdateCylinderCenter();
 
+                //GameObject temp = Instantiate(placePrefab, m_FirstPersonCamera.transform.position, Quaternion.identity).gameObject;
+                //temp.GetComponent<Collider>().attachedRigidbody.useGravity = false;
+
                 // transmit data
                 if (Jetfire.IsConnected2())
                 {
@@ -265,7 +261,8 @@ public class SelectionController : PortalbleGeneralController
 
         int numIter = cuedObjs.Count;
 
-        Vector3 visPos = m_FirstPersonCamera.transform.position;
+        //Vector3 visPos = m_FirstPersonCamera.transform.position;
+        Vector3 visPos = m_focusCylinderCenterPos_noOffset;
 
         for (int i = 0; i < numIter; i++)
         {
@@ -296,6 +293,8 @@ public class SelectionController : PortalbleGeneralController
         }
     }
 
+
+
     private float AddHandDistanceAlpha(GameObject curr, float alpha)
     {
         float objHandDis = m_sDM.FarHandDis;
@@ -305,6 +304,8 @@ public class SelectionController : PortalbleGeneralController
 
         return FocusUtils.LinearMapReverse(objHandDis, m_sDM.NearHandDis, m_sDM.FarHandDis, 0.0f, m_sDM.NearAlpha - alpha); // add hand distance into consideration
     }
+
+
 
 
     // functional functions
@@ -318,10 +319,14 @@ public class SelectionController : PortalbleGeneralController
     }
 
 
+
+
     public void ToggleUseSelectionAid()
     {
         m_sDM.UseSelectionAid = !m_sDM.UseSelectionAid;
     }
+
+
 
 
     public override void OnARPlaneHit(PortalbleHitResult hit)
@@ -360,10 +365,12 @@ public class SelectionController : PortalbleGeneralController
 
 
 
+
     public void ToggleTimeStamp(bool isStart)
     {
         FocusUtils.ToggleTimeStamp(isStart);
     }
+
 
 
 
@@ -393,4 +400,13 @@ public class SelectionController : PortalbleGeneralController
 
 //    m_v = distance_vec.y / 10000f;
 //    m_h = distance_vec.x / 10000f;
+//}
+
+//if (Input.GetMouseButtonDown(0))
+//{
+//    Vector3 touchPos = Input.mousePosition;
+//    Vector2 movePos;
+//    RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas.transform as RectTransform, touchPos, null, out movePos);
+//    Debug.Log(movePos);
+//    prefab_marker.GetComponent<RectTransform>().position = movePos;
 //}

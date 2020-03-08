@@ -18,7 +18,7 @@ public class SelectionController : PortalbleGeneralController
     private List<GameObject> m_markers = new List<GameObject>();
     private Queue<Vector2> m_markers_screenPos = new Queue<Vector2>();
     private int m_markerQueueLimit = 5;
-    private bool m_isMarkerDisplayed = true;
+    private bool m_isMarkerDisplayed = false;
     public SelectionDataManager m_sDM;
     private LineRenderer m_guideLine;
 
@@ -88,14 +88,14 @@ public class SelectionController : PortalbleGeneralController
         UpdateFocusCylinder();
         AidSelection();
 
-        if (!Grab.Instance.IsGrabbing && m_sDM.UseSelectionAid) // if not grabbing, enable focus cylinder
-        {
-            TurnOnSelectionAid();
-        }
-        else // if grabbing. do not detect candidate objects
-        {
-            TurnOffSelectionAid();
-        }
+        //if (!Grab.Instance.IsGrabbing && m_sDM.UseSelectionAid) // if not grabbing, enable focus cylinder
+        //{
+        //    TurnOnSelectionAid();
+        //}
+        //else // if grabbing. do not detect candidate objects
+        //{
+        //    TurnOffSelectionAid();
+        //}
 
         // usually hand is 0.3f in front of camera at most
         //Debug.Log("TRANSPP :" + Vector3.Distance(m_FirstPersonCamera.transform.position, ActiveHandTransform.position).ToString("F10"));
@@ -104,26 +104,26 @@ public class SelectionController : PortalbleGeneralController
     /// <summary>
     /// Turn on the visuals of selection aid
     /// </summary>
-    private void TurnOnSelectionAid()
-    {
-        if (!m_focusCylinderRenderer.enabled)
-        {
-            m_focusCylinderRenderer.enabled = true;
-        }
-        m_guideLine.gameObject.SetActive(true);
-    }
+    //private void TurnOnSelectionAid()
+    //{
+    //    if (!m_focusCylinderRenderer.enabled)
+    //    {
+    //        m_focusCylinderRenderer.enabled = true;
+    //    }
+    //    m_guideLine.gameObject.SetActive(true);
+    //}
 
     /// <summary>
     /// Turn off the visuals of selection aid
     /// </summary>
-    private void TurnOffSelectionAid()
-    {
-        if (m_focusCylinderRenderer.enabled)
-        {
-            m_focusCylinderRenderer.enabled = false;
-        }
-        m_guideLine.gameObject.SetActive(false);
-    }
+    //private void TurnOffSelectionAid()
+    //{
+    //    if (m_focusCylinderRenderer.enabled)
+    //    {
+    //        m_focusCylinderRenderer.enabled = false;
+    //    }
+    //    m_guideLine.gameObject.SetActive(false);
+    //}
 
 
     /// <summary>

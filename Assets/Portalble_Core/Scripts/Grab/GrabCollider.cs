@@ -92,10 +92,18 @@ namespace Portalble.Functions.Grab {
                 return;
 
             if (other.transform.parent.parent.name == "Hand_l") {
-                m_leftHandFingerIn++;
+                if (other.transform.parent.name != "ring" && other.transform.parent.name != "pinky")
+                {
+                    m_leftHandFingerIn++;
+                }
+
             }
             else if (other.transform.parent.parent.name == "Hand_r") {
-                m_rightHandFingerIn++;
+                if (other.transform.parent.name != "ring" && other.transform.parent.name != "pinky")
+                {
+                    m_rightHandFingerIn++;
+                }
+
             }
 
             // meaningless if it's already entered.
@@ -132,10 +140,16 @@ namespace Portalble.Functions.Grab {
                 return;
 
             if (other.transform.parent.parent.name == "Hand_l") {
-                m_leftHandFingerIn--;
+                if (other.transform.parent.name != "ring" && other.transform.parent.name != "pinky")
+                {
+                    m_leftHandFingerIn--;
+                }
             }
             else if (other.transform.parent.parent.name == "Hand_r") {
-                m_rightHandFingerIn--;
+                if (other.transform.parent.name != "ring" && other.transform.parent.name != "pinky")
+                {
+                    m_rightHandFingerIn--;
+                }
             }
 
             // Only exit when already entered

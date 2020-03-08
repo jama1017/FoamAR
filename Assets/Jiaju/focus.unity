@@ -419,7 +419,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 181273679}
-        m_MethodName: ToggleUseSelectionAid
+        m_MethodName: ToggleMarkerVisibility
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

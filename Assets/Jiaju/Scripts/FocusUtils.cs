@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class FocusUtils
 {
+
+    public static readonly Vector3 NullVector3 = new Vector3(-99999f, -99999f, -99999f);
+
     public static Vector3 WorldToScreenSpace(Vector3 worldPos)
     {
         return Camera.main.WorldToScreenPoint(worldPos);
@@ -76,7 +79,7 @@ public static class FocusUtils
         return num_one;
     }
 
-    public static GameObject RankFocusedObjects(List<GameObject> focusedObjects, Vector3 cylinderPosition, Canvas canvas)
+    public static GameObject RankFocusedObjects(List<GameObject> focusedObjects, Vector3 cylinderPosition, SelectionDataManager sDM, Canvas canvas)
     {
 
         if (focusedObjects.Count == 0)
@@ -85,18 +88,32 @@ public static class FocusUtils
         }
 
         GameObject num_one = null;
-        float min_dis = 9999999f;
+        float max_score = -9999999f;
 
         for (int i = 0; i < focusedObjects.Count; i++)
         {
-            float dis = Vector3.Distance(WorldToUISpace(canvas, focusedObjects[i].transform.position), WorldToUISpace(canvas, cylinderPosition));
+            Vector3 objPos = focusedObjects[i].transform.position;
 
-            if (dis < min_dis)
+            float objCylinderDis = Vector3.Distance(WorldToUISpace(canvas, objPos), WorldToUISpace(canvas, cylinderPosition));
+            float objHandDis = 0.0f;
+
+            Vector3 handPos = GetIndexThumbPos(sDM);
+            if (handPos != NullVector3) objHandDis = Vector3.Distance(objPos, handPos);
+
+            float objCylPortion = (1.0f / objCylinderDis) * 20000f;
+            float objHandPortion = 1.0f / Mathf.Pow(objHandDis, 3.0f);
+
+            float score = objCylPortion + objHandPortion;
+            Debug.Log("DATAA cy obj score: " + objCylPortion + " , " + objHandPortion + " , " + score);
+
+            if (score > max_score)
             {
-                min_dis = dis;
+                max_score = score;
                 num_one = focusedObjects[i];
             }
         }
+
+        Debug.Log("DATAA -----------");
 
         return num_one;
     }
@@ -146,5 +163,21 @@ public static class FocusUtils
     {
         Color currColor = renderer.material.color;
         renderer.material.color = new Vector4(currColor.r, currColor.g, currColor.b, alpha);
+    }
+
+    public static Vector3 GetIndexThumbPos(SelectionDataManager sDM)
+    {
+        if (!sDM.ActiveHand) return NullVector3;
+
+        Vector3 indexPos = sDM.ActiveIndex.transform.position;
+        Vector3 thumbPos = sDM.ActiveThumb.transform.position;
+
+        float factor = 0.5f;
+
+        float x = (indexPos.x + thumbPos.x) * factor;
+        float y = (indexPos.y + thumbPos.y) * factor;
+        float z = (indexPos.z + thumbPos.z) * factor;
+
+        return new Vector3(x, y, z);
     }
 }

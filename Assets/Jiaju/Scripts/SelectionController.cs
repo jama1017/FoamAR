@@ -20,7 +20,13 @@ public class SelectionController : PortalbleGeneralController
     private int m_markerQueueLimit = 5;
     private bool m_isMarkerDisplayed = false;
     public SelectionDataManager m_sDM;
-    private LineRenderer m_guideLine;
+    private LineRenderer m_guideLine;    // disabled
+    private GameObject m_highestRankedObjMarker;
+    private GameObject m_highestRankedObj;
+    private bool m_isSnapped = false;
+    //private float m_maxSnapDis = 0.2f;
+    private float m_maxSnapDis = 0.05f;
+
 
     // websocket
     public GameObject WSManager;
@@ -31,21 +37,16 @@ public class SelectionController : PortalbleGeneralController
     private Transform m_focusCylinder;
     private Vector3 m_focusCylinderCenterPos = Vector3.zero;
     private Vector3 m_focusCylinderCenterPos_noOffset = Vector3.zero;
-    private Renderer m_focusCylinderRenderer;
     private float m_v = 0f;
     private float m_h = 0f;
 
     // test distance calculation
-    //private GameObject m_marker1;
     //private GameObject m_marker2;
 
 
     protected override void Start()
     {
         base.Start();
-
-        //Debug.Log("HAHAHAH " + placePrefab.GetChild(0).gameObject.GetComponent<Portalble.Functions.Grab.GrabCollider>().m_automaticExpand);
-
         SetupServer();
 
 
@@ -53,7 +54,6 @@ public class SelectionController : PortalbleGeneralController
         //m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
         m_focusCylinder = Instantiate(m_focusCylinderPrefab);
         m_focusCylinder.gameObject.GetComponent<Collider>().attachedRigidbody.useGravity = false;
-        m_focusCylinderRenderer = m_focusCylinder.gameObject.GetComponent<Renderer>();
         float initial_width = Camera.main.pixelWidth / (2 * 10000f);
         m_focusCylinder.localScale = new Vector3(initial_width, m_focusCylinder.localScale[1], initial_width);
 
@@ -62,6 +62,9 @@ public class SelectionController : PortalbleGeneralController
         m_guideLine.positionCount = 2;
         m_guideLine.gameObject.SetActive(false);
 
+        // marks where the highestRankedObj is
+        m_highestRankedObjMarker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
+        m_highestRankedObjMarker.SetActive(false);
     }
 
     private void SetupServer()
@@ -71,9 +74,6 @@ public class SelectionController : PortalbleGeneralController
         string url = "ws://" + WSManager.GetComponent<WSManager>().websocketServer + ":" + websocketPort;
 
         Jetfire.Open2(url);
-
-        //m_marker1 = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
-        //m_marker2 = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
     }
 
     protected override void Update()
@@ -87,6 +87,8 @@ public class SelectionController : PortalbleGeneralController
         RecordGrabLoc();
         UpdateFocusCylinder();
         AidSelection();
+
+        ResetSelectionAid();
 
         //if (!Grab.Instance.IsGrabbing && m_sDM.UseSelectionAid) // if not grabbing, enable focus cylinder
         //{
@@ -183,19 +185,49 @@ public class SelectionController : PortalbleGeneralController
 
     private void AidSelection()
     {
-        GameObject num_one = FocusUtils.RankFocusedObjects(m_sDM.FocusedObjects, m_focusCylinderCenterPos, m_canvas);
+        m_highestRankedObj = FocusUtils.RankFocusedObjects(m_sDM.FocusedObjects, m_focusCylinderCenterPos, m_sDM, m_canvas);
         
-        if (!num_one || !ActiveHandManager)
+        if (!m_highestRankedObj || !ActiveHandManager)
         {
             m_guideLine.gameObject.SetActive(false);
+            m_highestRankedObjMarker.SetActive(false);
             return;
         }
 
-        m_guideLine.gameObject.SetActive(true);
+        m_highestRankedObjMarker.SetActive(true);
+        //m_guideLine.gameObject.SetActive(true);
 
-        FocusUtils.UpdateLinePos(m_guideLine, num_one.GetComponent<Collider>(), m_sDM.ActivePalm);
+        FocusUtils.UpdateLinePos(m_guideLine, m_highestRankedObj.GetComponent<Collider>(), m_sDM.ActivePalm);
+        m_highestRankedObjMarker.GetComponent<RectTransform>().anchoredPosition = FocusUtils.WorldToUISpace(m_canvas, m_highestRankedObj.transform.position);
+
+
+        // snap target object to hand if close enough
+        Vector3 indexThumbPos = FocusUtils.GetIndexThumbPos(m_sDM);
+
+        Debug.Log("SNAPP objHand dis test: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
+
+
+        if (Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos) < m_maxSnapDis)
+        {
+            if (ActiveHandGesture == "pinch")
+            {
+                if(!Grab.Instance.IsGrabbing && !m_isSnapped)
+                {
+                    Debug.Log("SNAPP objHand dis: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
+                    m_highestRankedObj.transform.position = indexThumbPos; // might need a different value to ensure collider trigger
+                    m_isSnapped = true;
+                }
+            }
+        }
     }
 
+    private void ResetSelectionAid()
+    {
+        if (!Grab.Instance.IsGrabbing)
+        {
+            m_isSnapped = false;
+        }
+    }
 
 
     private void RecordGrabLoc()

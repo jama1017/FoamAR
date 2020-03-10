@@ -43,32 +43,42 @@ public static class FocusUtils
         return movePos;
     }
 
-    public static Vector3 CalcFocusCenter(Queue<Vector2> markers)
+
+    public static Vector3 CalcFocusCenter(Queue<KeyValuePair<Vector2, long>> markers)
     {
         if (markers.Count == 0)
         {
             return Vector3.zero;
         }
 
-        float x_sum = 0f;
-        float y_sum = 0f;
+        float x_num_sum = 0f;
+        float y_num_sum = 0f;
+        float weight_sum = 0f;
 
-        IEnumerator<Vector2> marker_enum = markers.GetEnumerator();
+        IEnumerator<KeyValuePair<Vector2, long>> marker_enum = markers.GetEnumerator();
+
+        Debug.Log("QUEUEE start ------ ");
+
         while (marker_enum.MoveNext())
         {
+            float weight = (marker_enum.Current.Value - markers.Peek().Value) + 1.0f;
 
-            x_sum += marker_enum.Current.x;
-            y_sum += marker_enum.Current.y;
+            weight_sum += weight;
+
+            x_num_sum += marker_enum.Current.Key.x * weight;
+            y_num_sum += marker_enum.Current.Key.y * weight;
+
+            //Debug.Log("QUEUEE offset : " + smallest_offset.ToString("F10"));
+            Debug.Log("QUEUEE weight : " + weight.ToString());
+            Debug.Log("QUEUEE key : " + marker_enum.Current.Key.ToString());
         }
 
-        //for (int i = 0; i < markers.Count; i++)
-        //{
-        //    x_sum += markers[i].x;
-        //    y_sum += markers[i].y;
-        //}
+        Debug.Log("QUEUEE res: " + x_num_sum / weight_sum + " , " + y_num_sum / weight_sum);
+        Debug.Log("QUEUEE end ------ ");
 
-        return new Vector3(x_sum / markers.Count, y_sum / markers.Count, 0f);
+        return new Vector3(x_num_sum / weight_sum, y_num_sum / weight_sum, 0f);
     }
+
 
     public static GameObject RankFocusedObjects(List<GameObject> focusedObjects, Vector3 cylinderPosition)
     {
@@ -94,6 +104,7 @@ public static class FocusUtils
 
         return num_one;
     }
+
 
     public static GameObject RankFocusedObjects(List<GameObject> focusedObjects, Vector3 cylinderPosition, SelectionDataManager sDM, Canvas canvas)
     {
@@ -134,11 +145,13 @@ public static class FocusUtils
         return num_one;
     }
 
+
     public static void UpdateLinePos(LineRenderer line, Collider other, GameObject ActivePalm)
     {
         line.SetPosition(0, ActivePalm.transform.position);
         line.SetPosition(1, other.gameObject.transform.position);
     }
+
 
     public static void ToggleTimeStamp(bool isStart)
     {
@@ -164,10 +177,12 @@ public static class FocusUtils
 
     }
 
+
     public static string AddTimeStamp()
     {
         return System.DateTime.Now.ToString("MM / dd / yyyy hh: mm: ss") + " , " + System.DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
     }
+
 
     public static float LinearMapReverse(float input, float ogMin, float ogMax, float tarMin, float tarMax)
     {
@@ -175,11 +190,13 @@ public static class FocusUtils
         return Mathf.Lerp(tarMin, tarMax, t);
     }
 
+
     public static void UpdateMaterialAlpha(Renderer renderer, float alpha)
     {
         Color currColor = renderer.material.color;
         renderer.material.color = new Vector4(currColor.r, currColor.g, currColor.b, alpha);
     }
+
 
     public static Vector3 GetIndexThumbPos(SelectionDataManager sDM)
     {

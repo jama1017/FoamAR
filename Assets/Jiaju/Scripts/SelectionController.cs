@@ -16,7 +16,7 @@ public class SelectionController : PortalbleGeneralController
     // selection specific
     private bool m_isRecorded = false;
     private List<GameObject> m_markers = new List<GameObject>();
-    private Queue<Vector2> m_markers_screenPos = new Queue<Vector2>();
+    private Queue<KeyValuePair<Vector2, long>> m_markers_screenPos = new Queue<KeyValuePair<Vector2, long>>();
     private int m_markerQueueLimit = 5;
     private bool m_isMarkerDisplayed = false;
     public SelectionDataManager m_sDM;
@@ -24,7 +24,6 @@ public class SelectionController : PortalbleGeneralController
     private GameObject m_highestRankedObjMarker;
     private GameObject m_highestRankedObj;
     private bool m_isSnapped = false;
-    //private float m_maxSnapDis = 0.2f;
     private float m_maxSnapDis = 0.05f;
 
 
@@ -162,9 +161,6 @@ public class SelectionController : PortalbleGeneralController
 
             m_v = distance_vec.y / 10000f;
             m_h = distance_vec.x / 10000f;
-
-            //Debug.Log("SEM m_v: " + m_v);
-            //Debug.Log("SEM m_h: " + m_h);
         }
     }
 
@@ -248,14 +244,14 @@ public class SelectionController : PortalbleGeneralController
                 m_markers.Add(new_marker);
                 new_marker.SetActive(m_isMarkerDisplayed);
 
-                if (m_markers.Count < m_markerQueueLimit)
+                if (m_markers_screenPos.Count < m_markerQueueLimit)
                 {
-                    m_markers_screenPos.Enqueue(FocusUtils.WorldToScreenSpace(grabPos));
+                    m_markers_screenPos.Enqueue(new KeyValuePair<Vector2, long>(FocusUtils.WorldToScreenSpace(grabPos), System.DateTimeOffset.Now.ToUnixTimeMilliseconds()));
                 }
                 else
                 {
                     m_markers_screenPos.Dequeue();
-                    m_markers_screenPos.Enqueue(FocusUtils.WorldToScreenSpace(grabPos));
+                    m_markers_screenPos.Enqueue(new KeyValuePair<Vector2, long>(FocusUtils.WorldToScreenSpace(grabPos), System.DateTimeOffset.Now.ToUnixTimeMilliseconds()));
                 }
 
                 UpdateCylinderCenter();

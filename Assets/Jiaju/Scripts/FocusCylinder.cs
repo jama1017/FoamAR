@@ -77,12 +77,12 @@ public class FocusCylinder : MonoBehaviour
         if (_selectionDM.TargetObjIDs.Contains(other.gameObject.GetInstanceID()))
         {
             //objRenderer.material.color = new Color(_selectionDM.ObjTargetColor.r, _selectionDM.ObjTargetColor.g, _selectionDM.ObjTargetColor.b, objRenderer.material.color.a);
-            objRenderer.material.color = _selectionDM.ObjFocusedColor;
+            objRenderer.material.color = FocusUtils.ObjFocusedColor;
         }
         else
         {
             //objRenderer.material.color = new Color(_selectionDM.ObjNormalColor.r, _selectionDM.ObjNormalColor.g, _selectionDM.ObjNormalColor.b, objRenderer.material.color.a); ;
-            objRenderer.material.color = _selectionDM.ObjNormalColor;
+            objRenderer.material.color = FocusUtils.ObjNormalColor;
         }
     }
 
@@ -93,11 +93,11 @@ public class FocusCylinder : MonoBehaviour
 
         if (_selectionDM.TargetObjIDs.Contains(other.gameObject.GetInstanceID()))
         {
-            objRenderer.material.color = new Color(_selectionDM.ObjTargetFocusedColor.r, _selectionDM.ObjTargetFocusedColor.g, _selectionDM.ObjTargetFocusedColor.b, objRenderer.material.color.a);
+            objRenderer.material.color = new Color(FocusUtils.ObjTargetFocusedColor.r, FocusUtils.ObjTargetFocusedColor.g, FocusUtils.ObjTargetFocusedColor.b, objRenderer.material.color.a);
         }
         else
         {
-            objRenderer.material.color = new Color(_selectionDM.ObjFocusedColor.r, _selectionDM.ObjFocusedColor.g, _selectionDM.ObjFocusedColor.b, objRenderer.material.color.a); ;
+            objRenderer.material.color = new Color(FocusUtils.ObjFocusedColor.r, FocusUtils.ObjFocusedColor.g, FocusUtils.ObjFocusedColor.b, objRenderer.material.color.a); ;
         }
     }
 }

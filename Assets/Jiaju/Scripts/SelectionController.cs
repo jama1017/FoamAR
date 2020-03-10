@@ -309,12 +309,12 @@ public class SelectionController : PortalbleGeneralController
 
             if (objVisDis > m_sDM.FarDis) // far from far dis
             {
-                FocusUtils.UpdateMaterialAlpha(currRenderer, m_sDM.FarAlpha);
+                FocusUtils.UpdateMaterialAlpha(currRenderer, FocusUtils.FarAlpha);
 
             }
             else if (objVisDis < m_sDM.FarDis && objVisDis > m_sDM.NearDis) // in between far and near dis
             {
-                float alpha = FocusUtils.LinearMapReverse(objVisDis, m_sDM.NearDis, m_sDM.FarDis, m_sDM.FarAlpha, m_sDM.NearAlpha); // mapping from m_sDM.NearDis - m_sDM.FarDis to m_sDM.FarAlpha - 1.0f to
+                float alpha = FocusUtils.LinearMapReverse(objVisDis, m_sDM.NearDis, m_sDM.FarDis, FocusUtils.FarAlpha, FocusUtils.NearAlpha); // mapping from m_sDM.NearDis - m_sDM.FarDis to m_sDM.FarAlpha - 1.0f to
 
                 // hand distance from obj is usually from 0.09 to 0.20
                 alpha += AddHandDistanceAlpha(curr, alpha);
@@ -324,7 +324,7 @@ public class SelectionController : PortalbleGeneralController
             }
             else
             {
-                FocusUtils.UpdateMaterialAlpha(currRenderer, m_sDM.NearAlpha);
+                FocusUtils.UpdateMaterialAlpha(currRenderer, FocusUtils.NearAlpha);
 
             }
         }
@@ -334,12 +334,12 @@ public class SelectionController : PortalbleGeneralController
 
     private float AddHandDistanceAlpha(GameObject curr, float alpha)
     {
-        float objHandDis = m_sDM.FarHandDis;
+        float objHandDis = FocusUtils.FarHandDis;
 
         if (ActiveHandManager) objHandDis = Vector3.Distance(ActiveHandTransform.position, curr.transform.position);
-        if (objHandDis > m_sDM.FarHandDis) objHandDis = m_sDM.FarHandDis;
+        if (objHandDis > FocusUtils.FarHandDis) objHandDis = FocusUtils.FarHandDis;
 
-        return FocusUtils.LinearMapReverse(objHandDis, m_sDM.NearHandDis, m_sDM.FarHandDis, 0.0f, m_sDM.NearAlpha - alpha); // add hand distance into consideration
+        return FocusUtils.LinearMapReverse(objHandDis, FocusUtils.NearHandDis, FocusUtils.FarHandDis, 0.0f, FocusUtils.NearAlpha - alpha); // add hand distance into consideration
     }
 
 
@@ -398,7 +398,7 @@ public class SelectionController : PortalbleGeneralController
         if (placePrefab != null)
         {
             Transform cen = Instantiate(placePrefab, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
-            cen.gameObject.GetComponent<Renderer>().material.color = m_sDM.ObjNormalColor;
+            cen.gameObject.GetComponent<Renderer>().material.color = FocusUtils.ObjNormalColor;
             m_sDM.SceneObjects.Add(cen.gameObject);
 
             List<Transform> cens = new List<Transform>();
@@ -413,14 +413,14 @@ public class SelectionController : PortalbleGeneralController
                 {
                     if (i == 0 && j == 0) continue;
                     Transform obj = Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation);
-                    obj.gameObject.GetComponent<Renderer>().material.color = m_sDM.ObjNormalColor;
+                    obj.gameObject.GetComponent<Renderer>().material.color = FocusUtils.ObjNormalColor;
                     cens.Add(obj);
                     m_sDM.SceneObjects.Add(obj.gameObject);
                 }
             }
 
             int idx = Random.Range(0, cens.Count);
-            cens[idx].gameObject.GetComponent<Renderer>().material.color = m_sDM.ObjTargetColor;
+            cens[idx].gameObject.GetComponent<Renderer>().material.color = FocusUtils.ObjTargetColor;
             m_sDM.TargetObjIDs.Add(cens[idx].gameObject.GetInstanceID());
         }
     }

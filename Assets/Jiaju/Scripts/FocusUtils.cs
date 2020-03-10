@@ -7,6 +7,22 @@ public static class FocusUtils
 
     public static readonly Vector3 NullVector3 = new Vector3(-99999f, -99999f, -99999f);
 
+    /// <summary>
+    /// Constants
+    /// </summary>
+    // Depth cue
+    public static readonly float NearHandDis = 0.11f; // to be adjusted based on user preference.
+    public static readonly float FarHandDis = 0.21f;  // to be adjusted based on user preference.
+    public static readonly float FarAlpha = 0.2f;
+    public static readonly float NearAlpha = 1.0f;
+
+    // Object colors for user task and selection aid
+    public static readonly Color ObjNormalColor = new Color(150f / 255f, 100f / 255f, 0f, FarAlpha);
+    public static readonly Color ObjFocusedColor = new Color(1f, 200f / 255f, 0f, FarAlpha);
+    public static readonly Color ObjTargetColor = new Color(18f / 255f, 20f / 255f, 125f / 255f, FarAlpha);
+    public static readonly Color ObjTargetFocusedColor = new Color(85f / 255f, 180f / 255f, 1f, FarAlpha);
+
+
     public static Vector3 WorldToScreenSpace(Vector3 worldPos)
     {
         return Camera.main.WorldToScreenPoint(worldPos);

@@ -34,6 +34,7 @@ public class SelectionController : PortalbleGeneralController
     // selection cylinder
     public Transform m_focusCylinderPrefab;
     private Transform m_focusCylinder;
+    private Renderer m_focusCylinderRenderer;
     private Vector3 m_focusCylinderCenterPos = Vector3.zero;
     private Vector3 m_focusCylinderCenterPos_noOffset = Vector3.zero;
     private float m_v = 0f;
@@ -52,6 +53,7 @@ public class SelectionController : PortalbleGeneralController
         // set up focus cylinder
         //m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
         m_focusCylinder = Instantiate(m_focusCylinderPrefab);
+        m_focusCylinderRenderer = m_focusCylinder.GetComponent<Renderer>();
         m_focusCylinder.gameObject.GetComponent<Collider>().attachedRigidbody.useGravity = false;
         float initial_width = Camera.main.pixelWidth / (2 * 10000f);
         m_focusCylinder.localScale = new Vector3(initial_width, m_focusCylinder.localScale[1], initial_width);
@@ -89,14 +91,14 @@ public class SelectionController : PortalbleGeneralController
 
         ResetSelectionAid();
 
-        //if (!Grab.Instance.IsGrabbing && m_sDM.UseSelectionAid) // if not grabbing, enable focus cylinder
-        //{
-        //    TurnOnSelectionAid();
-        //}
-        //else // if grabbing. do not detect candidate objects
-        //{
-        //    TurnOffSelectionAid();
-        //}
+        if (!Grab.Instance.IsGrabbing && m_sDM.UseSelectionAid) // if not grabbing, enable focus cylinder
+        {
+            TurnOnSelectionAid();
+        }
+        else // if grabbing. do not detect candidate objects
+        {
+            TurnOffSelectionAid();
+        }
 
         // usually hand is 0.3f in front of camera at most
         //Debug.Log("TRANSPP :" + Vector3.Distance(m_FirstPersonCamera.transform.position, ActiveHandTransform.position).ToString("F10"));
@@ -105,26 +107,26 @@ public class SelectionController : PortalbleGeneralController
     /// <summary>
     /// Turn on the visuals of selection aid
     /// </summary>
-    //private void TurnOnSelectionAid()
-    //{
-    //    if (!m_focusCylinderRenderer.enabled)
-    //    {
-    //        m_focusCylinderRenderer.enabled = true;
-    //    }
-    //    m_guideLine.gameObject.SetActive(true);
-    //}
+    private void TurnOnSelectionAid()
+    {
+        if (!m_focusCylinderRenderer.enabled)
+        {
+            m_focusCylinderRenderer.enabled = true;
+        }
+        //m_guideLine.gameObject.SetActive(true);
+    }
 
     /// <summary>
     /// Turn off the visuals of selection aid
     /// </summary>
-    //private void TurnOffSelectionAid()
-    //{
-    //    if (m_focusCylinderRenderer.enabled)
-    //    {
-    //        m_focusCylinderRenderer.enabled = false;
-    //    }
-    //    m_guideLine.gameObject.SetActive(false);
-    //}
+    private void TurnOffSelectionAid()
+    {
+        if (m_focusCylinderRenderer.enabled)
+        {
+            m_focusCylinderRenderer.enabled = false;
+        }
+        //m_guideLine.gameObject.SetActive(false);
+    }
 
 
     /// <summary>

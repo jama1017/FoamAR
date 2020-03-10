@@ -71,33 +71,22 @@ public class FocusCylinder : MonoBehaviour
 
     private void ChangeObjToOGColor(Collider other)
     {
-        Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
-        //Color objOGColor = objRenderer.material.color;
-
-        if (_selectionDM.TargetObjIDs.Contains(other.gameObject.GetInstanceID()))
-        {
-            //objRenderer.material.color = new Color(_selectionDM.ObjTargetColor.r, _selectionDM.ObjTargetColor.g, _selectionDM.ObjTargetColor.b, objRenderer.material.color.a);
-            objRenderer.material.color = FocusUtils.ObjFocusedColor;
-        }
-        else
-        {
-            //objRenderer.material.color = new Color(_selectionDM.ObjNormalColor.r, _selectionDM.ObjNormalColor.g, _selectionDM.ObjNormalColor.b, objRenderer.material.color.a); ;
-            objRenderer.material.color = FocusUtils.ObjNormalColor;
-        }
+        other.gameObject.GetComponent<Selectable>().DeHighlight();
     }
 
     private void HighlightObjColor(Collider other)
     {
-        Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
-        //Color objOGColor = objRenderer.material.color;
+        //Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
+        ////Color objOGColor = objRenderer.material.color;
 
-        if (_selectionDM.TargetObjIDs.Contains(other.gameObject.GetInstanceID()))
-        {
-            objRenderer.material.color = new Color(FocusUtils.ObjTargetFocusedColor.r, FocusUtils.ObjTargetFocusedColor.g, FocusUtils.ObjTargetFocusedColor.b, objRenderer.material.color.a);
-        }
-        else
-        {
-            objRenderer.material.color = new Color(FocusUtils.ObjFocusedColor.r, FocusUtils.ObjFocusedColor.g, FocusUtils.ObjFocusedColor.b, objRenderer.material.color.a); ;
-        }
+        //if (other.gameObject.GetComponent<Selectable>().IsTarget)
+        //{
+        //    objRenderer.material.color = new Color(FocusUtils.ObjTargetFocusedColor.r, FocusUtils.ObjTargetFocusedColor.g, FocusUtils.ObjTargetFocusedColor.b, objRenderer.material.color.a);
+        //}
+        //else
+        //{
+        //    objRenderer.material.color = new Color(FocusUtils.ObjFocusedColor.r, FocusUtils.ObjFocusedColor.g, FocusUtils.ObjFocusedColor.b, objRenderer.material.color.a); ;
+        //}
+        other.gameObject.GetComponent<Selectable>().DeHighlight();
     }
 }

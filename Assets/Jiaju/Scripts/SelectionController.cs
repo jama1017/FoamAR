@@ -269,7 +269,8 @@ public class SelectionController : PortalbleGeneralController
                     string message = "Object grabbed," + newPos + "," + FocusUtils.WorldToScreenSpace(grabPos) + "," + FocusUtils.AddTimeStamp();
 
                     Color objColor = grabbedObj.GetComponent<Renderer>().material.color;
-                    if (m_sDM.TargetObjIDs.Contains(grabbedObj.GetInstanceID()))
+                    //if (m_sDM.TargetObjIDs.Contains(grabbedObj.GetInstanceID()))
+                    if (grabbedObj.GetComponent<Selectable>().IsTarget)
                     {
                         message += ", target obj";
                     }
@@ -420,8 +421,8 @@ public class SelectionController : PortalbleGeneralController
             }
 
             int idx = Random.Range(0, cens.Count);
-            cens[idx].gameObject.GetComponent<Renderer>().material.color = FocusUtils.ObjTargetColor;
-            m_sDM.TargetObjIDs.Add(cens[idx].gameObject.GetInstanceID());
+            cens[idx].gameObject.GetComponent<Selectable>().SetAsTarget();
+            //m_sDM.TargetObjIDs.Add(cens[idx].gameObject.GetInstanceID());
         }
     }
 

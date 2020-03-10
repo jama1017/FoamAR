@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5960132883046135335}
   - component: {fileID: 2666217731222760821}
   - component: {fileID: 2025040672824105385}
+  - component: {fileID: 1424238742981965701}
   m_Layer: 11
   m_Name: FocusCube
   m_TagString: InteractableObj
@@ -129,6 +130,18 @@ MonoBehaviour:
   m_selectedMaterial: {fileID: 2100000, guid: d4dcff38c4c58624ebf541cb3cf8825f, type: 2}
   m_grabbedMaterial: {fileID: 0}
   m_throwPower: 5
+--- !u!114 &1424238742981965701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 418944054124175135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e3e747d24f714bdd8b96362f26d678c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6968784813298600827
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public class SelectionDataManager : MonoBehaviour
     private bool _useSelectionAid = true;
 
     private List<GameObject> _sceneObjects = new List<GameObject>();
-    private HashSet<int> _targetObjIDs = new HashSet<int>();
+    //private HashSet<int> _targetObjIDs = new HashSet<int>();
 
     // depth cue related;
     private float _farDis = 0.3f;       // to be adjusted based on user preference. far distance to be reached
@@ -90,10 +90,10 @@ public class SelectionDataManager : MonoBehaviour
         get { return _sceneObjects; }
     }
 
-    public HashSet<int> TargetObjIDs
-    {
-        get { return _targetObjIDs; }
-    }
+    //public HashSet<int> TargetObjIDs
+    //{
+    //    get { return _targetObjIDs; }
+    //}
 
     public float NearDis
     {

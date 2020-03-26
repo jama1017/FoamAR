@@ -27,6 +27,7 @@ namespace Portalble
         {
             _isTarget = true;
             _renderer.material.color = FocusUtils.ObjTargetColor;
+            Debug.Log("HIGHH target set: " + _renderer.material.color);
         }
 
         public void Highlight()

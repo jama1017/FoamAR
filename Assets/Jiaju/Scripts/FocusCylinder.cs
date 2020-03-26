@@ -32,6 +32,7 @@ public class FocusCylinder : MonoBehaviour
             {
                 HighlightObjColor(other);
             }
+
             // when grabbing
             else
             {
@@ -44,8 +45,6 @@ public class FocusCylinder : MonoBehaviour
     {
         if (other.tag == "InteractableObj") // ignore ARPlane prefab
         {
-            // draw line on every collider
-            //LineRenderer line = _selectionDM.FocusedObjectToLine[other.gameObject].GetComponent<LineRenderer>();
             if (!Grab.Instance.IsGrabbing && _selectionDM.UseSelectionAid)
             {
                 HighlightObjColor(other);
@@ -66,7 +65,6 @@ public class FocusCylinder : MonoBehaviour
 
             ChangeObjToOGColor(other);
         }
-        //material.color = Color.blue
     }
 
     private void ChangeObjToOGColor(Collider other)
@@ -76,17 +74,6 @@ public class FocusCylinder : MonoBehaviour
 
     private void HighlightObjColor(Collider other)
     {
-        //Renderer objRenderer = other.gameObject.GetComponent<Renderer>();
-        ////Color objOGColor = objRenderer.material.color;
-
-        //if (other.gameObject.GetComponent<Selectable>().IsTarget)
-        //{
-        //    objRenderer.material.color = new Color(FocusUtils.ObjTargetFocusedColor.r, FocusUtils.ObjTargetFocusedColor.g, FocusUtils.ObjTargetFocusedColor.b, objRenderer.material.color.a);
-        //}
-        //else
-        //{
-        //    objRenderer.material.color = new Color(FocusUtils.ObjFocusedColor.r, FocusUtils.ObjFocusedColor.g, FocusUtils.ObjFocusedColor.b, objRenderer.material.color.a); ;
-        //}
-        other.gameObject.GetComponent<Selectable>().DeHighlight();
+        other.gameObject.GetComponent<Selectable>().Highlight();
     }
 }

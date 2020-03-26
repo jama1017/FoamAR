@@ -57,7 +57,7 @@ public static class FocusUtils
 
         IEnumerator<KeyValuePair<Vector2, long>> marker_enum = markers.GetEnumerator();
 
-        Debug.Log("QUEUEE start ------ ");
+        //Debug.Log("QUEUEE start ------ ");
 
         while (marker_enum.MoveNext())
         {
@@ -69,12 +69,12 @@ public static class FocusUtils
             y_num_sum += marker_enum.Current.Key.y * weight;
 
             //Debug.Log("QUEUEE offset : " + smallest_offset.ToString("F10"));
-            Debug.Log("QUEUEE weight : " + weight.ToString());
-            Debug.Log("QUEUEE key : " + marker_enum.Current.Key.ToString());
+            //Debug.Log("QUEUEE weight : " + weight.ToString());
+            //Debug.Log("QUEUEE key : " + marker_enum.Current.Key.ToString());
         }
 
-        Debug.Log("QUEUEE res: " + x_num_sum / weight_sum + " , " + y_num_sum / weight_sum);
-        Debug.Log("QUEUEE end ------ ");
+        //Debug.Log("QUEUEE res: " + x_num_sum / weight_sum + " , " + y_num_sum / weight_sum);
+        //Debug.Log("QUEUEE end ------ ");
 
         return new Vector3(x_num_sum / weight_sum, y_num_sum / weight_sum, 0f);
     }
@@ -131,7 +131,7 @@ public static class FocusUtils
             float objHandPortion = 1.0f / Mathf.Pow(objHandDis, 3.0f);
 
             float score = objCylPortion + objHandPortion;
-            Debug.Log("DATAA cy obj score: " + objCylPortion + " , " + objHandPortion + " , " + score);
+            //Debug.Log("DATAA cy obj score: " + objCylPortion + " , " + objHandPortion + " , " + score);
 
             if (score > max_score)
             {

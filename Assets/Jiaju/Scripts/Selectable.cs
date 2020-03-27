@@ -88,6 +88,20 @@ namespace Portalble
 
         public void SetHighestRankContour()
         {
+            _outline_mats[0] = _renderer.materials[0];
+
+            if (_outline_mats[0].HasProperty("_OutlineColor")) // if there is already an outline (finger enter or grabbing)
+            {
+                _outline_mats[1].SetColor("_OutlineColor", _outline_mats[0].GetColor("_OutlineColor")); // use existing outline color
+            }
+            else // otherwise use obj ranked color
+            {
+                if (_outline_mats[1].GetColor("_OutlineColor") != FocusUtils.ObjRankedColor) 
+                {
+                    _outline_mats[1].SetColor("_OutlineColor", FocusUtils.ObjRankedColor);
+                }
+            }
+
             _renderer.materials = _outline_mats;
         }
 
@@ -97,6 +111,7 @@ namespace Portalble
         {
             if(_renderer.materials.Length > 1)
             {
+                _normal_mats[0] = _renderer.materials[0];
                 _renderer.materials = _normal_mats;
             }
         }

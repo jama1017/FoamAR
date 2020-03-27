@@ -183,6 +183,9 @@ public class SelectionController : PortalbleGeneralController
 
     private void AidSelection()
     {
+
+        if (Grab.Instance.IsGrabbing) return;
+
         m_highestRankedObj = FocusUtils.RankFocusedObjects(m_sDM.FocusedObjects, m_focusCylinderCenterPos, m_sDM, m_canvas);
         
         if (!m_highestRankedObj || !ActiveHandManager)
@@ -192,17 +195,20 @@ public class SelectionController : PortalbleGeneralController
             return;
         }
 
-        m_highestRankedObjMarker.SetActive(true);
-        //m_guideLine.gameObject.SetActive(true);
+        m_highestRankedObj.GetComponent<Selectable>().SetHighestRankContour();
+        DecontourOtherFocusedObjects(m_highestRankedObj.GetInstanceID());
 
-        FocusUtils.UpdateLinePos(m_guideLine, m_highestRankedObj.GetComponent<Collider>(), m_sDM.ActivePalm);
+        m_highestRankedObjMarker.SetActive(true);
+
+
+        //FocusUtils.UpdateLinePos(m_guideLine, m_highestRankedObj.GetComponent<Collider>(), m_sDM.ActivePalm);
         m_highestRankedObjMarker.GetComponent<RectTransform>().anchoredPosition = FocusUtils.WorldToUISpace(m_canvas, m_highestRankedObj.transform.position);
 
 
         // snap target object to hand if close enough
         Vector3 indexThumbPos = FocusUtils.GetIndexThumbPos(m_sDM);
 
-        Debug.Log("SNAPP objHand dis test: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
+        //Debug.Log("SNAPP objHand dis test: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
 
 
         if (Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos) < m_maxSnapDis)
@@ -211,10 +217,23 @@ public class SelectionController : PortalbleGeneralController
             {
                 if(!Grab.Instance.IsGrabbing && !m_isSnapped)
                 {
-                    Debug.Log("SNAPP objHand dis: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
+                    //Debug.Log("SNAPP objHand dis: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
+                    m_highestRankedObj.GetComponent<Selectable>().RemoveHighestRankContour();
                     m_highestRankedObj.transform.position = indexThumbPos; // might need a different value to ensure collider trigger
                     m_isSnapped = true;
                 }
+            }
+        }
+    }
+
+    private void DecontourOtherFocusedObjects(int RankedObjID)
+    {
+        for (int i = 0; i < m_sDM.FocusedObjects.Count; i++)
+        {
+            GameObject curr = m_sDM.FocusedObjects[i];
+            if (curr.GetInstanceID() != RankedObjID)
+            {
+                curr.GetComponent<Selectable>().RemoveHighestRankContour();
             }
         }
     }

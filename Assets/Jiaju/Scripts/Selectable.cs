@@ -9,13 +9,33 @@ namespace Portalble
 
         private bool _isTarget = false;
         private Renderer _renderer;
+        private Material _outline_mat;
+
+        private Material[] _normal_mats;
+        private Material[] _outline_mats;
+
+        public Material m_vertOutline; // to make more permanent
 
         // Start is called before the first frame update
         void Start()
         {
             _renderer = GetComponent<Renderer>();
             _renderer.material.color = FocusUtils.ObjNormalColor;
+
+            // outline material
+            _outline_mat = Instantiate(m_vertOutline);
+            _outline_mat.SetFloat("_BodyAlpha", 0.0f);
+            _outline_mat.SetFloat("_OutlineWidth", 0.004f);
+            _outline_mat.SetColor("_OutlineColor", FocusUtils.ObjRankedColor);
+
+            _normal_mats = new Material[1];
+            _normal_mats[0] = _renderer.materials[0];
+
+            _outline_mats = new Material[2];
+            _outline_mats[0] = _renderer.materials[0];
+            _outline_mats[1] = _outline_mat;
         }
+
 
         // Update is called once per frame
         void Update()
@@ -23,12 +43,14 @@ namespace Portalble
 
         }
 
+
         public void SetAsTarget()
         {
             _isTarget = true;
             _renderer.material.color = FocusUtils.ObjTargetColor;
             Debug.Log("HIGHH target set: " + _renderer.material.color);
         }
+
 
         public void Highlight()
         {
@@ -42,6 +64,7 @@ namespace Portalble
             }
         }
 
+
         public void DeHighlight()
         {
             if (_isTarget)
@@ -54,9 +77,29 @@ namespace Portalble
             }
         }
 
+
+
         public bool IsTarget
         {
             get { return _isTarget; }
         }
+
+
+
+        public void SetHighestRankContour()
+        {
+            _renderer.materials = _outline_mats;
+        }
+
+
+
+        public void RemoveHighestRankContour()
+        {
+            if(_renderer.materials.Length > 1)
+            {
+                _renderer.materials = _normal_mats;
+            }
+        }
+
     }
 }

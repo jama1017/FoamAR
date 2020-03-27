@@ -22,6 +22,8 @@ public static class FocusUtils
     public static readonly Color ObjTargetColor = new Color(18f / 255f, 20f / 255f, 125f / 255f, FarAlpha);
     public static readonly Color ObjTargetFocusedColor = new Color(85f / 255f, 180f / 255f, 1f, FarAlpha);
 
+    public static readonly Color ObjRankedColor = new Color(1f, 0.0f, 0.0f, 1.0f);
+
 
     public static Vector3 WorldToScreenSpace(Vector3 worldPos)
     {
@@ -146,11 +148,11 @@ public static class FocusUtils
     }
 
 
-    public static void UpdateLinePos(LineRenderer line, Collider other, GameObject ActivePalm)
-    {
-        line.SetPosition(0, ActivePalm.transform.position);
-        line.SetPosition(1, other.gameObject.transform.position);
-    }
+    //public static void UpdateLinePos(LineRenderer line, Collider other, GameObject ActivePalm)
+    //{
+    //    line.SetPosition(0, ActivePalm.transform.position);
+    //    line.SetPosition(1, other.gameObject.transform.position);
+    //}
 
 
     public static void ToggleTimeStamp(bool isStart)

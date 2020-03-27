@@ -64,6 +64,7 @@ public class FocusCylinder : MonoBehaviour
             _selectionDM.FocusedObjects.Remove(other.gameObject);
 
             ChangeObjToOGColor(other);
+            other.gameObject.GetComponent<Selectable>().RemoveHighestRankContour();
         }
     }
 

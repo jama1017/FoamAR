@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Portalble.Functions.Grab;
 
 namespace Portalble
 {
@@ -14,6 +15,8 @@ namespace Portalble
         private Material[] _normal_mats;
         private Material[] _outline_mats;
 
+        private float _outline_width = 0.004f;
+
         public Material m_vertOutline; // to make more permanent
 
         // Start is called before the first frame update
@@ -25,7 +28,7 @@ namespace Portalble
             // outline material
             _outline_mat = Instantiate(m_vertOutline);
             _outline_mat.SetFloat("_BodyAlpha", 0.0f);
-            _outline_mat.SetFloat("_OutlineWidth", 0.004f);
+            _outline_mat.SetFloat("_OutlineWidth", _outline_width);
             _outline_mat.SetColor("_OutlineColor", FocusUtils.ObjRankedColor);
 
             _normal_mats = new Material[1];
@@ -40,7 +43,10 @@ namespace Portalble
         // Update is called once per frame
         void Update()
         {
-
+            if (GetComponent<Grabable>().IsBeingGrabbed())
+            {
+                RemoveHighestRankContour();
+            }
         }
 
 
@@ -92,13 +98,13 @@ namespace Portalble
 
             if (_outline_mats[0].HasProperty("_OutlineColor")) // if there is already an outline (finger enter or grabbing)
             {
-                _outline_mats[1].SetColor("_OutlineColor", _outline_mats[0].GetColor("_OutlineColor")); // use existing outline color
+                _outline_mats[1].SetFloat("_OutlineWidth", 0.0f); // get rid of second outline
             }
             else // otherwise use obj ranked color
             {
-                if (_outline_mats[1].GetColor("_OutlineColor") != FocusUtils.ObjRankedColor) 
+                if (_outline_mats[1].GetFloat("_OutlineWidth") == 0.0f) 
                 {
-                    _outline_mats[1].SetColor("_OutlineColor", FocusUtils.ObjRankedColor);
+                    _outline_mats[1].SetFloat("_OutlineWidth", _outline_width);
                 }
             }
 

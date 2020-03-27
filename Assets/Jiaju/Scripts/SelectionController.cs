@@ -218,7 +218,7 @@ public class SelectionController : PortalbleGeneralController
                 if(!Grab.Instance.IsGrabbing && !m_isSnapped)
                 {
                     //Debug.Log("SNAPP objHand dis: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
-                    m_highestRankedObj.GetComponent<Selectable>().RemoveHighestRankContour();
+                    //m_highestRankedObj.GetComponent<Selectable>().RemoveHighestRankContour();
                     m_highestRankedObj.transform.position = indexThumbPos; // might need a different value to ensure collider trigger
                     m_isSnapped = true;
                 }

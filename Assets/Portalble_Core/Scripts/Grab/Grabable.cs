@@ -175,6 +175,12 @@ namespace Portalble.Functions.Grab {
             if (renderer != null && m_unselectedMaterial != null) {
                 renderer.material = m_unselectedMaterial;
             }
+
+            if (GetComponent<Selectable>())
+            {
+                GetComponent<Selectable>().RemoveHighestRankContour();
+                GetComponent<Selectable>().DeHighlight();
+            }
         }
 
         /// <summary>

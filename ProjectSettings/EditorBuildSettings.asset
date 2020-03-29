@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Examples/Grab/BasicGrab.unity
     guid: af7103cf73a1ef4439f35ebf88f9910e
-  - enabled: 0
-    path: Assets/Jiaju/Jiaju.unity
-    guid: a6ece71b2fa394b0f9e4022709238fd1
   - enabled: 1
     path: Assets/Jiaju/focus.unity
     guid: 046f5d43f43804075b9bac804736d531
+  - enabled: 1
+    path: Assets/Jiaju/Jiaju.unity
+    guid: a6ece71b2fa394b0f9e4022709238fd1
   m_configObjects: {}

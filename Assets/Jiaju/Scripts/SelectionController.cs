@@ -198,11 +198,9 @@ public class SelectionController : PortalbleGeneralController
         m_highestRankedObj.GetComponent<Selectable>().SetHighestRankContour();
         DecontourOtherFocusedObjects(m_highestRankedObj.GetInstanceID());
 
-        m_highestRankedObjMarker.SetActive(true);
-
-
-        //FocusUtils.UpdateLinePos(m_guideLine, m_highestRankedObj.GetComponent<Collider>(), m_sDM.ActivePalm);
-        m_highestRankedObjMarker.GetComponent<RectTransform>().anchoredPosition = FocusUtils.WorldToUISpace(m_canvas, m_highestRankedObj.transform.position);
+        // ranked object marker
+        //m_highestRankedObjMarker.SetActive(true);
+        //m_highestRankedObjMarker.GetComponent<RectTransform>().anchoredPosition = FocusUtils.WorldToUISpace(m_canvas, m_highestRankedObj.transform.position);
 
 
         // snap target object to hand if close enough

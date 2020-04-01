@@ -206,18 +206,18 @@ public class SelectionController : PortalbleGeneralController
         // snap target object to hand if close enough
         Vector3 indexThumbPos = FocusUtils.GetIndexThumbPos(m_sDM);
 
-        //Debug.Log("SNAPP objHand dis test: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
-
-
+        // snapping object to hand
         if (Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos) < m_maxSnapDis)
         {
             if (ActiveHandGesture == "pinch")
             {
                 if(!Grab.Instance.IsGrabbing && !m_isSnapped)
                 {
-                    //Debug.Log("SNAPP objHand dis: " + Vector3.Distance(m_highestRankedObj.transform.position, indexThumbPos).ToString("F10"));
                     //m_highestRankedObj.GetComponent<Selectable>().RemoveHighestRankContour();
+                    m_highestRankedObj.GetComponent<Selectable>().SetSnapped();
+                    //Debug.Log("SNAPP -- pre: " + m_highestRankedObj.transform.position.ToString("F6"));
                     m_highestRankedObj.transform.position = indexThumbPos; // might need a different value to ensure collider trigger
+                    //Debug.Log("SNAPP -- after: " + m_highestRankedObj.transform.position.ToString("F6"));
                     m_isSnapped = true;
                 }
             }
@@ -251,10 +251,10 @@ public class SelectionController : PortalbleGeneralController
         {
             if (Grab.Instance.IsGrabbing && !m_isRecorded)
             {
-                //Debug.Log("FOCUS grabbing");
                 m_isRecorded = true;
                 GameObject grabbedObj = Grab.Instance.GetGrabbingObject().gameObject;
-                Vector3 grabPos = grabbedObj.transform.position;
+                //Vector3 grabPos = grabbedObj.transform.position;
+                Vector3 grabPos = grabbedObj.GetComponent<Selectable>().GetSnappedPosition();
 
                 Vector2 newPos = FocusUtils.WorldToUISpace(m_canvas, grabPos);
                 GameObject new_marker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
@@ -274,9 +274,6 @@ public class SelectionController : PortalbleGeneralController
                 }
 
                 UpdateCylinderCenter();
-
-                //GameObject temp = Instantiate(placePrefab, m_FirstPersonCamera.transform.position, Quaternion.identity).gameObject;
-                //temp.GetComponent<Collider>().attachedRigidbody.useGravity = false;
 
                 // transmit data
                 if (Jetfire.IsConnected2())

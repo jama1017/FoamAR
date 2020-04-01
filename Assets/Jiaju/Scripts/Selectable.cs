@@ -17,6 +17,9 @@ namespace Portalble
 
         private float _outline_width = 0.004f;
 
+        private Vector3 _preSnapPos = new Vector3(0.0f, 0.0f, 0.0f);
+        private bool _isSnapped = false;
+
         public Material m_vertOutline; // to make more permanent
 
         // Start is called before the first frame update
@@ -111,6 +114,11 @@ namespace Portalble
             _renderer.materials = _outline_mats;
         }
 
+        public void SetSnapped()
+        {
+            _isSnapped = true;
+            _preSnapPos = this.transform.position;
+        }
 
 
         public void RemoveHighestRankContour()
@@ -122,5 +130,22 @@ namespace Portalble
             }
         }
 
+        public Vector3 GetSnappedPosition()
+        {
+            Vector3 res = new Vector3(0.0f, 0.0f, 0.0f);
+
+            if (_isSnapped)
+            {
+                res = _preSnapPos;
+            }
+            else
+            {
+                res = this.transform.position;
+            }
+
+            _isSnapped = false;
+
+            return res;
+        }
     }
 }

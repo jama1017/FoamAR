@@ -15,7 +15,7 @@ namespace Portalble
         private Material[] _normal_mats;
         private Material[] _outline_mats;
 
-        private float _outline_width = 0.004f;
+        private float _outline_width = 0.003f;
 
         private Vector3 _preSnapPos = new Vector3(0.0f, 0.0f, 0.0f);
         private bool _isSnapped = false;
@@ -99,18 +99,27 @@ namespace Portalble
         {
             _outline_mats[0] = _renderer.materials[0];
 
-            if (_outline_mats[0].HasProperty("_OutlineColor")) // if there is already an outline (finger enter or grabbing)
+            if (_renderer.materials.Length <= 1) // if only one material, add
             {
-                _outline_mats[1].SetFloat("_OutlineWidth", 0.0f); // get rid of second outline
-            }
-            else // otherwise use obj ranked color
-            {
-                if (_outline_mats[1].GetFloat("_OutlineWidth") == 0.0f) 
-                {
-                    _outline_mats[1].SetFloat("_OutlineWidth", _outline_width);
-                }
+                _renderer.materials = _outline_mats;
+                return;
             }
 
+            // if two material and second is not dotted, skip
+            if (_renderer.materials[1].HasProperty("_OutlineColor") && !_renderer.materials[1].HasProperty("_OutlineDot")) // if there is already an outline (finger enter or grabbing)
+            {
+                return;
+            }
+            //else // otherwise use obj ranked color
+            //{
+            //    if (_outline_mats[1].GetFloat("_OutlineWidth") == 0.0f)
+            //    {
+            //        _outline_mats[1].SetFloat("_OutlineWidth", _outline_width);
+            //    }
+            //}
+
+            // if two material and second is dotted, update
+            _outline_mats[1].SetFloat("_OutlineWidth", _outline_width);
             _renderer.materials = _outline_mats;
         }
 
@@ -123,10 +132,17 @@ namespace Portalble
 
         public void RemoveHighestRankContour()
         {
-            if(_renderer.materials.Length > 1)
+            if (_renderer.materials.Length > 1)
             {
-                _normal_mats[0] = _renderer.materials[0];
-                _renderer.materials = _normal_mats;
+                //_normal_mats[0] = _renderer.materials[0];
+                //_renderer.materials = _normal_mats;
+
+                _outline_mats[0] = _renderer.materials[0];
+                if (_renderer.materials[1].HasProperty("_OutlineDot"))
+                {
+                    _outline_mats[1].SetFloat("_OutlineWidth", 0.0f);
+                    _renderer.materials = _outline_mats;
+                }
             }
         }
 

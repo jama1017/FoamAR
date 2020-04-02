@@ -152,14 +152,23 @@ namespace Portalble.Functions.Grab {
             if (renderer != null && m_selectedMaterial != null && Grab.Instance.UseMaterialChange) {
                 // if has renderer, then do material change.
                 m_unselectedMaterial = renderer.material;
+                Debug.Log("GRABBABLE OnSelected color: " + m_unselectedMaterial.color);
+
                 if (m_useOutlineMaterial) {
                     Material newInstance = Instantiate<Material>(m_selectedMaterial);
-                    newInstance.SetColor("_BodyColor", m_unselectedMaterial.color);
-                    newInstance.mainTexture = m_unselectedMaterial.mainTexture;
+                    //newInstance.SetColor("_BodyColor", m_unselectedMaterial.color);
+                    //newInstance.mainTexture = m_unselectedMaterial.mainTexture;
                     if (newInstance.HasProperty("_OutlineColor")) {
                         newInstance.SetColor("_OutlineColor", m_selectedOutlineColor);
                     }
-                    renderer.material = newInstance;
+
+                    // Jiaju change
+                    Material[] mats = new Material[2];
+                    mats[0] = m_unselectedMaterial;
+                    mats[1] = newInstance;
+                    renderer.materials = mats;
+                    Debug.Log("GRABBABLE OnSelected: " + renderer.materials[0].name + ", " + renderer.materials[1].name);
+
                 } else if (m_selectedMaterial != null) {
                     renderer.material = m_selectedMaterial;
                 }
@@ -173,9 +182,11 @@ namespace Portalble.Functions.Grab {
             // change material back.
             Renderer renderer = GetComponent<Renderer>();
             if (renderer != null && m_unselectedMaterial != null) {
-                renderer.material = m_unselectedMaterial;
+                renderer.materials = new Material[] { m_unselectedMaterial };
+                Debug.Log("GRABBABLE DeSelected: "+ renderer.materials.Length); // jiaju change
             }
 
+            // Jiaju change
             if (GetComponent<Selectable>())
             {
                 GetComponent<Selectable>().RemoveHighestRankContour();
@@ -200,10 +211,14 @@ namespace Portalble.Functions.Grab {
 
             if (Grab.Instance.UseMaterialChange) {
                 if (m_useOutlineMaterial) {
-                    Material mat = GetComponent<Renderer>().sharedMaterial;
-                    if (mat.HasProperty("_OutlineColor")) {
-                        GetComponent<Renderer>().sharedMaterial.SetColor("_OutlineColor", m_grabbedOutlineColor);
+
+                    Renderer renderer = GetComponent<Renderer>();
+                    Material[] mats = renderer.materials;
+                    if (mats[1].HasProperty("_OutlineColor")) {
+                        mats[1].SetColor("_OutlineColor", m_grabbedOutlineColor);
                     }
+                    renderer.materials = mats;
+                    Debug.Log("GRABBABLE OnGrabStart: " + GetComponent<Renderer>().materials[0].name); // jiaju change
                 }
                 else if (m_grabbedMaterial != null) {
                     GetComponent<Renderer>().material = m_grabbedMaterial;
@@ -233,13 +248,18 @@ namespace Portalble.Functions.Grab {
             // material back to selected
             if (Grab.Instance.UseMaterialChange) {
                 if (m_useOutlineMaterial) {
-                    Material mat = GetComponent<Renderer>().sharedMaterial;
-                    if (mat.HasProperty("_OutlineColor")) {
-                        GetComponent<Renderer>().sharedMaterial.SetColor("_OutlineColor", m_selectedOutlineColor);
+
+                    Renderer renderer = GetComponent<Renderer>();
+                    Material[] mats = renderer.materials;
+                    if (mats[1].HasProperty("_OutlineColor"))
+                    {
+                        mats[1].SetColor("_OutlineColor", m_selectedOutlineColor);
                     }
+                    renderer.materials = mats;
+
                 }
                 else if (m_selectedMaterial != null) {
-                    GetComponent<Renderer>().material = m_selectedMaterial;
+                    GetComponent<Renderer>().materials = new Material[] { m_selectedMaterial };
                 }
             }
         }

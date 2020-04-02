@@ -12,7 +12,7 @@ namespace Portalble
         private Renderer _renderer;
         private Material _outline_mat;
 
-        private Material[] _normal_mats;
+        //private Material[] _normal_mats;
         private Material[] _outline_mats;
 
         private float _outline_width = 0.003f;
@@ -34,8 +34,8 @@ namespace Portalble
             _outline_mat.SetFloat("_OutlineWidth", _outline_width);
             _outline_mat.SetColor("_OutlineColor", FocusUtils.ObjRankedColor);
 
-            _normal_mats = new Material[1];
-            _normal_mats[0] = _renderer.materials[0];
+            //_normal_mats = new Material[1];
+            //_normal_mats[0] = _renderer.materials[0];
 
             _outline_mats = new Material[2];
             _outline_mats[0] = _renderer.materials[0];
@@ -101,6 +101,7 @@ namespace Portalble
 
             if (_renderer.materials.Length <= 1) // if only one material, add
             {
+                Debug.Log("DOTT new added");
                 _renderer.materials = _outline_mats;
                 return;
             }
@@ -108,17 +109,12 @@ namespace Portalble
             // if two material and second is not dotted, skip
             if (_renderer.materials[1].HasProperty("_OutlineColor") && !_renderer.materials[1].HasProperty("_OutlineDot")) // if there is already an outline (finger enter or grabbing)
             {
+                Debug.Log("DOTT skipped");
                 return;
             }
-            //else // otherwise use obj ranked color
-            //{
-            //    if (_outline_mats[1].GetFloat("_OutlineWidth") == 0.0f)
-            //    {
-            //        _outline_mats[1].SetFloat("_OutlineWidth", _outline_width);
-            //    }
-            //}
 
             // if two material and second is dotted, update
+            Debug.Log("DOTT last called");
             _outline_mats[1].SetFloat("_OutlineWidth", _outline_width);
             _renderer.materials = _outline_mats;
         }
@@ -136,13 +132,21 @@ namespace Portalble
             {
                 //_normal_mats[0] = _renderer.materials[0];
                 //_renderer.materials = _normal_mats;
-
-                _outline_mats[0] = _renderer.materials[0];
-                if (_renderer.materials[1].HasProperty("_OutlineDot"))
+                if (_renderer.materials[1].HasProperty("_OutlineColor") && !_renderer.materials[1].HasProperty("_OutlineDot")) // if there is already an outline (finger enter or grabbing)
                 {
-                    _outline_mats[1].SetFloat("_OutlineWidth", 0.0f);
-                    _renderer.materials = _outline_mats;
+                    return;
                 }
+
+                Debug.Log("DOTT removed");
+                Material mat = _renderer.materials[0];
+                _renderer.materials = new Material[] { mat };
+
+                //_outline_mats[0] = _renderer.materials[0];
+                //if (_renderer.materials[1].HasProperty("_OutlineDot"))
+                //{
+                //    _outline_mats[1].SetFloat("_OutlineWidth", 0.0f);
+                //    _renderer.materials = _outline_mats;
+                //}
             }
         }
 

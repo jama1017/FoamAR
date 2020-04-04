@@ -45,11 +45,13 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
         {
             case MenuRegion.UPPER:
                 //Debug.Log("FOAMFILTER Create Upp");
-                m_data.CubeRenderer.color = m_data.HoverColor;
+                //m_data.CubeRenderer.color = m_data.HoverColor;
 
-                m_data.CylinderRenderer.color = m_data.NormalColor;
-                m_data.ConeRenderer.color = m_data.NormalColor;
-                m_data.SphereRenderer.color = m_data.NormalColor;
+                //m_data.CylinderRenderer.color = m_data.NormalColor;
+                //m_data.ConeRenderer.color = m_data.NormalColor;
+                //m_data.SphereRenderer.color = m_data.NormalColor;
+
+                HighlightSprite("cube");
 
                 m_selectedItem = CreateMenuItem.CUBE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
@@ -57,12 +59,13 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
 
             case MenuRegion.RIGHT:
                 //Debug.Log("FOAMFILTER Create Right");
-                m_data.CubeRenderer.color = m_data.NormalColor;
+                //m_data.CubeRenderer.color = m_data.NormalColor;
 
-                m_data.CylinderRenderer.color = m_data.HoverColor;
+                //m_data.CylinderRenderer.color = m_data.HoverColor;
 
-                m_data.ConeRenderer.color = m_data.NormalColor;
-                m_data.SphereRenderer.color = m_data.NormalColor;
+                //m_data.ConeRenderer.color = m_data.NormalColor;
+                //m_data.SphereRenderer.color = m_data.NormalColor;
+                HighlightSprite("cylinder");
 
                 m_selectedItem = CreateMenuItem.CYLINDER;
                 animator.SetBool(m_hash_itemSelectedBool, true);
@@ -70,12 +73,14 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
 
             case MenuRegion.LOWER:
                 //Debug.Log("FOAMFILTER Create Lower");
-                m_data.CubeRenderer.color = m_data.NormalColor;
-                m_data.CylinderRenderer.color = m_data.NormalColor;
+                //m_data.CubeRenderer.color = m_data.NormalColor;
+                //m_data.CylinderRenderer.color = m_data.NormalColor;
 
-                m_data.ConeRenderer.color = m_data.HoverColor;
+                //m_data.ConeRenderer.color = m_data.HoverColor;
 
-                m_data.SphereRenderer.color = m_data.NormalColor;
+                //m_data.SphereRenderer.color = m_data.NormalColor;
+
+                HighlightSprite("cone");
 
                 m_selectedItem = CreateMenuItem.CONE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
@@ -83,21 +88,25 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
 
             case MenuRegion.LEFT:
                 //Debug.Log("FOAMFILTER Create Left");
-                m_data.CubeRenderer.color = m_data.NormalColor;
-                m_data.CylinderRenderer.color = m_data.NormalColor;
-                m_data.ConeRenderer.color = m_data.NormalColor;
+                //m_data.CubeRenderer.color = m_data.NormalColor;
+                //m_data.CylinderRenderer.color = m_data.NormalColor;
+                //m_data.ConeRenderer.color = m_data.NormalColor;
 
-                m_data.SphereRenderer.color = m_data.HoverColor;
+                //m_data.SphereRenderer.color = m_data.HoverColor;
+
+                HighlightSprite("sphere");
 
                 m_selectedItem = CreateMenuItem.SPHERE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
             case MenuRegion.MIDDLE:
-                m_data.CubeRenderer.color = m_data.NormalColor;
-                m_data.CylinderRenderer.color = m_data.NormalColor;
-                m_data.ConeRenderer.color = m_data.NormalColor;
-                m_data.SphereRenderer.color = m_data.NormalColor;
+                //m_data.CubeRenderer.color = m_data.NormalColor;
+                //m_data.CylinderRenderer.color = m_data.NormalColor;
+                //m_data.ConeRenderer.color = m_data.NormalColor;
+                //m_data.SphereRenderer.color = m_data.NormalColor;
+
+                HighlightSprite("middle");
 
                 m_selectedItem = CreateMenuItem.NULL;            //test
                 animator.SetBool(m_hash_itemSelectedBool, false); //test
@@ -124,4 +133,51 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
+
+    private void HighlightSprite(string geoType)
+    {
+        switch(geoType)
+        {
+            case "cube":
+                m_data.CubeRenderer.sprite = m_data.CubeHighlightSprite;
+
+                m_data.CylinderRenderer.sprite = m_data.CylinderNormalSprite;
+                m_data.ConeRenderer.sprite = m_data.ConeNormalSprite;
+                m_data.SphereRenderer.sprite = m_data.SphereNormalSprite;
+
+                break;
+
+            case "cylinder":
+                m_data.CylinderRenderer.sprite = m_data.CylinderHighlightSprite;
+
+                m_data.CubeRenderer.sprite = m_data.CubeNormalSprite;
+                m_data.ConeRenderer.sprite = m_data.ConeNormalSprite;
+                m_data.SphereRenderer.sprite = m_data.SphereNormalSprite;
+                break;
+
+            case "cone":
+                m_data.ConeRenderer.sprite = m_data.ConeHighlightSprite;
+
+                m_data.CylinderRenderer.sprite = m_data.CylinderNormalSprite;
+                m_data.CubeRenderer.sprite = m_data.CubeNormalSprite;
+                m_data.SphereRenderer.sprite = m_data.SphereNormalSprite;
+                break;
+
+            case "sphere":
+                m_data.SphereRenderer.sprite = m_data.SphereHighlightSprite;
+
+                m_data.CubeRenderer.sprite = m_data.CubeNormalSprite;
+                m_data.ConeRenderer.sprite = m_data.ConeNormalSprite;
+                m_data.CylinderRenderer.sprite = m_data.CylinderNormalSprite;
+                break;
+
+            case "middle":
+                m_data.CubeRenderer.sprite = m_data.CubeNormalSprite;
+                m_data.ConeRenderer.sprite = m_data.ConeNormalSprite;
+                m_data.CylinderRenderer.sprite = m_data.CylinderNormalSprite;
+                m_data.SphereRenderer.sprite = m_data.SphereNormalSprite;
+                break;
+                
+        }
+    }
 }

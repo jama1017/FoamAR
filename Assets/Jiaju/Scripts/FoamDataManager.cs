@@ -11,12 +11,22 @@ public class FoamDataManager : MonoBehaviour
     public GameObject ActivePalm;
     public GestureControl ActiveGC;
     private float _triggerRadius = 2.0f;  // size of bounding region
-    private float _middleRadius = 0.020f; // middle region of the menu
+    private float _middleRadius = 0.023f; // middle region of the menu
 
     public SpriteRenderer CylinderRenderer;
     public SpriteRenderer CubeRenderer;
     public SpriteRenderer ConeRenderer;
     public SpriteRenderer SphereRenderer;
+
+    public Sprite CubeHighlightSprite;
+    public Sprite CylinderHighlightSprite;
+    public Sprite ConeHighlightSprite;
+    public Sprite SphereHighlightSprite;
+
+    public Sprite CubeNormalSprite;
+    public Sprite CylinderNormalSprite;
+    public Sprite ConeNormalSprite;
+    public Sprite SphereNormalSprite;
 
     public SpriteRenderer ManiUppRenderer;
     public SpriteRenderer ManiLowRenderer;
@@ -42,6 +52,11 @@ public class FoamDataManager : MonoBehaviour
         ActiveIndex = ActiveHand.transform.GetChild(1).GetChild(2).gameObject;
         ActivePalm = ActiveHand.transform.GetChild(5).GetChild(0).gameObject;
         ActiveGC = ActiveHand.GetComponent<GestureControl>();
+
+        CubeNormalSprite = CubeRenderer.sprite;
+        ConeNormalSprite = ConeRenderer.sprite;
+        CylinderNormalSprite = CylinderRenderer.sprite;
+        SphereNormalSprite = SphereRenderer.sprite;
     }
 
     // Update is called once per frame

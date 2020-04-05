@@ -36,12 +36,12 @@ public class FoamARController : PortalbleGeneralController
 	{
 		base.OnARPlaneHit(hit);
 
-		if (placePrefab != null)
-		{
-			Instantiate(m_createMenu.transform, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
-            Debug.Log("FOAMFILTER hit pos" + hit.Pose.position + hit.Pose.rotation * Vector3.up * offset);
-            Debug.Log("FOAMFILTER hit rotation" + hit.Pose.rotation);
-		}
+		//if (placePrefab != null)
+		//{
+		//	Instantiate(m_createMenu.transform, hit.Pose.position + hit.Pose.rotation * Vector3.up * offset, hit.Pose.rotation);
+  //          Debug.Log("FOAMFILTER hit pos" + hit.Pose.position + hit.Pose.rotation * Vector3.up * offset);
+  //          Debug.Log("FOAMFILTER hit rotation" + hit.Pose.rotation);
+		//}
 	}
 
     protected override void Start()

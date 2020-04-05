@@ -13,7 +13,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
     private Transform m_prim_child = null;
     private bool m_isReleased =  false;
 
-    private float offset = 0.2f;
+    private float offset = 0.13f;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -24,26 +24,28 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
         m_prim = null;
 
+        Vector3 prim_pos = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward + 0.5f * m_data.ActivePalm.transform.up;
+
         switch (m_data.Selected_createItem)
         {
             case CreateMenuItem.CUBE:
-                Debug.Log("FOAMFILTER CUBE ITEM CREATED");
-                m_prim = Instantiate(m_data.CubePrefab, m_data.ActivePalm.transform.position, Quaternion.identity);
+                //Debug.Log("FOAMFILTER CUBE ITEM CREATED");
+                m_prim = Instantiate(m_data.CubePrefab, prim_pos, Quaternion.identity);
                 break;
 
             case CreateMenuItem.SPHERE:
-                Debug.Log("FOAMFILTER SPHERE ITEM CREATED");
-                m_prim = Instantiate(m_data.SpherePrefab, m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward, Quaternion.identity);
+                //Debug.Log("FOAMFILTER SPHERE ITEM CREATED");
+                m_prim = Instantiate(m_data.SpherePrefab, prim_pos, Quaternion.identity);
                 break;
 
             case CreateMenuItem.CYLINDER:
-                Debug.Log("FOAMFILTER CYLINDER ITEM CREATED");
-                m_prim = Instantiate(m_data.CylinderPrefab, m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward, Quaternion.identity);
+                //Debug.Log("FOAMFILTER CYLINDER ITEM CREATED");
+                m_prim = Instantiate(m_data.CylinderPrefab, prim_pos, Quaternion.identity);
                 break;
 
             case CreateMenuItem.CONE:
-                Debug.Log("FOAMFILTER CONE ITEM CREATED");
-                m_prim = Instantiate(m_data.ConePrefab, m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward, Quaternion.identity);
+                //Debug.Log("FOAMFILTER CONE ITEM CREATED");
+                m_prim = Instantiate(m_data.ConePrefab, prim_pos, Quaternion.identity);
                 break;
 
             default:
@@ -52,9 +54,9 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
         if (m_prim)
         {
-            m_prim.gameObject.GetComponent<Grabable>().enabled = false;
+            m_prim.gameObject.GetComponent<Grabable>().enabled = false; // grabbing?
             m_prim_child = m_prim.GetChild(0);
-            m_prim_child.gameObject.SetActive(false);
+            m_prim_child.gameObject.SetActive(false); // is it for grabbing??
         }
 
         m_isReleased = false;
@@ -71,9 +73,9 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
             if (!m_isReleased)
             {
-                Debug.Log("FOAMFILTER UPDATING ITEM");
+                //Debug.Log("FOAMFILTER UPDATING ITEM");
                 m_prim.position = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward;
-                m_prim.rotation = m_data.ActivePalm.transform.rotation;
+                //m_prim.rotation = m_data.ActivePalm.transform.rotation;
             }
 
 
@@ -81,8 +83,8 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             {
                 Debug.Log("FOAMFILTER ITEM PLACED");
                 m_isReleased = true;
-                m_prim.gameObject.GetComponent<Grabable>().enabled = true;
-                m_prim_child.gameObject.SetActive(true);
+                m_prim.gameObject.GetComponent<Grabable>().enabled = true; // grabbing
+                m_prim_child.gameObject.SetActive(true); // grabbing
 
                 animator.SetBool(m_hash_actionBool, true);
             }   

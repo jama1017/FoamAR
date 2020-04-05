@@ -123,7 +123,7 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
             for (int i = 0; i < iter; i++)
             {
                 m_data.CreationRenderers[i].sprite = m_data.CreationNormalSprites[i];
-                m_data.CreationCenterRenderer.sprite = null;
+                m_data.CreationCenterRenderer.sprite = m_data.CreationCenterSprites[iter];
             }
             return;
         }

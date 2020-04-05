@@ -29,6 +29,7 @@ public class FoamDataManager : MonoBehaviour
     public Sprite CreationCenterSprite_Cylinder;
     public Sprite CreationCenterSprite_Cone;
     public Sprite CreationCenterSprite_Sphere;
+    public Sprite CreationCenterSprite_Middle;
 
     private List<SpriteRenderer> _creationRenderers = new List<SpriteRenderer>();
     private List<Sprite> _creationHighlightSprites = new List<Sprite>();
@@ -87,6 +88,7 @@ public class FoamDataManager : MonoBehaviour
         _creationCenterSprites.Add(CreationCenterSprite_Cylinder);
         _creationCenterSprites.Add(CreationCenterSprite_Cone);
         _creationCenterSprites.Add(CreationCenterSprite_Sphere);
+        _creationCenterSprites.Add(CreationCenterSprite_Middle);
 
     }
 

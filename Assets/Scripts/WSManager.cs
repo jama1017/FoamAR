@@ -193,8 +193,8 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
             websocketIdel = false;
             websocketQueAdd(1);
         }
-        Debug.Log("test for comm");
-        Debug.Log(getStringMode(queueActiveHand));
+        //Debug.Log("test for comm");
+        //Debug.Log(getStringMode(queueActiveHand));
     }
 
     private void websocketQueAdd(int que)
@@ -288,7 +288,7 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
 
         // Debug.Log("sorting result");
         //Debug.Log(result.Key + ";" + result.Value);
-        Debug.Log(result.Value);
+        //Debug.Log(result.Value);
         if (result.Key.ToString().Contains("right"))
         {
             return "RIGHT_HAND";

@@ -14,9 +14,9 @@ public enum MenuRegion
 public enum CreateMenuItem
 {
     CUBE,
-    SPHERE,
-    CONE,
     CYLINDER,
+    CONE,
+    SPHERE,
     NULL
 }
 

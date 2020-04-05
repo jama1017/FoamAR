@@ -142,7 +142,7 @@ public static class FocusUtils
             }
         }
 
-        Debug.Log("DATAA -----------");
+        //Debug.Log("DATAA -----------");
 
         return num_one;
     }

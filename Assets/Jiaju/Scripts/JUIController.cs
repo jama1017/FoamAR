@@ -44,7 +44,6 @@ public class JUIController : MonoBehaviour {
             checkTouch();
             checkMouseClick();
         }
-        Debug.Log("JUIController");
     }
 
     private void checkTouch()

@@ -13,6 +13,7 @@ public class FoamDataManager : MonoBehaviour
     private float _triggerRadius = 2.0f;  // size of bounding region
     private float _middleRadius = 0.023f; // middle region of the menu
 
+    // creation menu renderer and sprite
     public SpriteRenderer CylinderRenderer;
     public SpriteRenderer CubeRenderer;
     public SpriteRenderer ConeRenderer;
@@ -23,11 +24,10 @@ public class FoamDataManager : MonoBehaviour
     public Sprite ConeHighlightSprite;
     public Sprite SphereHighlightSprite;
 
-    public Sprite CubeNormalSprite;
-    public Sprite CylinderNormalSprite;
-    public Sprite ConeNormalSprite;
-    public Sprite SphereNormalSprite;
-
+    private List<SpriteRenderer> _creationRenderers = new List<SpriteRenderer>();
+    private List<Sprite> _creationHighlightSprites = new List<Sprite>();
+    private List<Sprite> _creationNormalSprites = new List<Sprite>();
+                   
     public SpriteRenderer ManiUppRenderer;
     public SpriteRenderer ManiLowRenderer;
     public SpriteRenderer ManiLeftRenderer;
@@ -53,10 +53,24 @@ public class FoamDataManager : MonoBehaviour
         ActivePalm = ActiveHand.transform.GetChild(5).GetChild(0).gameObject;
         ActiveGC = ActiveHand.GetComponent<GestureControl>();
 
-        CubeNormalSprite = CubeRenderer.sprite;
-        ConeNormalSprite = ConeRenderer.sprite;
-        CylinderNormalSprite = CylinderRenderer.sprite;
-        SphereNormalSprite = SphereRenderer.sprite;
+        // creation renderers
+        _creationRenderers.Add(CubeRenderer);
+        _creationRenderers.Add(CylinderRenderer);
+        _creationRenderers.Add(ConeRenderer);
+        _creationRenderers.Add(SphereRenderer);
+
+        // creation normal sprites
+        for (int i = 0; i < _creationRenderers.Count; i++)
+        {
+            _creationNormalSprites.Add(_creationRenderers[i].sprite);
+        }
+
+        // creation highlight sprites
+        _creationHighlightSprites.Add(CubeHighlightSprite);
+        _creationHighlightSprites.Add(CylinderHighlightSprite);
+        _creationHighlightSprites.Add(ConeHighlightSprite);
+        _creationHighlightSprites.Add(SphereHighlightSprite);
+
     }
 
     // Update is called once per frame
@@ -95,5 +109,20 @@ public class FoamDataManager : MonoBehaviour
     {
         get { return _selected_maniItem; }
         set { _selected_maniItem = value; }
+    }
+
+    public List<SpriteRenderer> CreationRenderers
+    {
+        get { return _creationRenderers; }
+    }
+
+    public List<Sprite> CreationNormalSprites
+    {
+        get { return _creationNormalSprites; }
+    }
+
+    public List<Sprite> CreationHighlightSprites
+    {
+        get { return _creationHighlightSprites; }
     }
 }

@@ -70,7 +70,7 @@ public class DataManager : MonoBehaviour {
 	public void setLeftHandObject(GameObject obj){
 		hand_l_busy = true;
 		hand_l_obj = obj;
-		Debug.Log("setLeftHandObject:" + hand_l_obj.name);
+		//Debug.Log("setLeftHandObject:" + hand_l_obj.name);
 		return;
 	}
 

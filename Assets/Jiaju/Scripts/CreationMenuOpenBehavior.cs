@@ -123,6 +123,7 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
             for (int i = 0; i < iter; i++)
             {
                 m_data.CreationRenderers[i].sprite = m_data.CreationNormalSprites[i];
+                m_data.CreationCenterRenderer.sprite = null;
             }
             return;
         }
@@ -133,57 +134,12 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
             if (i == geoNum)
             {
                 m_data.CreationRenderers[i].sprite = m_data.CreationHighlightSprites[i];
+                m_data.CreationCenterRenderer.sprite = m_data.CreationCenterSprites[i];
             }
             else
             {
                 m_data.CreationRenderers[i].sprite = m_data.CreationNormalSprites[i];
             }
         }
-
-
-        //switch (geoType)
-        //{
-        //    case "cube":
-                
-        //        m_data.CubeRenderer.sprite = m_data.CubeHighlightSprite;
-
-        //        m_data.CylinderRenderer.sprite = m_data.CylinderNormalSprite;
-        //        m_data.ConeRenderer.sprite = m_data.ConeNormalSprite;
-        //        m_data.SphereRenderer.sprite = m_data.SphereNormalSprite;
-
-        //        break;
-
-        //    case "cylinder":
-        //        m_data.CylinderRenderer.sprite = m_data.CylinderHighlightSprite;
-
-        //        m_data.CubeRenderer.sprite = m_data.CubeNormalSprite;
-        //        m_data.ConeRenderer.sprite = m_data.ConeNormalSprite;
-        //        m_data.SphereRenderer.sprite = m_data.SphereNormalSprite;
-        //        break;
-
-        //    case "cone":
-        //        m_data.ConeRenderer.sprite = m_data.ConeHighlightSprite;
-
-        //        m_data.CylinderRenderer.sprite = m_data.CylinderNormalSprite;
-        //        m_data.CubeRenderer.sprite = m_data.CubeNormalSprite;
-        //        m_data.SphereRenderer.sprite = m_data.SphereNormalSprite;
-        //        break;
-
-        //    case "sphere":
-        //        m_data.SphereRenderer.sprite = m_data.SphereHighlightSprite;
-
-        //        m_data.CubeRenderer.sprite = m_data.CubeNormalSprite;
-        //        m_data.ConeRenderer.sprite = m_data.ConeNormalSprite;
-        //        m_data.CylinderRenderer.sprite = m_data.CylinderNormalSprite;
-        //        break;
-
-        //    case "middle":
-        //        m_data.CubeRenderer.sprite = m_data.CubeNormalSprite;
-        //        m_data.ConeRenderer.sprite = m_data.ConeNormalSprite;
-        //        m_data.CylinderRenderer.sprite = m_data.CylinderNormalSprite;
-        //        m_data.SphereRenderer.sprite = m_data.SphereNormalSprite;
-        //        break;
-                
-        //}
     }
 }

@@ -3110,6 +3110,7 @@ MonoBehaviour:
   CubeRenderer: {fileID: 8697964955157275257}
   ConeRenderer: {fileID: 8697964953189211970}
   SphereRenderer: {fileID: 8697964953955487198}
+  CreationCenterRenderer: {fileID: 2927192044326349621}
   CubeHighlightSprite: {fileID: 21300000, guid: 9cacab521c1164605a875fab647dba88,
     type: 3}
   CylinderHighlightSprite: {fileID: 21300000, guid: 94728b7199c46436d9657b1c12e8c535,
@@ -3117,6 +3118,14 @@ MonoBehaviour:
   ConeHighlightSprite: {fileID: 21300000, guid: 8e6411fc7dd9840ab907cfc946e13c98,
     type: 3}
   SphereHighlightSprite: {fileID: 21300000, guid: 19248d19309c54659a2dec670e161f76,
+    type: 3}
+  CreationCenterSprite_Cube: {fileID: 21300000, guid: 44dcb63accf9f4925aa5228a17a68444,
+    type: 3}
+  CreationCenterSprite_Cylinder: {fileID: 21300000, guid: af456266387564b258d555a8243fb677,
+    type: 3}
+  CreationCenterSprite_Cone: {fileID: 21300000, guid: 7a69fe78678f64a4f86f2d97c5192b83,
+    type: 3}
+  CreationCenterSprite_Sphere: {fileID: 21300000, guid: 7fc4af5f29927417cbbfb70837d63913,
     type: 3}
   ManiUppRenderer: {fileID: 153038525}
   ManiLowRenderer: {fileID: 123255182}
@@ -5435,6 +5444,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d44ff0c2bd384fd38f0b72efc66b47d, type: 3}
+--- !u!212 &2927192044326349621 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5437762342128584466, guid: 5d44ff0c2bd384fd38f0b72efc66b47d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2927192044326349620}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6086892936752499879
 PrefabInstance:
   m_ObjectHideFlags: 0

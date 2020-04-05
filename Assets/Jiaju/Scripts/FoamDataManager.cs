@@ -18,22 +18,31 @@ public class FoamDataManager : MonoBehaviour
     public SpriteRenderer CubeRenderer;
     public SpriteRenderer ConeRenderer;
     public SpriteRenderer SphereRenderer;
+    public SpriteRenderer CreationCenterRenderer;
 
     public Sprite CubeHighlightSprite;
     public Sprite CylinderHighlightSprite;
     public Sprite ConeHighlightSprite;
     public Sprite SphereHighlightSprite;
 
+    public Sprite CreationCenterSprite_Cube;
+    public Sprite CreationCenterSprite_Cylinder;
+    public Sprite CreationCenterSprite_Cone;
+    public Sprite CreationCenterSprite_Sphere;
+
     private List<SpriteRenderer> _creationRenderers = new List<SpriteRenderer>();
     private List<Sprite> _creationHighlightSprites = new List<Sprite>();
     private List<Sprite> _creationNormalSprites = new List<Sprite>();
-                   
+    private List<Sprite> _creationCenterSprites = new List<Sprite>();
+
+
+
     public SpriteRenderer ManiUppRenderer;
     public SpriteRenderer ManiLowRenderer;
     public SpriteRenderer ManiLeftRenderer;
     public SpriteRenderer ManiRightRenderer;
 
-    private Color _normalColor = new Color(1f, 1f, 1f, 0.5f);
+    private Color _normalColor = new Color(1f, 1f, 1f, 0.78f);
     private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
 
     public Transform CubePrefab;
@@ -63,13 +72,21 @@ public class FoamDataManager : MonoBehaviour
         for (int i = 0; i < _creationRenderers.Count; i++)
         {
             _creationNormalSprites.Add(_creationRenderers[i].sprite);
+            _creationRenderers[i].color = _normalColor;
         }
+        CreationCenterRenderer.color = _normalColor;
 
         // creation highlight sprites
         _creationHighlightSprites.Add(CubeHighlightSprite);
         _creationHighlightSprites.Add(CylinderHighlightSprite);
         _creationHighlightSprites.Add(ConeHighlightSprite);
         _creationHighlightSprites.Add(SphereHighlightSprite);
+
+        // creation center sprites
+        _creationCenterSprites.Add(CreationCenterSprite_Cube);
+        _creationCenterSprites.Add(CreationCenterSprite_Cylinder);
+        _creationCenterSprites.Add(CreationCenterSprite_Cone);
+        _creationCenterSprites.Add(CreationCenterSprite_Sphere);
 
     }
 
@@ -124,5 +141,10 @@ public class FoamDataManager : MonoBehaviour
     public List<Sprite> CreationHighlightSprites
     {
         get { return _creationHighlightSprites; }
+    }
+
+    public List<Sprite> CreationCenterSprites
+    {
+        get { return _creationCenterSprites; }
     }
 }

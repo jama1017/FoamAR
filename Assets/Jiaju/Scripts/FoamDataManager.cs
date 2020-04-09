@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class FoamDataManager : MonoBehaviour
 {
+    public Camera FirstPersonCamera;
+
     public GameObject CreateMenu;
     public GameObject ManiMenu;
+    public GameObject ObjMenu;
+
     public GameObject ActiveHand;
     public GameObject ActiveIndex;
     public GameObject ActivePalm;
@@ -43,8 +47,8 @@ public class FoamDataManager : MonoBehaviour
     public SpriteRenderer ManiLeftRenderer;
     public SpriteRenderer ManiRightRenderer;
 
-    private Color _normalColor = new Color(1f, 1f, 1f, 0.78f);
-    private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
+    //private Color _normalColor = new Color(1f, 1f, 1f, 0.78f);
+    //private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
 
 
     public Transform CubePrefab;
@@ -65,6 +69,7 @@ public class FoamDataManager : MonoBehaviour
     {
         CreateMenu.SetActive(false);
         ManiMenu.SetActive(false);
+        ObjMenu.SetActive(false);
 
         ActiveIndex = ActiveHand.transform.GetChild(1).GetChild(2).gameObject;
         ActivePalm = ActiveHand.transform.GetChild(5).GetChild(0).gameObject;
@@ -80,9 +85,9 @@ public class FoamDataManager : MonoBehaviour
         for (int i = 0; i < _creationRenderers.Count; i++)
         {
             _creationNormalSprites.Add(_creationRenderers[i].sprite);
-            _creationRenderers[i].color = _normalColor;
+            _creationRenderers[i].color = FoamUtils.IconNormalColor;
         }
-        CreationCenterRenderer.color = _normalColor;
+        CreationCenterRenderer.color = FoamUtils.IconNormalColor;
 
         // creation highlight sprites
         _creationHighlightSprites.Add(CubeHighlightSprite);
@@ -115,15 +120,15 @@ public class FoamDataManager : MonoBehaviour
         get { return _middleRadius; }
     }
 
-    public Color NormalColor
-    {
-        get { return _normalColor; }
-    }
+    //public Color NormalColor
+    //{
+    //    get { return _normalColor; }
+    //}
 
-    public Color HoverColor
-    {
-        get { return _hoverColor; }
-    }
+    //public Color HoverColor
+    //{
+    //    get { return _hoverColor; }
+    //}
 
     public CreateMenuItem Selected_createItem
     {

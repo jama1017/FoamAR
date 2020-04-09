@@ -37,53 +37,53 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
 
         MenuRegion region = FoamUtils.checkMenuRegion(palmPos_curr, m_palmPos_init, m_bound_UppL, m_bound_UppR, m_bound_LowL, m_bound_LowR, m_data.MiddleRadius);
 
-        switch (region)
-        {
-            case MenuRegion.UPPER:
-                Debug.Log("FOAMFILTER Mani Upp");
-                m_data.ManiUppRenderer.color = m_data.HoverColor;
+        //switch (region)
+        //{
+        //    case MenuRegion.UPPER:
+        //        Debug.Log("FOAMFILTER Mani Upp");
+        //        m_data.ManiUppRenderer.color = m_data.HoverColor;
 
-                m_data.ManiRightRenderer.color = m_data.NormalColor;
-                m_data.ManiLowRenderer.color = m_data.NormalColor;
-                m_data.ManiLeftRenderer.color = m_data.NormalColor;
-                break;
+        //        m_data.ManiRightRenderer.color = m_data.NormalColor;
+        //        m_data.ManiLowRenderer.color = m_data.NormalColor;
+        //        m_data.ManiLeftRenderer.color = m_data.NormalColor;
+        //        break;
 
-            case MenuRegion.RIGHT:
-                Debug.Log("FOAMFILTER Mani Right");
-                m_data.ManiUppRenderer.color = m_data.NormalColor;
+        //    case MenuRegion.RIGHT:
+        //        Debug.Log("FOAMFILTER Mani Right");
+        //        m_data.ManiUppRenderer.color = m_data.NormalColor;
 
-                m_data.ManiRightRenderer.color = m_data.HoverColor;
+        //        m_data.ManiRightRenderer.color = m_data.HoverColor;
 
-                m_data.ManiLowRenderer.color = m_data.NormalColor;
-                m_data.ManiLeftRenderer.color = m_data.NormalColor;
-                break;
+        //        m_data.ManiLowRenderer.color = m_data.NormalColor;
+        //        m_data.ManiLeftRenderer.color = m_data.NormalColor;
+        //        break;
 
-            case MenuRegion.LOWER:
-                Debug.Log("FOAMFILTER Mani Lower");
-                m_data.ManiUppRenderer.color = m_data.NormalColor;
-                m_data.ManiRightRenderer.color = m_data.NormalColor;
+        //    case MenuRegion.LOWER:
+        //        Debug.Log("FOAMFILTER Mani Lower");
+        //        m_data.ManiUppRenderer.color = m_data.NormalColor;
+        //        m_data.ManiRightRenderer.color = m_data.NormalColor;
 
-                m_data.ManiLowRenderer.color = m_data.HoverColor;
+        //        m_data.ManiLowRenderer.color = m_data.HoverColor;
 
-                m_data.ManiLeftRenderer.color = m_data.NormalColor;
-                break;
+        //        m_data.ManiLeftRenderer.color = m_data.NormalColor;
+        //        break;
 
-            case MenuRegion.LEFT:
-                Debug.Log("FOAMFILTER Mani Left");
-                m_data.ManiUppRenderer.color = m_data.NormalColor;
-                m_data.ManiRightRenderer.color = m_data.NormalColor;
-                m_data.ManiLowRenderer.color = m_data.NormalColor;
+        //    case MenuRegion.LEFT:
+        //        Debug.Log("FOAMFILTER Mani Left");
+        //        m_data.ManiUppRenderer.color = m_data.NormalColor;
+        //        m_data.ManiRightRenderer.color = m_data.NormalColor;
+        //        m_data.ManiLowRenderer.color = m_data.NormalColor;
 
-                m_data.ManiLeftRenderer.color = m_data.HoverColor;
-                break;
+        //        m_data.ManiLeftRenderer.color = m_data.HoverColor;
+        //        break;
 
-            case MenuRegion.MIDDLE:
-                m_data.ManiUppRenderer.color = m_data.NormalColor;
-                m_data.ManiRightRenderer.color = m_data.NormalColor;
-                m_data.ManiLowRenderer.color = m_data.NormalColor;
-                m_data.ManiLeftRenderer.color = m_data.NormalColor;
-                break;
-        }
+        //    case MenuRegion.MIDDLE:
+        //        m_data.ManiUppRenderer.color = m_data.NormalColor;
+        //        m_data.ManiRightRenderer.color = m_data.NormalColor;
+        //        m_data.ManiLowRenderer.color = m_data.NormalColor;
+        //        m_data.ManiLeftRenderer.color = m_data.NormalColor;
+        //        break;
+        //}
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

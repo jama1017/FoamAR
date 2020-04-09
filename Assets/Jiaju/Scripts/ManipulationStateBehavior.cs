@@ -18,7 +18,12 @@ public class ManipulationStateBehavior : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        if (m_data.CurrentSelectionObj)
+        {
+            m_data.ObjMenu.transform.position = m_data.CurrentSelectionObj.transform.position - m_data.FirstPersonCamera.transform.forward * 0.11f; // need to make this offset variable
+            m_data.ObjMenu.transform.LookAt(Camera.main.transform);
+            m_data.ObjMenu.SetActive(true);
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

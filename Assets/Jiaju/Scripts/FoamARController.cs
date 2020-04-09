@@ -94,15 +94,15 @@ public class FoamARController : PortalbleGeneralController
 
         togglePinchBool();
 
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            m_stateMachine.SetBool(m_hash_pinchBool, true);
-        }
+        //if (Input.GetKey(KeyCode.DownArrow))
+        //{
+        //    m_stateMachine.SetBool(m_hash_pinchBool, true);
+        //}
 
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            m_stateMachine.SetBool(m_hash_pinchBool, false);
-        }
+        //if (Input.GetKey(KeyCode.UpArrow))
+        //{
+        //    m_stateMachine.SetBool(m_hash_pinchBool, false);
+        //}
 
         //ManageSelectedObj();
 

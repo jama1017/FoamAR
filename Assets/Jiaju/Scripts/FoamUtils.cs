@@ -31,6 +31,9 @@ public enum ManiMenuItem
 
 public static class FoamUtils
 {
+    public static readonly Color ObjManiSelectedColor = new Color(247f/255f, 238f/255f, 144f/255f);
+
+
     public static bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
 	{
 		float as_x = s.x - a.x;

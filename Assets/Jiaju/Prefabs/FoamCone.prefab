@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6807151188378628796}
   - component: {fileID: 8157573123642136029}
   - component: {fileID: 9067016337383511783}
+  - component: {fileID: 4923535359166238981}
   m_Layer: 0
   m_Name: GrabCollider
   m_TagString: Untagged
@@ -92,6 +93,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_visualizerMaterial: {fileID: 2100000, guid: 27be10cccb345c543a9b009b35fa38ad,
     type: 2}
+--- !u!114 &4923535359166238981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184506413038612319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837bf3154ba054b65bc034ef153fc031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4068709197770029286
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,6 +119,7 @@ GameObject:
   - component: {fileID: 4068709197770029285}
   - component: {fileID: 3539881689846169252}
   - component: {fileID: 5248201979277865907}
+  - component: {fileID: -9189615771292674073}
   m_Layer: 11
   m_Name: FoamCone
   m_TagString: InteractableObj
@@ -222,3 +236,15 @@ MonoBehaviour:
   m_selectedMaterial: {fileID: 2100000, guid: d4dcff38c4c58624ebf541cb3cf8825f, type: 2}
   m_grabbedMaterial: {fileID: 0}
   m_throwPower: 5
+--- !u!114 &-9189615771292674073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4068709197770029286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05bd2d8db415b4cf49d9715a704afad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

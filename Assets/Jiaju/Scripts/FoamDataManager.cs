@@ -46,12 +46,19 @@ public class FoamDataManager : MonoBehaviour
     private Color _normalColor = new Color(1f, 1f, 1f, 0.78f);
     private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
 
+
     public Transform CubePrefab;
     public Transform SpherePrefab;
     public Transform CylinderPrefab;
     public Transform ConePrefab;
     private CreateMenuItem _selected_createItem = CreateMenuItem.NULL;
     private ManiMenuItem _selected_maniItem = ManiMenuItem.NULL;
+
+
+    private List<GameObject> _sceneObjs = new List<GameObject>();
+    private GameObject _currentSelectionObj = null;
+    private Animator _stateMachine = null;
+
 
     // Start is called before the first frame update
     void Start()
@@ -148,5 +155,22 @@ public class FoamDataManager : MonoBehaviour
     public List<Sprite> CreationCenterSprites
     {
         get { return _creationCenterSprites; }
+    }
+
+    public List<GameObject> SceneObjs
+    {
+        get { return _sceneObjs; }
+    }
+
+    public GameObject CurrentSelectionObj
+    {
+        set { _currentSelectionObj = value; }
+        get { return _currentSelectionObj; }
+    }
+
+    public Animator StateMachine
+    {
+        set { _stateMachine = value; }
+        get { return _stateMachine; }
     }
 }

@@ -3751,6 +3751,7 @@ MonoBehaviour:
   m_rightHand: {fileID: 1614409302}
   m_createMenu: {fileID: 443596597}
   m_maniMenu: {fileID: 1059372737}
+  m_data: {fileID: 1069181527}
 --- !u!4 &1411466813
 Transform:
   m_ObjectHideFlags: 0

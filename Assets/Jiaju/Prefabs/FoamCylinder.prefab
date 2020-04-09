@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1103200049693930271}
   - component: {fileID: 1103200049693930270}
   - component: {fileID: 3373000557772836689}
+  - component: {fileID: 433075758103394742}
   m_Layer: 0
   m_Name: GrabCollider
   m_TagString: Untagged
@@ -92,6 +93,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_visualizerMaterial: {fileID: 2100000, guid: 27be10cccb345c543a9b009b35fa38ad,
     type: 2}
+--- !u!114 &433075758103394742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103200049693930264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837bf3154ba054b65bc034ef153fc031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1103200049768529556
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,6 +119,7 @@ GameObject:
   - component: {fileID: 1103200049768529563}
   - component: {fileID: 1103200049768529562}
   - component: {fileID: 1103200049768529557}
+  - component: {fileID: 2404536531868577728}
   m_Layer: 11
   m_Name: FoamCylinder
   m_TagString: InteractableObj
@@ -222,3 +236,15 @@ MonoBehaviour:
   m_selectedMaterial: {fileID: 2100000, guid: d4dcff38c4c58624ebf541cb3cf8825f, type: 2}
   m_grabbedMaterial: {fileID: 0}
   m_throwPower: 5
+--- !u!114 &2404536531868577728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103200049768529556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05bd2d8db415b4cf49d9715a704afad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

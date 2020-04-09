@@ -57,6 +57,9 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             m_prim.gameObject.GetComponent<Grabable>().enabled = false; // grabbing?
             m_prim_child = m_prim.GetChild(0);
             m_prim_child.gameObject.SetActive(false); // is it for grabbing??
+
+            m_data.SceneObjs.Add(m_prim.gameObject);
+            Debug.Log("MODELABLE obj count: " + m_data.SceneObjs.Count);
         }
 
         m_isReleased = false;

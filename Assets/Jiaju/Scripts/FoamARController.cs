@@ -22,6 +22,10 @@ public class FoamARController : PortalbleGeneralController
     private GestureControl m_activeGC;
 
 
+    //scene mgm
+    public FoamDataManager m_data; 
+
+
     //state machine
     private Animator m_stateMachine;
 
@@ -59,6 +63,8 @@ public class FoamARController : PortalbleGeneralController
         m_uiState_hashes.Add(m_hash_idleBool);
         m_uiState_hashes.Add(m_hash_createBool);
         m_uiState_hashes.Add(m_hash_maniBool);
+
+        m_data.StateMachine = m_stateMachine;
     }
 
     protected override void Update()
@@ -88,18 +94,20 @@ public class FoamARController : PortalbleGeneralController
 
         togglePinchBool();
 
-        //if (Input.GetKey(KeyCode.DownArrow))
-        //{
-        //    m_stateMachine.SetBool(m_hash_pinchBool, true);
-        //}
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            m_stateMachine.SetBool(m_hash_pinchBool, true);
+        }
 
-        //if (Input.GetKey(KeyCode.UpArrow))
-        //{
-        //    m_stateMachine.SetBool(m_hash_pinchBool, false);
-        //}
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            m_stateMachine.SetBool(m_hash_pinchBool, false);
+        }
 
+        //ManageSelectedObj();
 
     }
+
 
     private void handleIdle()
     {
@@ -107,39 +115,18 @@ public class FoamARController : PortalbleGeneralController
 
     }
 
+
     private void handleCreate()
     {
         switchStateBool(m_hash_createBool);
     }
+
 
     private void handleManipulate()
     {
         switchStateBool(m_hash_maniBool);
     }
 
-    //private void toggleActiveMenu()
-    //{
-    //    if (!Grab.Instance.IsGrabbing)
-    //    {
-    //        if (m_activeGC.bufferedGesture() == "pinch")
-    //        {
-    //            if (!m_isMenuShown)
-    //            {
-    //                m_isMenuShown = true;
-    //                m_activeMenu.transform.position = m_activeIndex.transform.position;
-    //                m_activeMenu.SetActive(m_isMenuShown);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            if (m_isMenuShown)
-    //            {
-    //                m_isMenuShown = false;
-    //                m_activeMenu.SetActive(m_isMenuShown);
-    //            }
-    //        }
-    //    }
-    //}
 
     private void switchStateBool(int targetState)
     {
@@ -172,4 +159,12 @@ public class FoamARController : PortalbleGeneralController
             }
         }
     }
+
+    //private void ManageSelectedObj()
+    //{
+    //    if (m_stateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState"))
+    //    {
+            
+    //    }
+    //}
 }

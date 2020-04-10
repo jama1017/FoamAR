@@ -6,9 +6,12 @@ public class Modelable : MonoBehaviour
 {
 
     private int _indexColliderCount = 0;
+    private int _indexDwellCount = 0;
     private FoamDataManager _data;
     private Renderer _renderer;
     private Color _originalColor;
+
+    private int _dwellThreshold = 250;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +30,11 @@ public class Modelable : MonoBehaviour
 
     public void OnChildTriggerEnter(Collider other)
     {
+        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState"))
+        {
+            return;
+        }
+
         if (other.transform.parent.name == "index")
         {
             _indexColliderCount++;
@@ -36,25 +44,36 @@ public class Modelable : MonoBehaviour
                 SetAsSelected();
             }
         }
-
-        Debug.Log("MODELABLE index count: " + _indexColliderCount);
-
+        //Debug.Log("MODELABLE index count: " + _indexColliderCount);
     }
 
 
     public void OnChildTriggerStay(Collider other)
     {
-       
+        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState"))
+        {
+            return;
+        }
+
+        if (other.transform.parent.name == "index")
+        {
+            _indexDwellCount++;
+        }
     }
 
 
     public void OnChildTriggerExit(Collider other)
     {
+        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState"))
+        {
+            return;
+        }
+
         if (other.transform.parent.name == "index")
         {
             _indexColliderCount--;
         }
-        Debug.Log("MODELABLE index count: " + _indexColliderCount);
+        //Debug.Log("MODELABLE index count: " + _indexColliderCount);
 
     }
 
@@ -72,7 +91,7 @@ public class Modelable : MonoBehaviour
             return;
         }
 
-        Debug.Log("MODELABLE: Select");
+        //Debug.Log("MODELABLE: Select");
 
         if (_data.CurrentSelectionObj)
         {
@@ -85,7 +104,17 @@ public class Modelable : MonoBehaviour
 
     public void Deselect()
     {
-        Debug.Log("MODELABLE: Deselect");
+        //Debug.Log("MODELABLE: Deselect");
         _renderer.material.color = _originalColor;
+    }
+
+    public bool IsHandDwell()
+    {
+        if (_indexDwellCount > _dwellThreshold)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

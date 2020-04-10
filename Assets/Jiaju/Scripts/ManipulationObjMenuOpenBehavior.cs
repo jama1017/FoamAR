@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManipulationStateBehavior : StateMachineBehaviour
+public class ManipulationObjMenuOpenBehavior : StateMachineBehaviour
 {
     private FoamDataManager _data;
-    private int _hash_dwellBool = Animator.StringToHash("DwellBool");
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
+        Debug.Log("MODELABLE hand dwell");
 
-        _data.ManiMenu.SetActive(false);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(_data.CurrentSelectionObj)
+        if (_data.CurrentSelectionObj)
         {
-            if (_data.CurrentSelectionObj.GetComponent<Modelable>().IsHandDwell())
-            {
-                animator.SetBool(_hash_dwellBool, true);
-            }
+            _data.ObjMenu.transform.position = _data.CurrentSelectionObj.transform.position - _data.FirstPersonCamera.transform.forward * 0.11f; // need to make this offset variable
+            _data.ObjMenu.transform.LookAt(Camera.main.transform);
+            _data.ObjMenu.SetActive(true);
         }
     }
 

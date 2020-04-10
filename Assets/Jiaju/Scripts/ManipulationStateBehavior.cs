@@ -6,6 +6,8 @@ public class ManipulationStateBehavior : StateMachineBehaviour
 {
     private FoamDataManager _data;
     private int _hash_dwellBool = Animator.StringToHash("DwellBool");
+    private int _hash_objMenuClosedBool = Animator.StringToHash("ObjMenuClosedBool");
+
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -13,6 +15,11 @@ public class ManipulationStateBehavior : StateMachineBehaviour
         _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
         _data.ManiMenu.SetActive(false);
+        //_data.ObjMenu.SetActive(false);
+
+        animator.SetBool(_hash_objMenuClosedBool, false);
+
+        Debug.Log("ICONN: Manipulation state entered");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -23,6 +30,8 @@ public class ManipulationStateBehavior : StateMachineBehaviour
             if (_data.CurrentSelectionObj.GetComponent<Modelable>().IsHandDwell())
             {
                 animator.SetBool(_hash_dwellBool, true);
+                //animator.SetTrigger("DwellTrigger");
+
             }
         }
     }

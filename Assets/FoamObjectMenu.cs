@@ -31,7 +31,12 @@ public class FoamObjectMenu : MonoBehaviour
         // find active icon
         if (!_currentActiveIcon)
         {
+            for (int i = 0; i < _iconMgrs.Count; i++)
+            {
+                _iconMgrs[i].ActivateIcon();
+            }
             Debug.Log("ICONN 1st no active icon");
+
             for (int i = 0; i < _iconMgrs.Count; i++)
             {
                 // if there is a collision already

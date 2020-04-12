@@ -42,7 +42,7 @@ public class FoamObjectMenu : MonoBehaviour
                 // if there is a collision already
                 if (_iconMgrs[i].IndexColliderCount > 0)
                 {
-                    // disable other icons
+                    // activate current icon and disable other icons
                     _currentActiveIcon = _iconMgrs[i];
                     Debug.Log("ICONN active icon: " + _currentActiveIcon.gameObject.name);
 

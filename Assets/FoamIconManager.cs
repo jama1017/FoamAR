@@ -74,7 +74,6 @@ public class FoamIconManager : MonoBehaviour
         if (other.transform.parent.name == "index")
         {
             _indexDwellCount++;
-            //Debug.Log("ICONN: " + _indexDwellCount);
         }
         
     }
@@ -129,7 +128,7 @@ public class FoamIconManager : MonoBehaviour
         _isActive = true;
         if (_indexColliderCount > 0)
         {
-            //_spriteRenderer.sprite = m_highlightSprite;
+            m_bg_spriteRenderer.sprite = m_bg_highlightSprite;
         }
     }
 

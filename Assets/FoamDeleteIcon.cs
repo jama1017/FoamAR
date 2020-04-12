@@ -19,5 +19,8 @@ public class FoamDeleteIcon : FoamIconManager
     public override void PerformAction()
     {
         base.PerformAction();
+        m_data.SceneObjs.Remove(m_data.CurrentSelectionObj);
+        GameObject.Destroy(m_data.CurrentSelectionObj);
+        m_data.CurrentSelectionObj = null;
     }
 }

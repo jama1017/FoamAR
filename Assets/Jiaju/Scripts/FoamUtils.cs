@@ -85,4 +85,10 @@ public static class FoamUtils
 
         return MenuRegion.MIDDLE;
     }
+
+    public static float LinearMap(float input, float ogMin, float ogMax, float tarMin, float tarMax)
+    {
+        float t = Mathf.Abs(input-ogMin) / Mathf.Abs(ogMax - ogMin);
+        return Mathf.Lerp(tarMin, tarMax, t);
+    }
 }

@@ -14,7 +14,7 @@ public class FoamIconManager : MonoBehaviour
     private Sprite _bg_originalSprite;
     private int _indexDwellCount = 0;
     private int _indexColliderCount = 0;
-    private int _dwellThreshold = 80;
+    private int _dwellThreshold = 70;
 
     private bool _isActive = true;
 

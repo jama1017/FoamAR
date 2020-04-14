@@ -91,4 +91,10 @@ public static class FoamUtils
         float t = Mathf.Abs(input-ogMin) / Mathf.Abs(ogMax - ogMin);
         return Mathf.Lerp(tarMin, tarMax, t);
     }
+
+    public static float LinearMapReverse(float input, float ogMin, float ogMax, float tarMin, float tarMax)
+    {
+        float t = Mathf.Abs(ogMax - input) / Mathf.Abs(ogMax - ogMin);
+        return Mathf.Lerp(tarMin, tarMax, t);
+    }
 }

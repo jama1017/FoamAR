@@ -15,6 +15,12 @@ public class ManipulationObjMenuOpenBehavior : StateMachineBehaviour
         _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
         animator.SetBool(_hash_dwellBool, false);
+
+        if (_data.CurrentSelectionObj)
+        {
+            _data.CurrentSelectionObj.GetComponent<Renderer>().material.color = FoamUtils.ObjManiSelectedColor;
+        }
+
         Debug.Log("ICONN Object menu state");
 
     }

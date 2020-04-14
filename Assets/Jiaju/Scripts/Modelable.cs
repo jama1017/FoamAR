@@ -11,7 +11,10 @@ public class Modelable : MonoBehaviour
     private Renderer _renderer;
     private Color _originalColor;
 
-    private int _dwellThreshold = 150;
+    private int _dwellThreshold = 220;
+    private bool _isBeingSelected = false;
+    private float _lowAlpha = 0.5f;
+    private int _dwellEffectLowCutoff = 30;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +27,35 @@ public class Modelable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        if (_indexDwellCount >= _dwellEffectLowCutoff && _isBeingSelected)
+        {
+            Color curC = _renderer.material.color;
+            float alp = 0.0f;
+
+            int mappedDwellCount = _indexDwellCount - _dwellEffectLowCutoff;
+            int mappedDwellThreshold = _dwellThreshold - _dwellEffectLowCutoff;
+
+            if (mappedDwellCount < mappedDwellThreshold / 2)
+            {
+                alp = FoamUtils.LinearMapReverse(mappedDwellCount, 0, mappedDwellThreshold / 2, _lowAlpha, 1.0f);
+            }
+            else
+            {
+                alp = FoamUtils.LinearMap(mappedDwellCount, mappedDwellThreshold / 2, mappedDwellThreshold, _lowAlpha, 1.0f);
+            }
+
+            Debug.Log("DWELLL alp: " + alp);
+            _renderer.material.color = new Color(curC.r, curC.g, curC.b, alp);
+        }
+        else
+        {
+            if (_isBeingSelected)
+            {
+                _renderer.material.color = FoamUtils.ObjManiSelectedColor;
+            }
+        }
+
     }
 
 
@@ -90,22 +121,23 @@ public class Modelable : MonoBehaviour
     {
         if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
 
-        //Debug.Log("MODELABLE: Select");
-
         if (_data.CurrentSelectionObj)
         {
             _data.CurrentSelectionObj.GetComponent<Modelable>().Deselect();
         }
 
+        _isBeingSelected = true;
         _renderer.material.color = FoamUtils.ObjManiSelectedColor;
         _data.CurrentSelectionObj = this.gameObject;
     }
 
+
     public void Deselect()
     {
-        //Debug.Log("MODELABLE: Deselect");
+        _isBeingSelected = false;
         _renderer.material.color = _originalColor;
     }
+
 
     public bool IsHandDwell()
     {

@@ -13,7 +13,15 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
     private Transform m_prim_child = null;
     private bool m_isReleased =  false;
 
+    private Renderer _primRenderer;
+    private Color _primOGColor;
+
     private float offset = 0.13f;
+
+    private int _animCount = 0;
+    private int _animTime = 50;
+    private int _transStep = 0;
+    private Vector3 _initalScale;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -23,8 +31,10 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
         Debug.Log("FOAMFILTER MENU ITEM SELECTED IS: " + m_data.Selected_createItem);
 
         m_prim = null;
+        _animCount = 0;
+        _transStep = 0;
 
-        Vector3 prim_pos = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward + 0.5f * m_data.ActivePalm.transform.up;
+        Vector3 prim_pos = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward;
 
         switch (m_data.Selected_createItem)
         {
@@ -58,7 +68,11 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             m_prim_child = m_prim.GetChild(0);
             m_prim_child.gameObject.SetActive(false); // is it for grabbing??
 
-            m_data.SceneObjs.Add(m_prim.gameObject);
+            _primRenderer = m_prim.gameObject.GetComponent<Renderer>();
+            _primOGColor = _primRenderer.material.color;
+
+            _initalScale = m_prim.transform.localScale;
+            m_prim.transform.localScale = Vector3.zero;
             //Debug.Log("MODELABLE obj count: " + m_data.SceneObjs.Count);
         }
 
@@ -70,25 +84,55 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
+
+        // change transparency
+        if (m_prim && !m_isReleased)
+        {
+            Color curC = _primRenderer.material.color;
+            float newA = FoamUtils.SinWave(_transStep);
+            _primRenderer.material.color = new Color(curC.r, curC.g, curC.b, newA);
+            _transStep++;
+        }
+
+        // play scale animation first
+        if (_animCount < _animTime)
+        {
+            float newX = FoamUtils.LinearMap(_animCount, 0, _animTime, 0.0f, _initalScale.x);
+            float newY = FoamUtils.LinearMap(_animCount, 0, _animTime, 0.0f, _initalScale.y);
+            float newZ = FoamUtils.LinearMap(_animCount, 0, _animTime, 0.0f, _initalScale.z);
+
+            m_prim.localScale = new Vector3(newX, newY, newZ);
+            m_prim.position = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward;
+            _animCount++;
+            return;
+        }
+
         if (m_prim)
         {
-            //Debug.Log("FOAMFILTER IN SELECTED STATE UPDATE");
-
             if (!m_isReleased)
             {
-                //Debug.Log("FOAMFILTER UPDATING ITEM");
                 m_prim.position = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward;
-                //m_prim.rotation = m_data.ActivePalm.transform.rotation;
             }
 
-
-            if (m_data.ActiveGC.bufferedGesture() == "pinch" || Input.GetKey(KeyCode.DownArrow))
+            //if (m_data.ActiveGC.bufferedGesture() == "pinch" || Input.GetKey(KeyCode.DownArrow))
+            if (m_data.ActiveGC.bufferedGesture() == "pinch")
             {
-                Debug.Log("FOAMFILTER ITEM PLACED");
+                Debug.Log("FOAMFILTER ITEM PLACED: " + m_prim.gameObject.name);
                 m_isReleased = true;
+
+                if (m_prim.gameObject.name == "FoamCone(Clone)")
+                {
+                    GameObject.Destroy(m_prim.gameObject);
+                    m_prim = Instantiate(m_data.ConePrefab, m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward, Quaternion.identity);
+                    Debug.Log("FOAMFILTER cone recreated: ");
+                }
+
+                _primRenderer.material.color = _primOGColor;
+
                 m_prim.gameObject.GetComponent<Grabable>().enabled = true; // grabbing
                 m_prim_child.gameObject.SetActive(true); // grabbing
 
+                m_data.SceneObjs.Add(m_prim.gameObject);
                 animator.SetBool(m_hash_actionBool, true);
             }   
         }

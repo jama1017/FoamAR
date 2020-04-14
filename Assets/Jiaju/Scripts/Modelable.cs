@@ -11,7 +11,7 @@ public class Modelable : MonoBehaviour
     private Renderer _renderer;
     private Color _originalColor;
 
-    private int _dwellThreshold = 220;
+    private int _dwellThreshold = 220; // to add a special case for cone
     private bool _isBeingSelected = false;
     private float _lowAlpha = 0.5f;
     private int _dwellEffectLowCutoff = 30;
@@ -27,6 +27,7 @@ public class Modelable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
 
         if (_indexDwellCount >= _dwellEffectLowCutoff && _isBeingSelected)
         {
@@ -45,7 +46,6 @@ public class Modelable : MonoBehaviour
                 alp = FoamUtils.LinearMap(mappedDwellCount, mappedDwellThreshold / 2, mappedDwellThreshold, _lowAlpha, 1.0f);
             }
 
-            Debug.Log("DWELLL alp: " + alp);
             _renderer.material.color = new Color(curC.r, curC.g, curC.b, alp);
         }
         else
@@ -61,10 +61,7 @@ public class Modelable : MonoBehaviour
 
     public void OnChildTriggerEnter(Collider other)
     {
-        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState"))
-        {
-            return;
-        }
+        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
 
         if (other.transform.parent.name == "index")
         {

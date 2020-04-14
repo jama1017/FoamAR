@@ -86,15 +86,24 @@ public static class FoamUtils
         return MenuRegion.MIDDLE;
     }
 
+
     public static float LinearMap(float input, float ogMin, float ogMax, float tarMin, float tarMax)
     {
         float t = Mathf.Abs(input-ogMin) / Mathf.Abs(ogMax - ogMin);
         return Mathf.Lerp(tarMin, tarMax, t);
     }
 
+
     public static float LinearMapReverse(float input, float ogMin, float ogMax, float tarMin, float tarMax)
     {
         float t = Mathf.Abs(ogMax - input) / Mathf.Abs(ogMax - ogMin);
         return Mathf.Lerp(tarMin, tarMax, t);
+    }
+
+
+    public static float SinWave(int step)
+    {
+        float angle = (2f * Mathf.PI / 45f) * (float)step;
+        return LinearMap(Mathf.Sin(angle), -1f, 1f, 0.5f, 1.0f);
     }
 }

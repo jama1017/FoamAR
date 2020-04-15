@@ -68,6 +68,7 @@ Assets/SVMSupport/
 Assets/SVMSupport.meta
 Assets/DestPrimitives.meta
 Assets/DestPrimitives/
-
+Assets/Plugins/macOS/
+Assets/Plugins/macOS.meta
 # mono crash
 mono_crash.*

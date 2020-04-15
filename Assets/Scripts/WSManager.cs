@@ -7,16 +7,19 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Runtime.InteropServices;
 using AOT;
+using System.Collections;
+using Portalble;
 
-
-public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
+/* ios version */
+public class WSManager : MonoBehaviour, WebSocketUnityDelegate
 {
+    /* android */
+    private WebSocketUnity webSocket;
 
-    // Web Socket for Unity
-    // private WebSocketUnity webSocket;
-    public string websocketServer;
+
+    /* shared */
+    public string websocketServer = "192.168.1.201";
     public string websocketPort = "9999";
-    [SerializeField]
     private GameObject hand_l, hand_r;
     private string handinfo_l = "";
     private string handinfo_r = "";
@@ -33,23 +36,22 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
     private float websocketLastUpdate = 0;
     private bool websocketIdel = true;
     private string curr_message = "";
-
-    //  public Vector2 faceTrackingScreenDims = new Vector2 (480, 320);
-    //  private float eyeDistance = -1.0f;
-    //  private float eyeScale = -1.0f;
-    //  private Vector2 eyeCentroid = new Vector2(0, 0);
-    //
     private GameObject InputHolder;
-    // private InputField websocketInputField;
-    // Use this for initialization
+
+    private bool DummyDataReplay = false;
+
+    private int handNumber = 0;
+    public int HandNumber
+    {
+        get
+        {
+            return handNumber;
+        }
+    }
     void Start()
     {
-        
-        InputHolder = GameObject.Find ("NodeServer");
-        // websocketInputField = InputHolder.GetComponentInChildren<UnityEngine.UI.InputField> ();
-        // websocketInputField.text = websocketServer;
-        // websocketInputField.onEndEdit.AddListener(delegate { updateWebSocketServerInfo();});
-        
+
+        InputHolder = GameObject.Find("NodeServer");
         hand_l = GameObject.Find("Hand_l");
         hand_r = GameObject.Find("Hand_r");
 
@@ -64,7 +66,7 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
         for (int i = 0; i < WEBSOCKET_EVENT_QUE_SIZE; i++)
             websocketReceivingEventQue[i] = 0;
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -81,43 +83,64 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
         bool result = Portalble.Funcs.idleHandManager(hand_l, hand_r, getActiveHand());
         if (!result)
             Debug.Log("Something went wrong with idleHandManager, unkonwn issue");
-        // issue here, if No_hand is found in begining, 
-        // it will deactivate hand_r and hand_l, thus making
-        // other script using that not usable.
+
+#if UNITY_IOS && !UNITY_EDITOR
         curr_message = Jetfire.curr_message;
         // p_message
         if (curr_message != "")
         {
             OnWebSocketUnityReceiveMessage(curr_message);
         }
+#endif
+
+
     }
 
+    public void enableDummyDataReplay()
+    {
+        DummyDataReplay = true;
+    }
+
+    public void disableDummyDataReplay()
+    {
+        DummyDataReplay = false;
+    }
     /// <summary>
     /// This function is called when the object becomes enabled and active.
     /// </summary>
     public void OnEnable()
     {
+        if (DummyDataReplay)
+            return;
         // Create web socket
         Debug.Log("Connecting" + websocketServer);
         string url = "ws://" + websocketServer + ":" + websocketPort;
-        // webSocket = new WebSocketUnity(url, this);
-        
-        // Open the connection
-        // webSocket.Open();
+
+#if UNITY_IOS && !UNITY_EDITOR
         Jetfire.Open(url);
+        
+#else
+        if (DummyDataReplay)
+            return;
+        webSocket = new WebSocketUnity(url, this);
+        // Open the connection
+        webSocket.Open();
+#endif
     }
 
     private void updateWebSocketServerInfo()
     {
         // websocketServer = websocketInputField.text;
+#if UNITY_IOS && !UNITY_EDITOR
         Jetfire.Close();
+#else
+        webSocket.Close();
+#endif
         OnEnable();
     }
 
-    #region Jetfire implementation
-
-    // These callbacks come from WebSocketUnityDelegate
-    // You will need them to manage websocket events
+    //    #region Jetfire implementation	
+    #region WebSocketUnityDelegate implementation
     public string getHandInfoLeft()
     {
         return handinfo_l;
@@ -151,6 +174,8 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
     {
         var hand_list = message.Split(new string[] { "#OneMore#" }, System.StringSplitOptions.None);
         var gesture_list = message.Split(new string[] { "#GestureDetected#" }, System.StringSplitOptions.None);
+        handNumber = hand_list.Length;
+
         // Assign partial message to left/hand variable
         //var List = message.Split (new char[] {',', ':', ';'});
         string handinfo_l_temp = "";
@@ -193,8 +218,8 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
             websocketIdel = false;
             websocketQueAdd(1);
         }
-        //Debug.Log("test for comm");
-        //Debug.Log(getStringMode(queueActiveHand));
+        // Debug.Log("test for comm");
+        // Debug.Log(getStringMode(queueActiveHand));
     }
 
     private void websocketQueAdd(int que)
@@ -214,8 +239,8 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
         if (handqueue_idx >= ACTIVE_HAND_BUFFER_SIZE)
             handqueue_idx = 0;
     }
-    
-    /*
+
+
     // This event happens when the websocket received data (on mobile : ios and android)
     // you need to decode it and call after the same callback than PC
     public void OnWebSocketUnityReceiveDataOnMobile(string base64EncodedData)
@@ -234,7 +259,7 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
         //Debug.Log("Received data from server : " + testInt1+", "+testInt2);
         //GameObject.Find("NotificationText").GetComponent<TextMesh>().text = "Received data from server : " + testInt1+", "+testInt2;
     }
-    */
+
 
     // This event happens when you get an error@
     public void OnWebSocketUnityError(string error)
@@ -288,7 +313,7 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
 
         // Debug.Log("sorting result");
         //Debug.Log(result.Key + ";" + result.Value);
-        //Debug.Log(result.Value);
+        // Debug.Log(result.Value);
         if (result.Key.ToString().Contains("right"))
         {
             return "RIGHT_HAND";
@@ -305,5 +330,5 @@ public class WSManager : MonoBehaviour //, WebSocketUnityDelegate
         return "ERROR";
     }
 
-    #endregion 
+    #endregion
 }

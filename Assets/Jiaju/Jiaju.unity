@@ -6426,6 +6426,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_dot: {fileID: 244978126}
   m_stateIndicator: {fileID: 486983606}
+  m_fan_cre: {fileID: 21300000, guid: 5e130a6696f224dca9e7e40d118fb1b3, type: 3}
+  m_fan_mani: {fileID: 21300000, guid: a48122c60087b453ea43a5e39b1a5b58, type: 3}
+  m_fan_og: {fileID: 21300000, guid: fd2fecda0187b462e8232e486c8adf75, type: 3}
 --- !u!4 &2128887758
 Transform:
   m_ObjectHideFlags: 0

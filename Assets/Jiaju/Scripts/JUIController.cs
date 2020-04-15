@@ -16,8 +16,12 @@ public class JUIController : MonoBehaviour {
 
     public GameObject m_dot;
     private Animator m_dotAnimator;
+    private Image _dotRenderer;
 
     public Text m_stateIndicator;
+    public Sprite m_fan_cre;
+    public Sprite m_fan_mani;
+    public Sprite m_fan_og;
     private FoamState _foamState = FoamState.STATE_IDLE;
 
     public FoamState FoamState
@@ -30,6 +34,7 @@ public class JUIController : MonoBehaviour {
     void Start()
     {
         m_dotAnimator = m_dot.GetComponent<Animator>();
+        _dotRenderer = m_dot.GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -40,7 +45,9 @@ public class JUIController : MonoBehaviour {
             Debug.Log(touch.position);
         }
 
-        if (m_dotAnimator.GetCurrentAnimatorStateInfo(0).IsName("dot_fan")) {
+        AnimatorStateInfo info = m_dotAnimator.GetCurrentAnimatorStateInfo(0);
+
+        if (info.IsName("dot_fan")) {
             checkTouch();
             checkMouseClick();
         }
@@ -72,6 +79,7 @@ public class JUIController : MonoBehaviour {
         if (isInsideTri(touchPos, corners[0], corners[1], corners[2]))
         {
             m_stateIndicator.text = "Create";
+            _dotRenderer.sprite = m_fan_cre;
             _foamState = FoamState.STATE_CREATE;
 
         }

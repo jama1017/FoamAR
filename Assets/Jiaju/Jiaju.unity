@@ -1039,7 +1039,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30, y: 30}
+  m_AnchoredPosition: {x: 25, y: 25}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &244978128
@@ -2775,7 +2775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 30, y: -30}
+  m_AnchoredPosition: {x: 25, y: -30}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &597696560
@@ -4089,8 +4089,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   websocketServer: 192.168.0.153
   websocketPort: 9999
-  hand_l: {fileID: 1949621240}
-  hand_r: {fileID: 1614409302}
 --- !u!4 &1218827174
 Transform:
   m_ObjectHideFlags: 0
@@ -6426,9 +6424,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_dot: {fileID: 244978126}
   m_stateIndicator: {fileID: 486983606}
-  m_fan_cre: {fileID: 21300000, guid: 5e130a6696f224dca9e7e40d118fb1b3, type: 3}
-  m_fan_mani: {fileID: 21300000, guid: a48122c60087b453ea43a5e39b1a5b58, type: 3}
-  m_fan_og: {fileID: 21300000, guid: fd2fecda0187b462e8232e486c8adf75, type: 3}
 --- !u!4 &2128887758
 Transform:
   m_ObjectHideFlags: 0

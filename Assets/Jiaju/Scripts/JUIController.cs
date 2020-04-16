@@ -16,13 +16,12 @@ public class JUIController : MonoBehaviour {
 
     public GameObject m_dot;
     private Animator m_dotAnimator;
-    private Image _dotRenderer;
 
     public Text m_stateIndicator;
-    public Sprite m_fan_cre;
-    public Sprite m_fan_mani;
-    public Sprite m_fan_og;
     private FoamState _foamState = FoamState.STATE_IDLE;
+
+    private int _hash_creBool = Animator.StringToHash("creBool");
+    private int _hash_maniBool = Animator.StringToHash("maniBool");
 
     public FoamState FoamState
     {
@@ -34,7 +33,6 @@ public class JUIController : MonoBehaviour {
     void Start()
     {
         m_dotAnimator = m_dot.GetComponent<Animator>();
-        _dotRenderer = m_dot.GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -47,7 +45,8 @@ public class JUIController : MonoBehaviour {
 
         AnimatorStateInfo info = m_dotAnimator.GetCurrentAnimatorStateInfo(0);
 
-        if (info.IsName("dot_fan")) {
+        if (info.IsName("dot_fan") || info.IsName("dot_cre") || info.IsName("dot_mani"))
+        {
             checkTouch();
             checkMouseClick();
         }
@@ -79,19 +78,30 @@ public class JUIController : MonoBehaviour {
         if (isInsideTri(touchPos, corners[0], corners[1], corners[2]))
         {
             m_stateIndicator.text = "Create";
-            _dotRenderer.sprite = m_fan_cre;
+
+            m_dotAnimator.SetBool(_hash_maniBool, false);
+            m_dotAnimator.SetBool(_hash_creBool, true);
+
             _foamState = FoamState.STATE_CREATE;
 
         }
         else if (isInsideTri(touchPos, corners[2], corners[3], corners[0]))
         {
             m_stateIndicator.text = "Edit";
+
+            m_dotAnimator.SetBool(_hash_creBool, false);
+            m_dotAnimator.SetBool(_hash_maniBool, true);
+
             _foamState = FoamState.STATE_MANIPULATE;
 
         }
         else
         {
             m_stateIndicator.text = "Idle";
+
+            m_dotAnimator.SetBool(_hash_creBool, false);
+            m_dotAnimator.SetBool(_hash_maniBool, false);
+
             _foamState = FoamState.STATE_IDLE;
         }
     }

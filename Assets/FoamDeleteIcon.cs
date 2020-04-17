@@ -20,6 +20,7 @@ public class FoamDeleteIcon : FoamIconManager
     {
         base.PerformAction();
         m_data.SceneObjs.Remove(m_data.CurrentSelectionObj);
+        Debug.Log("!!--!! num obj in scene: " + m_data.SceneObjs.Count);
         GameObject.Destroy(m_data.CurrentSelectionObj);
         m_data.CurrentSelectionObj = null;
     }

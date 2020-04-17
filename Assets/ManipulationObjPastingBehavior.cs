@@ -86,6 +86,7 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
                 //grabbing stuff?
 
                 _data.SceneObjs.Add(_copiedObj.gameObject);
+                Debug.Log("!!--!! num obj in scene: " + _data.SceneObjs.Count);
                 animator.SetBool(_hash_objMenuClosedBool, true);
             }
         }

@@ -120,6 +120,8 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
                 m_prim_child.gameObject.SetActive(true); // grabbing
 
                 m_data.SceneObjs.Add(m_prim.gameObject);
+                Debug.Log("!!--!! num obj in scene: " + m_data.SceneObjs.Count);
+
                 animator.SetBool(m_hash_actionBool, true);
             }   
         }

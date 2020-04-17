@@ -33,6 +33,7 @@ public class FoamARController : PortalbleGeneralController
     private int m_hash_maniBool = Animator.StringToHash("ManipulationStateBool");
     private int m_hash_idleBool = Animator.StringToHash("IdleStateBool");
     private int m_hash_pinchBool = Animator.StringToHash("PinchBool");
+    private int _hash_palmBool = Animator.StringToHash("PalmBool");
     private List<int> m_uiState_hashes = new List<int>();
 
 
@@ -92,7 +93,7 @@ public class FoamARController : PortalbleGeneralController
                 break;
         }
 
-        togglePinchBool();
+        ToggleGestureBools();
 
         //if (Input.GetKey(KeyCode.DownArrow))
         //{
@@ -144,18 +145,26 @@ public class FoamARController : PortalbleGeneralController
         }
     }
 
-    private void togglePinchBool()
+    private void ToggleGestureBools()
     {
         if (!Grab.Instance.IsGrabbing)
         {
             if (m_activeGC.bufferedGesture() == "pinch")
             {
                 m_stateMachine.SetBool(m_hash_pinchBool, true);
-                //Debug.Log("FOAMFILTER pinch bool is true");
             } else
             {
                 m_stateMachine.SetBool(m_hash_pinchBool, false);
-                //Debug.Log("FOAMFILTER pinch bool is false");
+            }
+
+
+            if (m_activeGC.bufferedGesture() == "palm") // or include more gestures
+            {
+                m_stateMachine.SetBool(_hash_palmBool, true);
+            }
+            else
+            {
+                m_stateMachine.SetBool(_hash_palmBool, false);
             }
         }
     }

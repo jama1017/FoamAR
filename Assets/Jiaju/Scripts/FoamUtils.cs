@@ -34,6 +34,8 @@ public static class FoamUtils
     public static readonly Color ObjManiSelectedColor = new Color(247f/255f, 238f/255f, 144f/255f);
     public static readonly Color IconNormalColor = new Color(1f, 1f, 1f, 0.78f);
 
+    public static readonly float ObjCreatedOffset = 0.13f;
+    public static readonly int ObjCreatedAnimTime = 40;
 
     public static bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
 	{
@@ -106,4 +108,25 @@ public static class FoamUtils
         float angle = (2f * Mathf.PI / 45f) * (float)step;
         return LinearMap(Mathf.Sin(angle), -1f, 1f, 0.5f, 1.0f);
     }
-}
+
+
+    public static int AnimateWaveTransparency(Renderer primRenderer, int transStep)
+    {
+        Color curC = primRenderer.material.color;
+        float newA = SinWave(transStep);
+        primRenderer.material.color = new Color(curC.r, curC.g, curC.b, newA);
+        return transStep + 1;
+    }
+
+    public static int AnimateGrowSize(int animCount, Vector3 initalScale, Transform prim, Vector3 ObjCreatedPos)
+    {
+        float newX = FoamUtils.LinearMap(animCount, 0, FoamUtils.ObjCreatedAnimTime, 0.0f, initalScale.x);
+        float newY = FoamUtils.LinearMap(animCount, 0, FoamUtils.ObjCreatedAnimTime, 0.0f, initalScale.y);
+        float newZ = FoamUtils.LinearMap(animCount, 0, FoamUtils.ObjCreatedAnimTime, 0.0f, initalScale.z);
+
+        prim.localScale = new Vector3(newX, newY, newZ);
+        prim.position = ObjCreatedPos;
+        return animCount + 1;
+    }
+
+ }

@@ -41,7 +41,6 @@ public class FoamDataManager : MonoBehaviour
     private List<Sprite> _creationCenterSprites = new List<Sprite>();
 
 
-
     public SpriteRenderer ManiUppRenderer;
     public SpriteRenderer ManiLowRenderer;
     public SpriteRenderer ManiLeftRenderer;
@@ -49,6 +48,8 @@ public class FoamDataManager : MonoBehaviour
 
     //private Color _normalColor = new Color(1f, 1f, 1f, 0.78f);
     //private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
+    public Material FoamMaterial;
+    private Color _objManiOGColor;
 
 
     public Transform CubePrefab;
@@ -62,6 +63,8 @@ public class FoamDataManager : MonoBehaviour
     private List<GameObject> _sceneObjs = new List<GameObject>();
     private GameObject _currentSelectionObj = null;
     private Animator _stateMachine = null;
+
+    private Vector3 _objCreatedPos;
 
 
     // Start is called before the first frame update
@@ -102,12 +105,16 @@ public class FoamDataManager : MonoBehaviour
         _creationCenterSprites.Add(CreationCenterSprite_Sphere);
         _creationCenterSprites.Add(CreationCenterSprite_Middle);
 
+        _objCreatedPos = Vector3.zero;
+
+        _objManiOGColor = FoamMaterial.color;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // check state first
+       _objCreatedPos = ActivePalm.transform.position + FoamUtils.ObjCreatedOffset * ActivePalm.transform.forward;
     }
 
     public float TriggerRadius
@@ -177,5 +184,17 @@ public class FoamDataManager : MonoBehaviour
     {
         set { _stateMachine = value; }
         get { return _stateMachine; }
+    }
+
+
+    public Vector3 ObjCreatedPos
+    {
+        get { return _objCreatedPos; }
+    }
+
+
+    public Color ObjManiOGColor
+    {
+        get { return _objManiOGColor; }
     }
 }

@@ -3835,6 +3835,7 @@ MonoBehaviour:
   ManiLowRenderer: {fileID: 123255182}
   ManiLeftRenderer: {fileID: 711979058}
   ManiRightRenderer: {fileID: 2050319731}
+  FoamMaterial: {fileID: 2100000, guid: 04276a49cb89342639b6dee3396f928c, type: 2}
   CubePrefab: {fileID: 3596028150467614126, guid: a3489e92154e148d4a8b2afabd58f73b,
     type: 3}
   SpherePrefab: {fileID: 7254101635669762746, guid: 01b0dd58da57e4d7499fe8a048d82a75,

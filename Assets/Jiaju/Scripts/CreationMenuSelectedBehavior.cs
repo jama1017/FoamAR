@@ -15,11 +15,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
     private Renderer _primRenderer;
     private Color _primOGColor;
-
-    private float offset = 0.13f;
-
     private int _animCount = 0;
-    private int _animTime = 50;
     private int _transStep = 0;
     private Vector3 _initalScale;
 
@@ -34,28 +30,26 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
         _animCount = 0;
         _transStep = 0;
 
-        Vector3 prim_pos = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward;
-
         switch (m_data.Selected_createItem)
         {
             case CreateMenuItem.CUBE:
                 //Debug.Log("FOAMFILTER CUBE ITEM CREATED");
-                m_prim = Instantiate(m_data.CubePrefab, prim_pos, Quaternion.identity);
+                m_prim = Instantiate(m_data.CubePrefab, m_data.ObjCreatedPos, Quaternion.identity);
                 break;
 
             case CreateMenuItem.SPHERE:
                 //Debug.Log("FOAMFILTER SPHERE ITEM CREATED");
-                m_prim = Instantiate(m_data.SpherePrefab, prim_pos, Quaternion.identity);
+                m_prim = Instantiate(m_data.SpherePrefab, m_data.ObjCreatedPos, Quaternion.identity);
                 break;
 
             case CreateMenuItem.CYLINDER:
                 //Debug.Log("FOAMFILTER CYLINDER ITEM CREATED");
-                m_prim = Instantiate(m_data.CylinderPrefab, prim_pos, Quaternion.identity);
+                m_prim = Instantiate(m_data.CylinderPrefab, m_data.ObjCreatedPos, Quaternion.identity);
                 break;
 
             case CreateMenuItem.CONE:
                 //Debug.Log("FOAMFILTER CONE ITEM CREATED");
-                m_prim = Instantiate(m_data.ConePrefab, prim_pos, Quaternion.identity);
+                m_prim = Instantiate(m_data.ConePrefab, m_data.ObjCreatedPos, Quaternion.identity);
                 break;
 
             default:
@@ -64,6 +58,9 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
         if (m_prim)
         {
+            m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
+            Debug.Log("-------------" + m_prim.gameObject.name);
+
             m_prim.gameObject.GetComponent<Grabable>().enabled = false; // grabbing?
             m_prim_child = m_prim.GetChild(0);
             m_prim_child.gameObject.SetActive(false); // is it for grabbing??
@@ -88,22 +85,13 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
         // change transparency
         if (m_prim && !m_isReleased)
         {
-            Color curC = _primRenderer.material.color;
-            float newA = FoamUtils.SinWave(_transStep);
-            _primRenderer.material.color = new Color(curC.r, curC.g, curC.b, newA);
-            _transStep++;
+            _transStep = FoamUtils.AnimateWaveTransparency(_primRenderer, _transStep);
         }
 
         // play scale animation first
-        if (_animCount < _animTime)
+        if (m_prim && _animCount < FoamUtils.ObjCreatedAnimTime)
         {
-            float newX = FoamUtils.LinearMap(_animCount, 0, _animTime, 0.0f, _initalScale.x);
-            float newY = FoamUtils.LinearMap(_animCount, 0, _animTime, 0.0f, _initalScale.y);
-            float newZ = FoamUtils.LinearMap(_animCount, 0, _animTime, 0.0f, _initalScale.z);
-
-            m_prim.localScale = new Vector3(newX, newY, newZ);
-            m_prim.position = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward;
-            _animCount++;
+            _animCount = FoamUtils.AnimateGrowSize(_animCount, _initalScale, m_prim, m_data.ObjCreatedPos);
             return;
         }
 
@@ -111,7 +99,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
         {
             if (!m_isReleased)
             {
-                m_prim.position = m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward;
+                m_prim.position = m_data.ObjCreatedPos;
             }
 
             //if (m_data.ActiveGC.bufferedGesture() == "pinch" || Input.GetKey(KeyCode.DownArrow))
@@ -120,11 +108,10 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
                 Debug.Log("FOAMFILTER ITEM PLACED: " + m_prim.gameObject.name);
                 m_isReleased = true;
 
-                if (m_prim.gameObject.name == "FoamCone(Clone)")
+                if (m_prim.gameObject.name == "FoamCone")
                 {
                     GameObject.Destroy(m_prim.gameObject);
-                    m_prim = Instantiate(m_data.ConePrefab, m_data.ActivePalm.transform.position + offset * m_data.ActivePalm.transform.forward, Quaternion.identity);
-                    Debug.Log("FOAMFILTER cone recreated: ");
+                    m_prim = Instantiate(m_data.ConePrefab, m_data.ObjCreatedPos, Quaternion.identity);
                 }
 
                 _primRenderer.material.color = _primOGColor;
@@ -145,7 +132,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
-        Debug.Log("EXITING CREATION MENU SELECTED STATE");
+        //Debug.Log("EXITING CREATION MENU SELECTED STATE");
         animator.SetBool(m_hash_itemSelectedBool, false);
         m_prim = null;
     }

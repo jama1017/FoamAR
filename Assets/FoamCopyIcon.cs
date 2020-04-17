@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FoamCopyIcon : FoamIconManager
 {
+    private int _hash_copySelectedBool = Animator.StringToHash("CopySelectedBool");
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -19,5 +21,7 @@ public class FoamCopyIcon : FoamIconManager
     public override void PerformAction()
     {
         base.PerformAction();
+        m_data.StateMachine.SetBool(_hash_copySelectedBool, true);
+
     }
 }

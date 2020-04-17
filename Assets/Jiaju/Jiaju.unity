@@ -6424,6 +6424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_dot: {fileID: 244978126}
+  m_data: {fileID: 1069181527}
   m_stateIndicator: {fileID: 486983606}
 --- !u!4 &2128887758
 Transform:

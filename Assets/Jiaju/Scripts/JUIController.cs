@@ -15,6 +15,7 @@ public enum FoamState
 public class JUIController : MonoBehaviour {
 
     public GameObject m_dot;
+    public FoamDataManager m_data;
     private Animator m_dotAnimator;
 
     public Text m_stateIndicator;
@@ -47,8 +48,12 @@ public class JUIController : MonoBehaviour {
 
         if (info.IsName("dot_fan") || info.IsName("dot_cre") || info.IsName("dot_mani"))
         {
-            checkTouch();
-            checkMouseClick();
+            AnimatorStateInfo appInfo = m_data.StateMachine.GetCurrentAnimatorStateInfo(0);
+            if (appInfo.IsName("IdleState") || appInfo.IsName("ManipulationState") || appInfo.IsName("CreationState"))
+            {
+                checkTouch();
+                checkMouseClick();
+            }
         }
     }
 

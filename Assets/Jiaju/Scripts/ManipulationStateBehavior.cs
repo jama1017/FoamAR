@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ManipulationStateBehavior : StateMachineBehaviour
 {
@@ -19,7 +20,7 @@ public class ManipulationStateBehavior : StateMachineBehaviour
 
         animator.SetBool(_hash_objMenuClosedBool, false);
 
-        Debug.Log("ICONN: Manipulation state entered");
+        _data.StateIndicator.GetComponent<Text>().text = "Edit";
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

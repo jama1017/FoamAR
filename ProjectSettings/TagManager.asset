@@ -21,6 +21,7 @@ TagManager:
   - Canvas
   - ARPlane
   - selectionDM
+  - stateIndicator
   layers:
   - Default
   - TransparentFX

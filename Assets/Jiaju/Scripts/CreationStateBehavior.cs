@@ -1,21 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CreationStateBehavior : StateMachineBehaviour
 {
-    private FoamDataManager m_data;
-    private int m_hash_actionBool = Animator.StringToHash("ActionPerformedBool");
+    private FoamDataManager _data;
+    private int _hash_actionBool = Animator.StringToHash("ActionPerformedBool");
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        m_data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
+        _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
-        m_data.CreateMenu.SetActive(false);
-        animator.SetBool(m_hash_actionBool, false);
+        _data.CreateMenu.SetActive(false);
+        animator.SetBool(_hash_actionBool, false);
 
-        Debug.Log("FOAMFILTER Creation State entered");
+        _data.StateIndicator.GetComponent<Text>().text = "Create";
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

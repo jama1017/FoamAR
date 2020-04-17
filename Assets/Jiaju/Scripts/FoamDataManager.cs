@@ -10,6 +10,8 @@ public class FoamDataManager : MonoBehaviour
     public GameObject ManiMenu;
     public GameObject ObjMenu;
 
+    public GameObject StateIndicator;
+
     public GameObject ActiveHand;
     public GameObject ActiveIndex;
     public GameObject ActivePalm;

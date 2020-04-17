@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ManipulationObjPastingBehavior : StateMachineBehaviour
 {
@@ -26,6 +27,7 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
         _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
         animator.SetBool(_hash_objMenuClosedBool, false);
 
+        _data.StateIndicator.GetComponent<Text>().text = "Pinch to Place";
 
         _copiedObj = null;
         _animCount = 0;

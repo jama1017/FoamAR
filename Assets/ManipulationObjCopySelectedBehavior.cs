@@ -1,17 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ManipulationObjCopySelectedBehavior : StateMachineBehaviour
 {
 
     private int _hash_copySelectedBool = Animator.StringToHash("CopySelectedBool");
+    private Text _stateIndicator;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool(_hash_copySelectedBool, false);
-
+        _stateIndicator = GameObject.FindGameObjectWithTag("stateIndicator").GetComponent<Text>();
+        _stateIndicator.text = "Palm to Copy";
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

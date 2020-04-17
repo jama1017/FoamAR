@@ -2368,7 +2368,7 @@ GameObject:
   - component: {fileID: 486983606}
   m_Layer: 5
   m_Name: StateIndicator
-  m_TagString: Untagged
+  m_TagString: stateIndicator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3804,6 +3804,7 @@ MonoBehaviour:
   CreateMenu: {fileID: 443596597}
   ManiMenu: {fileID: 1059372737}
   ObjMenu: {fileID: 392482723}
+  StateIndicator: {fileID: 486983605}
   ActiveHand: {fileID: 1614409302}
   ActiveIndex: {fileID: 0}
   ActivePalm: {fileID: 0}

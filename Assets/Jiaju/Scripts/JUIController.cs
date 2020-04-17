@@ -82,7 +82,7 @@ public class JUIController : MonoBehaviour {
 
         if (isInsideTri(touchPos, corners[0], corners[1], corners[2]))
         {
-            m_stateIndicator.text = "Create";
+            //m_stateIndicator.text = "Create";
 
             m_dotAnimator.SetBool(_hash_maniBool, false);
             m_dotAnimator.SetBool(_hash_creBool, true);
@@ -92,7 +92,7 @@ public class JUIController : MonoBehaviour {
         }
         else if (isInsideTri(touchPos, corners[2], corners[3], corners[0]))
         {
-            m_stateIndicator.text = "Edit";
+            //m_stateIndicator.text = "Edit";
 
             m_dotAnimator.SetBool(_hash_creBool, false);
             m_dotAnimator.SetBool(_hash_maniBool, true);

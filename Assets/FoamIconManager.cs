@@ -55,6 +55,7 @@ public class FoamIconManager : MonoBehaviour
 
         if (!m_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationObjMenuOpen")) { return; }
 
+        if (!other.transform.parent) return;
         if (other.transform.parent.name == "index") {
 
             _indexColliderCount++;
@@ -71,6 +72,7 @@ public class FoamIconManager : MonoBehaviour
     {
         if (!m_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationObjMenuOpen")) { return; }
 
+        if (!other.transform.parent) return;
         if (other.transform.parent.name == "index")
         {
             _indexDwellCount++;
@@ -82,6 +84,7 @@ public class FoamIconManager : MonoBehaviour
     {
         if (!m_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationObjMenuOpen")) { return; }
 
+        if (!other.transform.parent) return;
         if (other.transform.parent.name == "index")
         {
             if (_isActive)

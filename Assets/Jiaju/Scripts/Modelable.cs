@@ -63,6 +63,7 @@ public class Modelable : MonoBehaviour
     {
         if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
 
+        if (!other.transform.parent) return;
         if (other.transform.parent.name == "index")
         {
             _indexColliderCount++;
@@ -80,6 +81,8 @@ public class Modelable : MonoBehaviour
     {
         if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
 
+        if (!other) return;
+        if (!other.transform.parent) return;
         if (other.transform.parent.name == "index")
         {
             _indexDwellCount++;
@@ -93,6 +96,7 @@ public class Modelable : MonoBehaviour
     {
         if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
 
+        if (!other.transform.parent) return;
         if (other.transform.parent.name == "index")
         {
             _indexColliderCount--;

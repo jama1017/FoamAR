@@ -61,9 +61,9 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
             Debug.Log("-------------" + m_prim.gameObject.name);
 
-            m_prim.gameObject.GetComponent<Grabable>().enabled = false; // grabbing?
-            m_prim_child = m_prim.GetChild(0);
-            m_prim_child.gameObject.SetActive(false); // is it for grabbing??
+            //m_prim.gameObject.GetComponent<Grabable>().enabled = false; // grabbing?
+            //m_prim_child = m_prim.GetChild(0);
+            //m_prim_child.gameObject.SetActive(false); // is it for grabbing??
 
             _primRenderer = m_prim.gameObject.GetComponent<Renderer>();
             _primOGColor = _primRenderer.material.color;
@@ -116,8 +116,8 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
                 _primRenderer.material.color = _primOGColor;
 
-                m_prim.gameObject.GetComponent<Grabable>().enabled = true; // grabbing
-                m_prim_child.gameObject.SetActive(true); // grabbing
+                //m_prim.gameObject.GetComponent<Grabable>().enabled = true; // grabbing
+                //m_prim_child.gameObject.SetActive(true); // grabbing
 
                 m_data.SceneObjs.Add(m_prim.gameObject);
                 Debug.Log("!!--!! num obj in scene: " + m_data.SceneObjs.Count);

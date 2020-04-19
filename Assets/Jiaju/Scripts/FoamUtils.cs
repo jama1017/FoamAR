@@ -37,6 +37,8 @@ public static class FoamUtils
     public static readonly float ObjCreatedOffset = 0.13f;
     public static readonly int ObjCreatedAnimTime = 40;
 
+    public static bool IsGlobalGrabbing = false;
+
     public static bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
 	{
 		float as_x = s.x - a.x;

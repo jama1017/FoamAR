@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Portalble.Functions.Grab;
 
 public class ManipulationStateBehavior : StateMachineBehaviour
 {
@@ -19,6 +20,8 @@ public class ManipulationStateBehavior : StateMachineBehaviour
         //_data.ObjMenu.SetActive(false);
 
         animator.SetBool(_hash_objMenuClosedBool, false);
+
+        FoamUtils.IsGlobalGrabbing = true;
 
         _data.StateIndicator.GetComponent<Text>().text = "Edit";
     }
@@ -38,10 +41,18 @@ public class ManipulationStateBehavior : StateMachineBehaviour
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        FoamUtils.IsGlobalGrabbing = false;
+        if(_data.CurrentSelectionObj)
+        {
+            Portalble.Functions.Grab.GrabCollider curGC = _data.CurrentSelectionObj.transform.GetChild(0).GetComponent<Portalble.Functions.Grab.GrabCollider>();
+            if (curGC)
+            {
+                curGC.DeGrab();
+            }
+        }
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

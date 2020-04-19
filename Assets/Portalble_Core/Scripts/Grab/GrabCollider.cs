@@ -85,6 +85,7 @@ namespace Portalble.Functions.Grab {
         }
 
         void OnTriggerEnter(Collider other) {
+
             // Don't want palm
             if (other.name == "palm")
                 return;
@@ -114,6 +115,10 @@ namespace Portalble.Functions.Grab {
             if (m_ableToExpand == false)
                 return;
 
+            // Jiaju FoamAR addition
+            if (!FoamUtils.IsGlobalGrabbing) return;
+
+
             if (m_leftHandFingerIn >= FINGER_THRESHOLD) {
                 // Tell it to be grabbed
                 if (m_grabObj != null) {
@@ -133,6 +138,7 @@ namespace Portalble.Functions.Grab {
         }
 
         void OnTriggerExit(Collider other) {
+
             if (other.name == "palm")
                 return;
 
@@ -155,6 +161,9 @@ namespace Portalble.Functions.Grab {
             // Only exit when already entered
             if (!m_entered)
                 return;
+
+            // Jiaju FoamAR addition
+            if (!FoamUtils.IsGlobalGrabbing) return;
 
             if (m_leftHandFingerIn < FINGER_THRESHOLD && m_rightHandFingerIn < FINGER_THRESHOLD) {
                 DeExpand();
@@ -209,6 +218,17 @@ namespace Portalble.Functions.Grab {
             if (m_expanded && lock_flag) {
                 DeExpand();
             }
+        }
+
+        // Jiaju FoamAR change
+        public void DeGrab()
+        {
+            DeExpand();
+            if (m_grabObj != null)
+            {
+                m_grabObj.OnGrabTriggerExit();
+            }
+            m_entered = false;
         }
     }
 }

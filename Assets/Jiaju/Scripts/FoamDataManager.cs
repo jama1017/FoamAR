@@ -17,7 +17,7 @@ public class FoamDataManager : MonoBehaviour
     public GameObject ActivePalm;
     public GestureControl ActiveGC;
     private float _triggerRadius = 2.0f;  // size of bounding region
-    private float _middleRadius = 0.023f; // middle region of the menu
+    private float _middleRadius = 0.030f; // middle region of the menu
 
     // creation menu renderer and sprite
     public SpriteRenderer CylinderRenderer;
@@ -44,9 +44,14 @@ public class FoamDataManager : MonoBehaviour
 
 
     public SpriteRenderer ManiUppRenderer;
+    public SpriteRenderer ManiRightRenderer;
     public SpriteRenderer ManiLowRenderer;
     public SpriteRenderer ManiLeftRenderer;
-    public SpriteRenderer ManiRightRenderer;
+
+    public SpriteRenderer ManiCenterRenderer;
+
+    private List<SpriteRenderer> _manipulateRenderers = new List<SpriteRenderer>();
+
 
     //private Color _normalColor = new Color(1f, 1f, 1f, 0.78f);
     //private Color _hoverColor = new Color(1f, 1f, 1f, 1f);
@@ -107,6 +112,13 @@ public class FoamDataManager : MonoBehaviour
         _creationCenterSprites.Add(CreationCenterSprite_Sphere);
         _creationCenterSprites.Add(CreationCenterSprite_Middle);
 
+        // manipulationRenderers
+        _manipulateRenderers.Add(ManiUppRenderer);
+        _manipulateRenderers.Add(ManiRightRenderer);
+        _manipulateRenderers.Add(ManiLowRenderer);
+        _manipulateRenderers.Add(ManiLeftRenderer);
+
+
         _objCreatedPos = Vector3.zero;
 
         _objManiOGColor = FoamMaterial.color;
@@ -129,15 +141,6 @@ public class FoamDataManager : MonoBehaviour
         get { return _middleRadius; }
     }
 
-    //public Color NormalColor
-    //{
-    //    get { return _normalColor; }
-    //}
-
-    //public Color HoverColor
-    //{
-    //    get { return _hoverColor; }
-    //}
 
     public CreateMenuItem Selected_createItem
     {
@@ -145,15 +148,23 @@ public class FoamDataManager : MonoBehaviour
         set { _selected_createItem = value; }
     }
 
+
     public ManiMenuItem Selected_maniItem
     {
         get { return _selected_maniItem; }
         set { _selected_maniItem = value; }
     }
 
+
     public List<SpriteRenderer> CreationRenderers
     {
         get { return _creationRenderers; }
+    }
+
+
+    public List<SpriteRenderer> ManipulateRenderers
+    {
+        get { return _manipulateRenderers; }
     }
 
     public List<Sprite> CreationNormalSprites

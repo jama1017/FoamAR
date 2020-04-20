@@ -24,8 +24,8 @@ public enum ManiMenuItem
 {
     MOVE,
     SCALE,
-    ROTATE,
-    COLOR,
+    ONE,
+    TWO,
     NULL
 }
 

@@ -61,6 +61,7 @@ namespace Portalble.Functions.Grab {
 
 
         public bool IsFingerInObj;
+        private GameObject _parentGameObject;
 
         // Use this for initialization
         void Start() {
@@ -84,6 +85,8 @@ namespace Portalble.Functions.Grab {
             if (m_grabObj == null && transform.parent != null) {
                 m_grabObj = transform.parent.GetComponent<Grabable>();
             }
+
+            _parentGameObject = this.transform.parent.gameObject;
         }
 
         void Update()
@@ -133,10 +136,12 @@ namespace Portalble.Functions.Grab {
                 return;
 
             // Jiaju FoamAR addition
-            if (!FoamUtils.IsGlobalGrabbing || this.transform.parent.gameObject.GetInstanceID() != FoamUtils.CurrentSelectionObjID) return;
+            if (!FoamUtils.IsGlobalGrabbing) return;
 
 
             if (m_leftHandFingerIn >= FINGER_THRESHOLD) {
+
+                _parentGameObject.GetComponent<Modelable>().SetAsSelected();  // Jiaju
                 // Tell it to be grabbed
                 if (m_grabObj != null) {
                     m_grabObj.OnGrabTriggerEnter(this, true);
@@ -145,6 +150,8 @@ namespace Portalble.Functions.Grab {
                 }
             }
             else if (m_rightHandFingerIn >= FINGER_THRESHOLD) {
+
+                _parentGameObject.GetComponent<Modelable>().SetAsSelected();  // Jiaju
                 // Tell it to be grabbed
                 if (m_grabObj != null) {
                     m_grabObj.OnGrabTriggerEnter(this, false);
@@ -180,7 +187,7 @@ namespace Portalble.Functions.Grab {
                 return;
 
             // Jiaju FoamAR addition
-            if (!FoamUtils.IsGlobalGrabbing || this.transform.parent.gameObject.GetInstanceID() != FoamUtils.CurrentSelectionObjID) return;
+            if (!FoamUtils.IsGlobalGrabbing) return;
 
 
             if (m_leftHandFingerIn < FINGER_THRESHOLD && m_rightHandFingerIn < FINGER_THRESHOLD) {

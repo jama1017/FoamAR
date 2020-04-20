@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CreationMenuOpenBehavior : StateMachineBehaviour
 {
-    private FoamDataManager m_data;
+    private FoamDataManager _data;
     private Vector3 m_palmPos_init;
     private Vector3 m_bound_UppL;
     private Vector3 m_bound_UppR;
@@ -13,22 +13,25 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
     private int m_hash_itemSelectedBool = Animator.StringToHash("ItemSelectedBool");
     private CreateMenuItem m_selectedItem = CreateMenuItem.NULL;
 
+    private FoamRadialManager _currSelectedOption = null; // for highlighting purpose only
+
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        m_data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
+        _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
-        m_data.CreateMenu.transform.position = m_data.ActiveIndex.transform.position;
-        m_data.CreateMenu.SetActive(true);
+        _data.CreateMenu.transform.position = _data.ActiveIndex.transform.position;
+        _data.CreateMenu.SetActive(true);
 
-        m_data.ManiMenu.SetActive(false);
+        _data.ManiMenu.SetActive(false);
 
-        m_palmPos_init = m_data.ActivePalm.transform.position;
-        m_bound_UppL = m_palmPos_init + new Vector3(-m_data.TriggerRadius, m_data.TriggerRadius);
-        m_bound_UppR = m_palmPos_init + new Vector3(m_data.TriggerRadius, m_data.TriggerRadius);
+        m_palmPos_init = _data.ActivePalm.transform.position;
+        m_bound_UppL = m_palmPos_init + new Vector3(-_data.TriggerRadius, _data.TriggerRadius);
+        m_bound_UppR = m_palmPos_init + new Vector3(_data.TriggerRadius, _data.TriggerRadius);
 
-        m_bound_LowL = m_palmPos_init + new Vector3(-m_data.TriggerRadius, -m_data.TriggerRadius);
-        m_bound_LowR = m_palmPos_init + new Vector3(m_data.TriggerRadius, -m_data.TriggerRadius);
+        m_bound_LowL = m_palmPos_init + new Vector3(-_data.TriggerRadius, -_data.TriggerRadius);
+        m_bound_LowR = m_palmPos_init + new Vector3(_data.TriggerRadius, -_data.TriggerRadius);
 
         animator.SetBool(m_hash_itemSelectedBool, false);
         Debug.Log("FOAMFILTER Creation Menu Open State entered");
@@ -37,9 +40,9 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Vector3 palmPos_curr = m_data.ActivePalm.transform.position;
+        Vector3 palmPos_curr = _data.ActivePalm.transform.position;
 
-        MenuRegion region = FoamUtils.checkMenuRegion(palmPos_curr, m_palmPos_init, m_bound_UppL, m_bound_UppR, m_bound_LowL, m_bound_LowR, m_data.MiddleRadius);
+        MenuRegion region = FoamUtils.checkMenuRegion(palmPos_curr, m_palmPos_init, m_bound_UppL, m_bound_UppR, m_bound_LowL, m_bound_LowR, _data.MiddleRadius);
 
         switch (region)
         {
@@ -92,8 +95,8 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
                 break;
         }
 
-        m_data.Selected_createItem = m_selectedItem;
-        //Debug.Log("FOAMFILTER selected item in open: " + m_data.Selected_createItem);
+        _data.Selected_createItem = m_selectedItem;
+        //Debug.Log("FOAMFILTER selected item in open: " + _data.Selected_createItem);
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
@@ -115,31 +118,20 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
 
     private void HighlightSprite(CreateMenuItem geoType)
     {
-        int iter = m_data.CreationRenderers.Count;
         int geoNum = (int) geoType;
+
+        if (_currSelectedOption)
+        {
+            _currSelectedOption.DeHighlightIcon();
+        }
 
         if (geoNum == (int)CreateMenuItem.NULL)
         {
-            for (int i = 0; i < iter; i++)
-            {
-                m_data.CreationRenderers[i].sprite = m_data.CreationNormalSprites[i];
-                m_data.CreationCenterRenderer.sprite = m_data.CreationCenterSprites[iter];
-            }
+            _data.CreationCenterRenderer.GetComponent<FoamRadialCenterManager>().DeHighlightCenter();
             return;
         }
 
-
-        for (int i = 0; i < iter; i++)
-        {
-            if (i == geoNum)
-            {
-                m_data.CreationRenderers[i].sprite = m_data.CreationHighlightSprites[i];
-                m_data.CreationCenterRenderer.sprite = m_data.CreationCenterSprites[i];
-            }
-            else
-            {
-                m_data.CreationRenderers[i].sprite = m_data.CreationNormalSprites[i];
-            }
-        }
+        _currSelectedOption = _data.CreationRenderers[geoNum].GetComponent<FoamRadialManager>();
+        _currSelectedOption.HightlightIcon();
     }
 }

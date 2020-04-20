@@ -14,6 +14,7 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
 
     private FoamRadialManager _currSelectedOption = null; // for highlighting purpose only
 
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {

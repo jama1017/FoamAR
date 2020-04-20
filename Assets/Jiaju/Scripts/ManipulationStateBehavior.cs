@@ -21,7 +21,7 @@ public class ManipulationStateBehavior : StateMachineBehaviour
 
         animator.SetBool(_hash_objMenuClosedBool, false);
 
-        FoamUtils.IsGlobalGrabbing = true;
+        //FoamUtils.IsGlobalGrabbing = true;
 
         _data.StateIndicator.GetComponent<Text>().text = "Edit";
     }
@@ -43,15 +43,15 @@ public class ManipulationStateBehavior : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        FoamUtils.IsGlobalGrabbing = false;
-        if(_data.CurrentSelectionObj)
-        {
-            Portalble.Functions.Grab.GrabCollider curGC = _data.CurrentSelectionObj.transform.GetChild(0).GetComponent<Portalble.Functions.Grab.GrabCollider>();
-            if (curGC)
-            {
-                curGC.DeGrab();
-            }
-        }
+        //FoamUtils.IsGlobalGrabbing = false;
+        //if(_data.CurrentSelectionObj)
+        //{
+        //    Portalble.Functions.Grab.GrabCollider curGC = _data.CurrentSelectionObj.transform.GetChild(0).GetComponent<Portalble.Functions.Grab.GrabCollider>();
+        //    if (curGC)
+        //    {
+        //        curGC.DeGrab();
+        //    }
+        //}
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

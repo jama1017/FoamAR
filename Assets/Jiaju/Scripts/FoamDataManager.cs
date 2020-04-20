@@ -20,34 +20,18 @@ public class FoamDataManager : MonoBehaviour
     private float _middleRadius = 0.030f; // middle region of the menu
 
     // creation menu renderer and sprite
-    public SpriteRenderer CylinderRenderer;
     public SpriteRenderer CubeRenderer;
     public SpriteRenderer ConeRenderer;
+    public SpriteRenderer CylinderRenderer;
     public SpriteRenderer SphereRenderer;
     public SpriteRenderer CreationCenterRenderer;
 
-    public Sprite CubeHighlightSprite;
-    public Sprite CylinderHighlightSprite;
-    public Sprite ConeHighlightSprite;
-    public Sprite SphereHighlightSprite;
-
-    public Sprite CreationCenterSprite_Cube;
-    public Sprite CreationCenterSprite_Cylinder;
-    public Sprite CreationCenterSprite_Cone;
-    public Sprite CreationCenterSprite_Sphere;
-    public Sprite CreationCenterSprite_Middle;
-
     private List<SpriteRenderer> _creationRenderers = new List<SpriteRenderer>();
-    private List<Sprite> _creationHighlightSprites = new List<Sprite>();
-    private List<Sprite> _creationNormalSprites = new List<Sprite>();
-    private List<Sprite> _creationCenterSprites = new List<Sprite>();
-
 
     public SpriteRenderer ManiUppRenderer;
     public SpriteRenderer ManiRightRenderer;
     public SpriteRenderer ManiLowRenderer;
     public SpriteRenderer ManiLeftRenderer;
-
     public SpriteRenderer ManiCenterRenderer;
 
     private List<SpriteRenderer> _manipulateRenderers = new List<SpriteRenderer>();
@@ -90,27 +74,6 @@ public class FoamDataManager : MonoBehaviour
         _creationRenderers.Add(CylinderRenderer);
         _creationRenderers.Add(ConeRenderer);
         _creationRenderers.Add(SphereRenderer);
-
-        // creation normal sprites
-        for (int i = 0; i < _creationRenderers.Count; i++)
-        {
-            _creationNormalSprites.Add(_creationRenderers[i].sprite);
-            _creationRenderers[i].color = FoamUtils.IconNormalColor;
-        }
-        CreationCenterRenderer.color = FoamUtils.IconNormalColor;
-
-        // creation highlight sprites
-        _creationHighlightSprites.Add(CubeHighlightSprite);
-        _creationHighlightSprites.Add(CylinderHighlightSprite);
-        _creationHighlightSprites.Add(ConeHighlightSprite);
-        _creationHighlightSprites.Add(SphereHighlightSprite);
-
-        // creation center sprites
-        _creationCenterSprites.Add(CreationCenterSprite_Cube);
-        _creationCenterSprites.Add(CreationCenterSprite_Cylinder);
-        _creationCenterSprites.Add(CreationCenterSprite_Cone);
-        _creationCenterSprites.Add(CreationCenterSprite_Sphere);
-        _creationCenterSprites.Add(CreationCenterSprite_Middle);
 
         // manipulationRenderers
         _manipulateRenderers.Add(ManiUppRenderer);
@@ -165,21 +128,6 @@ public class FoamDataManager : MonoBehaviour
     public List<SpriteRenderer> ManipulateRenderers
     {
         get { return _manipulateRenderers; }
-    }
-
-    public List<Sprite> CreationNormalSprites
-    {
-        get { return _creationNormalSprites; }
-    }
-
-    public List<Sprite> CreationHighlightSprites
-    {
-        get { return _creationHighlightSprites; }
-    }
-
-    public List<Sprite> CreationCenterSprites
-    {
-        get { return _creationCenterSprites; }
     }
 
     public List<GameObject> SceneObjs

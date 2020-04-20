@@ -85,8 +85,10 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
                 _copiedRenderer.material.color = _copiedOGColor;
                 //grabbing stuff?
 
-                _data.SceneObjs.Add(_copiedObj.gameObject);
-                Debug.Log("!!--!! num obj in scene: " + _data.SceneObjs.Count);
+                //_data.SceneObjs.Add(_copiedObj.gameObject);
+                FoamUtils.CreateObjData(_data, _copiedObj.gameObject);
+
+                //Debug.Log("!!--!! num obj in scene: " + _data.SceneObjs.Count);
                 animator.SetBool(_hash_objMenuClosedBool, true);
             }
         }

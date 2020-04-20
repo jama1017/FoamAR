@@ -15,6 +15,9 @@ public class FoamARController : PortalbleGeneralController
     public GameObject m_createMenu;
     public GameObject m_maniMenu;
 
+    private GameObject _activeIndex;
+    private GameObject _activeThumb;
+
     private GestureControl m_leftGC;
     private GestureControl m_rightGC;
     private JUIController m_jui;
@@ -52,12 +55,17 @@ public class FoamARController : PortalbleGeneralController
     protected override void Start()
     {
         base.Start();
+
+        // move things below to m_data
         m_leftGC = m_leftHand.GetComponent<GestureControl>();
         m_rightGC = m_rightHand.GetComponent<GestureControl>();
         m_jui = JUIController.GetComponent<JUIController>();
 
         m_activeGC = m_rightGC;
         m_activeHand = m_rightHand;
+
+        _activeIndex = m_activeHand.transform.GetChild(1).GetChild(2).gameObject;
+        _activeThumb = m_activeHand.transform.GetChild(0).GetChild(2).gameObject;
 
         //state machine
         m_stateMachine = this.GetComponent<Animator>();
@@ -145,14 +153,37 @@ public class FoamARController : PortalbleGeneralController
         }
     }
 
+    private void CheckIsGlobalFingerInObj()
+    {
+        int iter = m_data.SceneObjGCs.Count;
+
+        for (int i = 0; i < iter; i++)
+        {
+            if (m_data.SceneObjGCs[i].IsFingerInObj)
+            {
+                FoamUtils.IsGlobalFingerInObject = true;
+                return;
+            }
+        }
+
+        FoamUtils.IsGlobalFingerInObject = false;
+    }
+
     private void ToggleGestureBools()
     {
+
+
+        float dis = Vector3.Distance(_activeIndex.transform.position, _activeThumb.transform.position);
+
         if (!Grab.Instance.IsGrabbing)
         {
-            if (m_activeGC.bufferedGesture() == "pinch")
+            CheckIsGlobalFingerInObj();
+            //Debug.Log("FoamUtils.IsGlobalFingerInObject: " + FoamUtils.IsGlobalFingerInObject);
+            if (m_activeGC.bufferedGesture() == "pinch" && !FoamUtils.IsGlobalFingerInObject && dis < 0.035f)
             {
                 m_stateMachine.SetBool(m_hash_pinchBool, true);
-            } else
+            }
+            else
             {
                 m_stateMachine.SetBool(m_hash_pinchBool, false);
             }

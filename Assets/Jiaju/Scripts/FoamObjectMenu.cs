@@ -35,7 +35,7 @@ public class FoamObjectMenu : MonoBehaviour
             {
                 _iconMgrs[i].ActivateIcon();
             }
-            Debug.Log("ICONN 1st no active icon");
+            //Debug.Log("ICONN 1st no active icon");
 
             for (int i = 0; i < _iconMgrs.Count; i++)
             {
@@ -44,7 +44,7 @@ public class FoamObjectMenu : MonoBehaviour
                 {
                     // activate current icon and disable other icons
                     _currentActiveIcon = _iconMgrs[i];
-                    Debug.Log("ICONN active icon: " + _currentActiveIcon.gameObject.name);
+                    //Debug.Log("ICONN active icon: " + _currentActiveIcon.gameObject.name);
 
                     for (int j = 0; j < _iconMgrs.Count; j++)
                     {
@@ -65,7 +65,7 @@ public class FoamObjectMenu : MonoBehaviour
         if (_currentActiveIcon.IndexColliderCount <= 0)
         {
             _currentActiveIcon = null;
-            Debug.Log("ICONN active icon null");
+            //Debug.Log("ICONN active icon null");
 
             for (int i = 0; i < _iconMgrs.Count; i++)
             {

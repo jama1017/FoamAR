@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Portalble.Functions.Grab;
 
 public class Modelable : MonoBehaviour
 {
@@ -27,7 +28,8 @@ public class Modelable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
+        if (!CheckIsInRightState()) { return; }
+        if (!CheckIsInManipulationState()) { return; }
 
         if (_indexDwellCount >= _dwellEffectLowCutoff && _isBeingSelected)
         {
@@ -61,14 +63,14 @@ public class Modelable : MonoBehaviour
 
     public void OnChildTriggerEnter(Collider other)
     {
-        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
+        if (!CheckIsInRightState()) { return; }
 
         if (!other.transform.parent) return;
         if (other.transform.parent.name == "index")
         {
             _indexColliderCount++;
 
-            if (_indexColliderCount > 0)
+            if (_indexColliderCount > 0 && !Grab.Instance.IsGrabbing)
             {
                 SetAsSelected();
             }
@@ -79,7 +81,7 @@ public class Modelable : MonoBehaviour
 
     public void OnChildTriggerStay(Collider other)
     {
-        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
+        if (!CheckIsInRightState()) { return; }
 
         if (!other) return;
         if (!other.transform.parent) return;
@@ -94,7 +96,7 @@ public class Modelable : MonoBehaviour
 
     public void OnChildTriggerExit(Collider other)
     {
-        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
+        if (!CheckIsInRightState()) { return; }
 
         if (!other.transform.parent) return;
         if (other.transform.parent.name == "index")
@@ -120,7 +122,7 @@ public class Modelable : MonoBehaviour
 
     public void SetAsSelected()
     {
-        if (!_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationState")) { return; }
+        if (!CheckIsInRightState()) { return; }
 
         if (_data.CurrentSelectionObj)
         {
@@ -130,6 +132,8 @@ public class Modelable : MonoBehaviour
         _isBeingSelected = true;
         _renderer.material.color = FoamUtils.ObjManiSelectedColor;
         _data.CurrentSelectionObj = this.gameObject;
+
+        FoamUtils.CurrentSelectionObjID = this.gameObject.GetInstanceID();
     }
 
 
@@ -145,6 +149,29 @@ public class Modelable : MonoBehaviour
         if (_indexDwellCount > _dwellThreshold)
         {
             _indexDwellCount = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool CheckIsInRightState()
+    {
+        AnimatorStateInfo info = _data.StateMachine.GetCurrentAnimatorStateInfo(0);
+
+        if (info.IsName("ManipulationState") || info.IsName("ToolMoveSelected")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool CheckIsInManipulationState()
+    {
+        AnimatorStateInfo info = _data.StateMachine.GetCurrentAnimatorStateInfo(0);
+
+        if (info.IsName("ManipulationState"))
+        {
             return true;
         }
 

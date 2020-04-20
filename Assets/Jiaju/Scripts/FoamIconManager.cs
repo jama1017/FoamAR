@@ -111,7 +111,7 @@ public class FoamIconManager : MonoBehaviour
         _indexDwellCount = 0;
         _indexColliderCount = 0;
 
-        Debug.Log("ICONN: action performed");
+        //Debug.Log("ICONN: action performed");
     }
 
 

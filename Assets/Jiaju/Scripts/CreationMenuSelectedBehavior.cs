@@ -24,7 +24,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 	{
         m_data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
-        Debug.Log("FOAMFILTER MENU ITEM SELECTED IS: " + m_data.Selected_createItem);
+        //Debug.Log("FOAMFILTER MENU ITEM SELECTED IS: " + m_data.Selected_createItem);
 
         m_prim = null;
         _animCount = 0;
@@ -59,7 +59,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
         if (m_prim)
         {
             m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
-            Debug.Log("-------------" + m_prim.gameObject.name);
+            //Debug.Log("-------------" + m_prim.gameObject.name);
 
             //m_prim.gameObject.GetComponent<Grabable>().enabled = false; // grabbing?
             //m_prim_child = m_prim.GetChild(0);
@@ -105,7 +105,6 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             //if (m_data.ActiveGC.bufferedGesture() == "pinch" || Input.GetKey(KeyCode.DownArrow))
             if (m_data.ActiveGC.bufferedGesture() == "pinch")
             {
-                Debug.Log("FOAMFILTER ITEM PLACED: " + m_prim.gameObject.name);
                 m_isReleased = true;
 
                 if (m_prim.gameObject.name == "FoamCone")
@@ -116,11 +115,8 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
                 _primRenderer.material.color = _primOGColor;
 
-                //m_prim.gameObject.GetComponent<Grabable>().enabled = true; // grabbing
-                //m_prim_child.gameObject.SetActive(true); // grabbing
-
-                m_data.SceneObjs.Add(m_prim.gameObject);
-                Debug.Log("!!--!! num obj in scene: " + m_data.SceneObjs.Count);
+                //m_data.SceneObjs.Add(m_prim.gameObject);
+                FoamUtils.CreateObjData(m_data, m_prim.gameObject);
 
                 animator.SetBool(m_hash_actionBool, true);
             }   

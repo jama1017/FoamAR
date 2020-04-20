@@ -60,6 +60,8 @@ namespace Portalble.Functions.Grab {
         private bool m_ableToExpand = true;
 
 
+        public bool IsFingerInObj;
+
         // Use this for initialization
         void Start() {
             // Set kinematic in order to avoid physics
@@ -83,6 +85,21 @@ namespace Portalble.Functions.Grab {
                 m_grabObj = transform.parent.GetComponent<Grabable>();
             }
         }
+
+        void Update()
+        {
+            if (m_leftHandFingerIn > 0 || m_rightHandFingerIn > 0)
+            {
+                IsFingerInObj = true;
+
+            }
+            else
+            {
+                IsFingerInObj = false;
+
+            }
+        }
+
 
         void OnTriggerEnter(Collider other) {
 
@@ -116,7 +133,7 @@ namespace Portalble.Functions.Grab {
                 return;
 
             // Jiaju FoamAR addition
-            if (!FoamUtils.IsGlobalGrabbing) return;
+            if (!FoamUtils.IsGlobalGrabbing || this.transform.parent.gameObject.GetInstanceID() != FoamUtils.CurrentSelectionObjID) return;
 
 
             if (m_leftHandFingerIn >= FINGER_THRESHOLD) {
@@ -163,7 +180,8 @@ namespace Portalble.Functions.Grab {
                 return;
 
             // Jiaju FoamAR addition
-            if (!FoamUtils.IsGlobalGrabbing) return;
+            if (!FoamUtils.IsGlobalGrabbing || this.transform.parent.gameObject.GetInstanceID() != FoamUtils.CurrentSelectionObjID) return;
+
 
             if (m_leftHandFingerIn < FINGER_THRESHOLD && m_rightHandFingerIn < FINGER_THRESHOLD) {
                 DeExpand();

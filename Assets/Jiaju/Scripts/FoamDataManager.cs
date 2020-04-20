@@ -52,6 +52,7 @@ public class FoamDataManager : MonoBehaviour
 
 
     private List<GameObject> _sceneObjs = new List<GameObject>();
+    private List<Portalble.Functions.Grab.GrabCollider> _sceneObjGCs = new List<Portalble.Functions.Grab.GrabCollider>();
     private GameObject _currentSelectionObj = null;
     private Animator _stateMachine = null;
 
@@ -133,6 +134,11 @@ public class FoamDataManager : MonoBehaviour
     public List<GameObject> SceneObjs
     {
         get { return _sceneObjs; }
+    }
+
+    public List<Portalble.Functions.Grab.GrabCollider> SceneObjGCs
+    {
+        get { return _sceneObjGCs; }
     }
 
     public GameObject CurrentSelectionObj

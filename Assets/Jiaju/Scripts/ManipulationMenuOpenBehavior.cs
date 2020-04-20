@@ -10,7 +10,9 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
     private Vector3 m_bound_UppR;
     private Vector3 m_bound_LowL;
     private Vector3 m_bound_LowR;
-    private int m_hash_itemSelectedBool = Animator.StringToHash("ItemSelectedBool");
+
+    //private int _hash_itemSelectedBool = Animator.StringToHash("ItemSelectedBool");
+    private int _hash_toolSelectedInt = Animator.StringToHash("ToolSelectedInt");
 
     private FoamRadialManager _currSelectedOption = null; // for highlighting purpose only
 
@@ -22,7 +24,6 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
 
         _data.ManiMenu.transform.position = _data.ActiveIndex.transform.position;
         _data.ManiMenu.SetActive(true);
-
         _data.CreateMenu.SetActive(false);
 
         m_palmPos_init = _data.ActivePalm.transform.position;
@@ -32,7 +33,7 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
         m_bound_LowL = m_palmPos_init + new Vector3(-_data.TriggerRadius, -_data.TriggerRadius);
         m_bound_LowR = m_palmPos_init + new Vector3(_data.TriggerRadius, -_data.TriggerRadius);
 
-        animator.SetBool(m_hash_itemSelectedBool, false);
+        //animator.SetBool(_hash_itemSelectedBool, false);
         Debug.Log("FOAMFILTER Mani Menu Open State entered");
     }
 
@@ -48,25 +49,27 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
             case MenuRegion.UPPER:
                 Debug.Log("-----------Mani Upp");
 
-                HighlightSprite(ManiMenuItem.MOVE);
+                HighlightSprite(ManiMenuItem.SELECT);
+                animator.SetInteger(_hash_toolSelectedInt, 0);
 
                 break;
 
             case MenuRegion.RIGHT:
                 //Debug.Log("-----------Mani RIGHT");
-                HighlightSprite(ManiMenuItem.SCALE);
+                HighlightSprite(ManiMenuItem.MOVE);
+                animator.SetInteger(_hash_toolSelectedInt, 1);
 
                 break;
 
             case MenuRegion.LOWER:
                 //Debug.Log("-----------Mani LOWER");
-                HighlightSprite(ManiMenuItem.ONE);
+                HighlightSprite(ManiMenuItem.SCALE);
 
                 break;
 
             case MenuRegion.LEFT:
                 //Debug.Log("-----------Mani LEFT");
-                HighlightSprite(ManiMenuItem.TWO);
+                HighlightSprite(ManiMenuItem.ONE);
 
                 break;
 
@@ -79,10 +82,10 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        _data.ManiMenu.SetActive(false);
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

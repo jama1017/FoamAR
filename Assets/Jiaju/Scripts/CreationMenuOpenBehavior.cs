@@ -34,7 +34,7 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
         m_bound_LowR = m_palmPos_init + new Vector3(_data.TriggerRadius, -_data.TriggerRadius);
 
         animator.SetBool(m_hash_itemSelectedBool, false);
-        Debug.Log("FOAMFILTER Creation Menu Open State entered");
+        //Debug.Log("FOAMFILTER Creation Menu Open State entered");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

@@ -22,7 +22,7 @@ public class FocusCylinder : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("FOCUSED on object " + other.tag);
+        //Debug.Log("FOCUSED on object " + other.tag);
 
         if (other.tag == "InteractableObj") // ignore ARPlane prefab
         {

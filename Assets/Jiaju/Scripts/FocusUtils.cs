@@ -174,7 +174,7 @@ public static class FocusUtils
 
 
             Jetfire.SendMsg2(message);
-            Debug.Log("JETFIRE start/end");
+            //Debug.Log("JETFIRE start/end");
         }
 
     }

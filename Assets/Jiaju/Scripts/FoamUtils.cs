@@ -22,10 +22,10 @@ public enum CreateMenuItem
 
 public enum ManiMenuItem
 {
+    SELECT,
     MOVE,
     SCALE,
     ONE,
-    TWO,
     NULL
 }
 
@@ -38,6 +38,11 @@ public static class FoamUtils
     public static readonly int ObjCreatedAnimTime = 40;
 
     public static bool IsGlobalGrabbing = false;
+
+    // to stop pinch bool from updating if finger in collider
+    public static bool IsGlobalFingerInObject = false;
+
+    public static int CurrentSelectionObjID = 0;
 
     public static bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
 	{
@@ -131,4 +136,17 @@ public static class FoamUtils
         return animCount + 1;
     }
 
- }
+    public static void CreateObjData(FoamDataManager DM, GameObject obj)
+    {
+        DM.SceneObjs.Add(obj);
+        DM.SceneObjGCs.Add(obj.transform.GetChild(0).GetComponent<Portalble.Functions.Grab.GrabCollider>());
+    }
+
+
+    public static void RemoveObjData(FoamDataManager DM, GameObject obj)
+    {
+        DM.SceneObjs.Remove(obj);
+        DM.SceneObjGCs.Remove(obj.transform.GetChild(0).GetComponent<Portalble.Functions.Grab.GrabCollider>());
+
+    }
+}

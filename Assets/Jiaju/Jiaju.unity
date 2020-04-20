@@ -2524,7 +2524,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Idle
+  m_Text: FoamAR
 --- !u!222 &486983607
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5928,7 +5928,7 @@ MonoBehaviour:
   materialPrototypes:
   - {fileID: 2100000, guid: 52c992b288e16f64a8ac2ccf28093f4c, type: 2}
   - {fileID: 2100000, guid: cbaaf44db5d1af24685052651371ec6b, type: 2}
-  - {fileID: 2100000, guid: a0631de1075036b4580b0c788a584166, type: 2}
+  - {fileID: 0}
   currentColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &1614409306
 MonoBehaviour:

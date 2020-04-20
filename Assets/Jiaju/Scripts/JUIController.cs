@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.iOS;
+using Portalble.Functions.Grab;
 
 public enum FoamState
 {
@@ -49,7 +50,8 @@ public class JUIController : MonoBehaviour {
         if (info.IsName("dot_fan") || info.IsName("dot_cre") || info.IsName("dot_mani"))
         {
             AnimatorStateInfo appInfo = m_data.StateMachine.GetCurrentAnimatorStateInfo(0);
-            if (appInfo.IsName("IdleState") || appInfo.IsName("ManipulationState") || appInfo.IsName("CreationState"))
+            //if (appInfo.IsName("IdleState") || appInfo.IsName("ManipulationState") || appInfo.IsName("CreationState"))
+            if (appInfo.IsTag("Switchable") && !Grab.Instance.IsGrabbing)
             {
                 checkTouch();
                 checkMouseClick();
@@ -100,15 +102,15 @@ public class JUIController : MonoBehaviour {
             _foamState = FoamState.STATE_MANIPULATE;
 
         }
-        else
-        {
-            m_stateIndicator.text = "Idle";
+        //else
+        //{
+        //    m_stateIndicator.text = "Idle";
 
-            m_dotAnimator.SetBool(_hash_creBool, false);
-            m_dotAnimator.SetBool(_hash_maniBool, false);
+        //    m_dotAnimator.SetBool(_hash_creBool, false);
+        //    m_dotAnimator.SetBool(_hash_maniBool, false);
 
-            _foamState = FoamState.STATE_IDLE;
-        }
+        //    _foamState = FoamState.STATE_IDLE;
+        //}
     }
 
     private bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)

@@ -382,7 +382,7 @@ GameObject:
   - component: {fileID: 133015745}
   - component: {fileID: 133015746}
   m_Layer: 0
-  m_Name: Mani_2
+  m_Name: Mani_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -400,7 +400,7 @@ Transform:
   m_LocalScale: {x: 0.002, y: 0.002, z: 1}
   m_Children: []
   m_Father: {fileID: 423431587}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &133015745
 SpriteRenderer:
@@ -439,12 +439,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b0a57a014cb834d828db3d70e5954aaf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4f78ae7eb8ac84c9cb1ab020c2288e52, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 11.07, y: 4.71}
+  m_Size: {x: 13.54, y: 29.34383}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba13b76fbc88040e09bfdd2434c7c5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_highlightSprite: {fileID: 21300000, guid: 8546230f36ebf49cebc7d9a4edc59673, type: 3}
+  m_highlightSprite: {fileID: 21300000, guid: 985bb416d58114353b0c139808f8f8fe, type: 3}
   m_centerSprite: {fileID: 21300000, guid: e06cb108289b0488baab49c8f0043b43, type: 3}
   m_centerText: {fileID: 1387675486}
 --- !u!1 &135463955
@@ -2264,9 +2264,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 732566772}
+  - {fileID: 642960984}
   - {fileID: 878873231}
   - {fileID: 133015744}
-  - {fileID: 642960984}
   - {fileID: 1387675485}
   m_Father: {fileID: 1059372738}
   m_RootOrder: 0
@@ -3093,7 +3093,7 @@ GameObject:
   - component: {fileID: 642960985}
   - component: {fileID: 642960986}
   m_Layer: 0
-  m_Name: Mani_scale
+  m_Name: Mani_move
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3111,7 +3111,7 @@ Transform:
   m_LocalScale: {x: 0.002, y: 0.002, z: 1}
   m_Children: []
   m_Father: {fileID: 423431587}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &642960985
 SpriteRenderer:
@@ -3150,7 +3150,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b82f648c47aaa42b89561fe6f4f6ce31, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 13aab452d484646828afff1420a93826, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3173,8 +3173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba13b76fbc88040e09bfdd2434c7c5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_highlightSprite: {fileID: 21300000, guid: 6896bed12fd4a446ab9f901a6c9573cb, type: 3}
-  m_centerSprite: {fileID: 21300000, guid: 1d145bd6143124775b1fd40488144df8, type: 3}
+  m_highlightSprite: {fileID: 21300000, guid: 7b9046ff7e36244bc9b6827456242894, type: 3}
+  m_centerSprite: {fileID: 21300000, guid: b2912e9abae664f53acb03c6aadc9a7b, type: 3}
   m_centerText: {fileID: 1387675486}
 --- !u!1 &678918249 stripped
 GameObject:
@@ -3475,7 +3475,7 @@ GameObject:
   - component: {fileID: 732566773}
   - component: {fileID: 732566774}
   m_Layer: 0
-  m_Name: Mani_move
+  m_Name: Mani_select
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3532,7 +3532,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: fe638b29cf2974b9c9cbe6430a3556af, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 31b517cabf7b8404ab00416faabfd5e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3555,8 +3555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba13b76fbc88040e09bfdd2434c7c5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_highlightSprite: {fileID: 21300000, guid: 7b9046ff7e36244bc9b6827456242894, type: 3}
-  m_centerSprite: {fileID: 21300000, guid: b2912e9abae664f53acb03c6aadc9a7b, type: 3}
+  m_highlightSprite: {fileID: 21300000, guid: fd904883557684bc5a186102240e1c9e, type: 3}
+  m_centerSprite: {fileID: 21300000, guid: c169c82c9883346fda4cf291ceca9e5c, type: 3}
   m_centerText: {fileID: 1387675486}
 --- !u!1 &872373782
 GameObject:
@@ -3746,7 +3746,7 @@ GameObject:
   - component: {fileID: 878873232}
   - component: {fileID: 878873233}
   m_Layer: 0
-  m_Name: Mani_1
+  m_Name: Mani_scale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3764,7 +3764,7 @@ Transform:
   m_LocalScale: {x: 0.002, y: 0.002, z: 1}
   m_Children: []
   m_Father: {fileID: 423431587}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &878873232
 SpriteRenderer:
@@ -3803,12 +3803,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4f78ae7eb8ac84c9cb1ab020c2288e52, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a3e23566a6f064b4cbfa534b5962d3b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 11.07, y: 4.71}
+  m_Size: {x: 13.54, y: 29.34383}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3826,8 +3826,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba13b76fbc88040e09bfdd2434c7c5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_highlightSprite: {fileID: 21300000, guid: 985bb416d58114353b0c139808f8f8fe, type: 3}
-  m_centerSprite: {fileID: 21300000, guid: e06cb108289b0488baab49c8f0043b43, type: 3}
+  m_highlightSprite: {fileID: 21300000, guid: 6896bed12fd4a446ab9f901a6c9573cb, type: 3}
+  m_centerSprite: {fileID: 21300000, guid: 1d145bd6143124775b1fd40488144df8, type: 3}
   m_centerText: {fileID: 1387675486}
 --- !u!114 &910155741 stripped
 MonoBehaviour:

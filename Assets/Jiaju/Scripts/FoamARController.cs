@@ -80,8 +80,8 @@ public class FoamARController : PortalbleGeneralController
     {
         base.Update();
 
-        m_maniMenu.transform.LookAt(Camera.main.transform);
-        m_createMenu.transform.LookAt(Camera.main.transform);
+        m_maniMenu.transform.LookAt(2 * m_maniMenu.transform.position - Camera.main.transform.position);
+        m_createMenu.transform.LookAt(2 * m_createMenu.transform.position - Camera.main.transform.position);
 
         switch (m_jui.FoamState)
         {

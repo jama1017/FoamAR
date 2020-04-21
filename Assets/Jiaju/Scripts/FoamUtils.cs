@@ -32,7 +32,10 @@ public enum ManiMenuItem
 public static class FoamUtils
 {
     public static readonly Color ObjManiSelectedColor = new Color(247f/255f, 238f/255f, 144f/255f);
-    public static readonly Color IconNormalColor = new Color(1f, 1f, 1f, 0.78f);
+
+    public static readonly Color RadialIconBGNormalColor = new Color(0.1372549f, 0.1215686f, 0.1254902f, 0.80f); // #231F20
+    public static readonly Color RadialIconBGHighlightColor = new Color(0.2470588f, 0.2470588f, 0.2470588f, 0.80f); // #3f3f3f
+    public static readonly Color IconNormalColor = new Color(1f, 1f, 1f, 0.80f); // for radial centers. To rename
 
     public static readonly float ObjCreatedOffset = 0.13f;
     public static readonly int ObjCreatedAnimTime = 40;

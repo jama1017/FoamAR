@@ -13,8 +13,6 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
     private int m_hash_itemSelectedBool = Animator.StringToHash("ItemSelectedBool");
     private CreateMenuItem m_selectedItem = CreateMenuItem.NULL;
 
-    private FoamRadialManager _currSelectedOption = null; // for highlighting purpose only
-
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -44,12 +42,14 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
 
         MenuRegion region = FoamUtils.checkMenuRegion(palmPos_curr, m_palmPos_init, m_bound_UppL, m_bound_UppR, m_bound_LowL, m_bound_LowR, _data.MiddleRadius);
 
+        Debug.DrawLine(m_palmPos_init, palmPos_curr, Color.red, 2.5f);
+
         switch (region)
         {
             case MenuRegion.UPPER:
                 //Debug.Log("FOAMFILTER Create Upp");
 
-                HighlightSprite(CreateMenuItem.CUBE);
+                _data.CreateMenuParent.HighlightSprite(0);
 
                 m_selectedItem = CreateMenuItem.CUBE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
@@ -59,7 +59,7 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
             case MenuRegion.RIGHT:
                 //Debug.Log("FOAMFILTER Create Right");
 
-                HighlightSprite(CreateMenuItem.CYLINDER);
+                _data.CreateMenuParent.HighlightSprite(1);
 
                 m_selectedItem = CreateMenuItem.CYLINDER;
                 animator.SetBool(m_hash_itemSelectedBool, true);
@@ -69,7 +69,7 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
             case MenuRegion.LOWER:
                 //Debug.Log("FOAMFILTER Create Lower");
 
-                HighlightSprite(CreateMenuItem.CONE);
+                _data.CreateMenuParent.HighlightSprite(2);
 
                 m_selectedItem = CreateMenuItem.CONE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
@@ -79,7 +79,7 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
             case MenuRegion.LEFT:
                 //Debug.Log("FOAMFILTER Create Left");
 
-                HighlightSprite(CreateMenuItem.SPHERE);
+                _data.CreateMenuParent.HighlightSprite(3);
 
                 m_selectedItem = CreateMenuItem.SPHERE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
@@ -88,7 +88,7 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
 
             case MenuRegion.MIDDLE:
 
-                HighlightSprite(CreateMenuItem.NULL);
+                _data.CreateMenuParent.HighlightSprite(-1);
 
                 m_selectedItem = CreateMenuItem.NULL;            //test
                 animator.SetBool(m_hash_itemSelectedBool, false); //test
@@ -96,7 +96,6 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
         }
 
         _data.Selected_createItem = m_selectedItem;
-        //Debug.Log("FOAMFILTER selected item in open: " + _data.Selected_createItem);
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
@@ -115,23 +114,4 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
-
-    private void HighlightSprite(CreateMenuItem geoType)
-    {
-        int geoNum = (int) geoType;
-
-        if (_currSelectedOption)
-        {
-            _currSelectedOption.DeHighlightIcon();
-        }
-
-        if (geoNum == (int)CreateMenuItem.NULL)
-        {
-            _data.CreationCenterRenderer.GetComponent<FoamRadialCenterManager>().DeHighlightCenter();
-            return;
-        }
-
-        _currSelectedOption = _data.CreationRenderers[geoNum].GetComponent<FoamRadialManager>();
-        _currSelectedOption.HightlightIcon();
-    }
 }

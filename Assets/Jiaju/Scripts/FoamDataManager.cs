@@ -7,7 +7,9 @@ public class FoamDataManager : MonoBehaviour
     public Camera FirstPersonCamera;
 
     public GameObject CreateMenu;
+    private FoamRadialMenuParent _createMenuParent;
     public GameObject ManiMenu;
+    private FoamRadialMenuParent _maniMenuParent;
     public GameObject ObjMenu;
 
     public GameObject StateIndicator;
@@ -20,21 +22,20 @@ public class FoamDataManager : MonoBehaviour
     private float _middleRadius = 0.030f; // middle region of the menu
 
     // creation menu renderer and sprite
-    public SpriteRenderer CubeRenderer;
-    public SpriteRenderer ConeRenderer;
-    public SpriteRenderer CylinderRenderer;
-    public SpriteRenderer SphereRenderer;
-    public SpriteRenderer CreationCenterRenderer;
+    //public SpriteRenderer CubeRenderer;
+    //public SpriteRenderer ConeRenderer;
+    //public SpriteRenderer CylinderRenderer;
+    //public SpriteRenderer SphereRenderer;
+    //public SpriteRenderer CreationCenterRenderer;
+    //private List<SpriteRenderer> _creationRenderers = new List<SpriteRenderer>();
 
-    private List<SpriteRenderer> _creationRenderers = new List<SpriteRenderer>();
+    //public SpriteRenderer ManiUppRenderer;
+    //public SpriteRenderer ManiRightRenderer;
+    //public SpriteRenderer ManiLowRenderer;
+    //public SpriteRenderer ManiLeftRenderer;
+    //public SpriteRenderer ManiCenterRenderer;
 
-    public SpriteRenderer ManiUppRenderer;
-    public SpriteRenderer ManiRightRenderer;
-    public SpriteRenderer ManiLowRenderer;
-    public SpriteRenderer ManiLeftRenderer;
-    public SpriteRenderer ManiCenterRenderer;
-
-    private List<SpriteRenderer> _manipulateRenderers = new List<SpriteRenderer>();
+    //private List<SpriteRenderer> _manipulateRenderers = new List<SpriteRenderer>();
 
 
     //private Color _normalColor = new Color(1f, 1f, 1f, 0.78f);
@@ -72,16 +73,18 @@ public class FoamDataManager : MonoBehaviour
         ActiveGC = ActiveHand.GetComponent<GestureControl>();
 
         // creation renderers
-        _creationRenderers.Add(CubeRenderer);
-        _creationRenderers.Add(CylinderRenderer);
-        _creationRenderers.Add(ConeRenderer);
-        _creationRenderers.Add(SphereRenderer);
+        //_creationRenderers.Add(CubeRenderer);
+        //_creationRenderers.Add(CylinderRenderer);
+        //_creationRenderers.Add(ConeRenderer);
+        //_creationRenderers.Add(SphereRenderer);
+        _createMenuParent = CreateMenu.GetComponent<FoamRadialMenuParent>();
 
         // manipulationRenderers
-        _manipulateRenderers.Add(ManiUppRenderer);
-        _manipulateRenderers.Add(ManiRightRenderer);
-        _manipulateRenderers.Add(ManiLowRenderer);
-        _manipulateRenderers.Add(ManiLeftRenderer);
+        //_manipulateRenderers.Add(ManiUppRenderer);
+        //_manipulateRenderers.Add(ManiRightRenderer);
+        //_manipulateRenderers.Add(ManiLowRenderer);
+        //_manipulateRenderers.Add(ManiLeftRenderer);
+        _maniMenuParent = ManiMenu.GetComponent<FoamRadialMenuParent>();
 
 
         _objCreatedPos = Vector3.zero;
@@ -121,16 +124,26 @@ public class FoamDataManager : MonoBehaviour
     }
 
 
-    public List<SpriteRenderer> CreationRenderers
+    //public List<SpriteRenderer> CreationRenderers
+    //{
+    //    get { return _creationRenderers; }
+    //}
+
+    public FoamRadialMenuParent CreateMenuParent
     {
-        get { return _creationRenderers; }
+        get { return _createMenuParent; }
+    }
+
+    public FoamRadialMenuParent ManiMenuParent
+    {
+        get { return _maniMenuParent; }
     }
 
 
-    public List<SpriteRenderer> ManipulateRenderers
-    {
-        get { return _manipulateRenderers; }
-    }
+    //public List<SpriteRenderer> ManipulateRenderers
+    //{
+    //    get { return _manipulateRenderers; }
+    //}
 
     public List<GameObject> SceneObjs
     {

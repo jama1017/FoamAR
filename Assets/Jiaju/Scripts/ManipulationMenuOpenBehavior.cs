@@ -14,8 +14,6 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
     //private int _hash_itemSelectedBool = Animator.StringToHash("ItemSelectedBool");
     private int _hash_toolSelectedInt = Animator.StringToHash("ToolSelectedInt");
 
-    private FoamRadialManager _currSelectedOption = null; // for highlighting purpose only
-
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -49,33 +47,39 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
             case MenuRegion.UPPER:
                 Debug.Log("-----------Mani Upp");
 
-                HighlightSprite(ManiMenuItem.SELECT);
+                _data.ManiMenuParent.HighlightSprite(0);
+
                 animator.SetInteger(_hash_toolSelectedInt, 0);
 
                 break;
 
             case MenuRegion.RIGHT:
                 //Debug.Log("-----------Mani RIGHT");
-                HighlightSprite(ManiMenuItem.MOVE);
+
+                _data.ManiMenuParent.HighlightSprite(1);
+
                 animator.SetInteger(_hash_toolSelectedInt, 1);
 
                 break;
 
             case MenuRegion.LOWER:
                 //Debug.Log("-----------Mani LOWER");
-                HighlightSprite(ManiMenuItem.SCALE);
+
+                _data.ManiMenuParent.HighlightSprite(2);
 
                 break;
 
             case MenuRegion.LEFT:
                 //Debug.Log("-----------Mani LEFT");
-                HighlightSprite(ManiMenuItem.ONE);
+
+                _data.ManiMenuParent.HighlightSprite(3);
 
                 break;
 
             case MenuRegion.MIDDLE:
                 //Debug.Log("-----------Mani MIDDLE");
-                HighlightSprite(ManiMenuItem.NULL);
+
+                _data.ManiMenuParent.HighlightSprite(-1);
 
                 break;
         }
@@ -98,23 +102,4 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
-
-    private void HighlightSprite(ManiMenuItem toolType)
-    {
-        int toolNum = (int)toolType;
-
-        if (_currSelectedOption)
-        {
-            _currSelectedOption.DeHighlightIcon();
-        }
-
-        if (toolNum == (int)ManiMenuItem.NULL)
-        {
-            _data.ManiCenterRenderer.GetComponent<FoamRadialCenterManager>().DeHighlightCenter();
-            return;
-        }
-        
-        _currSelectedOption = _data.ManipulateRenderers[toolNum].GetComponent<FoamRadialManager>();
-        _currSelectedOption.HightlightIcon();
-    }
 }

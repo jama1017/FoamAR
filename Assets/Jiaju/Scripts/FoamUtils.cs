@@ -48,17 +48,26 @@ public static class FoamUtils
     public static int CurrentSelectionObjID = 0;
 
     public static bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
-	{
-		float as_x = s.x - a.x;
-		float as_y = s.y - a.y;
+    {
+        float as_x = s.x - a.x;
+        float as_y = s.y - a.y;
 
-		bool s_ab = (b.x - a.x) * as_y - (b.y - a.y) * as_x > 0;
+        bool s_ab = (b.x - a.x) * as_y - (b.y - a.y) * as_x > 0;
 
-		if ((c.x - a.x) * as_y - (c.y - a.y) * as_x > 0 == s_ab) return false;
-		if ((c.x - b.x) * (s.y - b.y) - (c.y - b.y) * (s.x - b.x) > 0 != s_ab) return false;
+        if ((c.x - a.x) * as_y - (c.y - a.y) * as_x > 0 == s_ab) return false;
+        if ((c.x - b.x) * (s.y - b.y) - (c.y - b.y) * (s.x - b.x) > 0 != s_ab) return false;
 
-		return true;
-	}
+        return true;
+    }
+
+    //public static bool isInsideTri(Vector3 P, Vector3 A, Vector3 B, Vector3 C)
+    //{
+    //    bool b0 = Vector3.Dot(new Vector3(P.x - A.x, P.y - A.y), new Vector3(A.y - B.y, B.x - A.x)) > 0;
+    //    bool b1 = Vector3.Dot(new Vector3(P.x - B.x, P.y - B.y), new Vector3(B.y - C.y, C.x - B.x)) > 0;
+    //    bool b2 = Vector3.Dot(new Vector3(P.x - C.x, P.y - C.y), new Vector3(C.y - A.y, A.x - C.x)) > 0;
+    //    return (b0 == b1 && b1 == b2);                                                            
+    //}
+
 
     public static MenuRegion checkMenuRegion(Vector3 currPos, Vector3 initPos, Vector3 UppL, Vector3 UppR, Vector3 LowL, Vector3 LowR, float middleRadius)
 	{

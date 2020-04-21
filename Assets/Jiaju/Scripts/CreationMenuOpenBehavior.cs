@@ -5,11 +5,6 @@ using UnityEngine;
 public class CreationMenuOpenBehavior : StateMachineBehaviour
 {
     private FoamDataManager _data;
-    private Vector3 m_palmPos_init;
-    private Vector3 m_bound_UppL;
-    private Vector3 m_bound_UppR;
-    private Vector3 m_bound_LowL;
-    private Vector3 m_bound_LowR;
     private int m_hash_itemSelectedBool = Animator.StringToHash("ItemSelectedBool");
     private CreateMenuItem m_selectedItem = CreateMenuItem.NULL;
 
@@ -21,77 +16,44 @@ public class CreationMenuOpenBehavior : StateMachineBehaviour
 
         _data.CreateMenu.transform.position = _data.ActiveIndex.transform.position;
         _data.CreateMenu.SetActive(true);
-
         _data.ManiMenu.SetActive(false);
 
-        m_palmPos_init = _data.ActivePalm.transform.position;
-        m_bound_UppL = m_palmPos_init + new Vector3(-_data.TriggerRadius, _data.TriggerRadius);
-        m_bound_UppR = m_palmPos_init + new Vector3(_data.TriggerRadius, _data.TriggerRadius);
-
-        m_bound_LowL = m_palmPos_init + new Vector3(-_data.TriggerRadius, -_data.TriggerRadius);
-        m_bound_LowR = m_palmPos_init + new Vector3(_data.TriggerRadius, -_data.TriggerRadius);
+        _data.CreateMenuParent.RecordPalmPosInit(_data.ActivePalm.transform.position);
 
         animator.SetBool(m_hash_itemSelectedBool, false);
-        //Debug.Log("FOAMFILTER Creation Menu Open State entered");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Vector3 palmPos_curr = _data.ActivePalm.transform.position;
-
-        MenuRegion region = FoamUtils.checkMenuRegion(palmPos_curr, m_palmPos_init, m_bound_UppL, m_bound_UppR, m_bound_LowL, m_bound_LowR, _data.MiddleRadius);
-
-        Debug.DrawLine(m_palmPos_init, palmPos_curr, Color.red, 2.5f);
+        MenuRegion region = _data.CreateMenuParent.RegionDetection(_data.ActivePalm.transform.position);
 
         switch (region)
         {
             case MenuRegion.UPPER:
-                //Debug.Log("FOAMFILTER Create Upp");
-
-                _data.CreateMenuParent.HighlightSprite(0);
-
                 m_selectedItem = CreateMenuItem.CUBE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
-
             case MenuRegion.RIGHT:
-                //Debug.Log("FOAMFILTER Create Right");
-
-                _data.CreateMenuParent.HighlightSprite(1);
-
                 m_selectedItem = CreateMenuItem.CYLINDER;
                 animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
-
             case MenuRegion.LOWER:
-                //Debug.Log("FOAMFILTER Create Lower");
-
-                _data.CreateMenuParent.HighlightSprite(2);
-
                 m_selectedItem = CreateMenuItem.CONE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
 
             case MenuRegion.LEFT:
-                //Debug.Log("FOAMFILTER Create Left");
-
-                _data.CreateMenuParent.HighlightSprite(3);
-
                 m_selectedItem = CreateMenuItem.SPHERE;
                 animator.SetBool(m_hash_itemSelectedBool, true);
                 break;
 
-
             case MenuRegion.MIDDLE:
-
-                _data.CreateMenuParent.HighlightSprite(-1);
-
-                m_selectedItem = CreateMenuItem.NULL;            //test
-                animator.SetBool(m_hash_itemSelectedBool, false); //test
+                m_selectedItem = CreateMenuItem.NULL;          
+                animator.SetBool(m_hash_itemSelectedBool, false);
                 break;
         }
 

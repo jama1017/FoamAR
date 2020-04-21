@@ -5179,11 +5179,6 @@ MonoBehaviour:
   ActiveIndex: {fileID: 0}
   ActivePalm: {fileID: 0}
   ActiveGC: {fileID: 0}
-  ManiUppRenderer: {fileID: 1064629000}
-  ManiRightRenderer: {fileID: 802976927}
-  ManiLowRenderer: {fileID: 358513690}
-  ManiLeftRenderer: {fileID: 873332767}
-  ManiCenterRenderer: {fileID: 292848347}
   FoamMaterial: {fileID: 2100000, guid: 04276a49cb89342639b6dee3396f928c, type: 2}
   CubePrefab: {fileID: 3596028150467614126, guid: a3489e92154e148d4a8b2afabd58f73b,
     type: 3}

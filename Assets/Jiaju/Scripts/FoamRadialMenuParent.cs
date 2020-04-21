@@ -11,7 +11,7 @@ public class FoamRadialMenuParent : MonoBehaviour
     protected Vector3 m_palmPos_init = Vector3.zero; // projected space
     protected Vector3 m_menu_center = Vector3.zero;
     //protected Vector2 m_palmPos_curr = Vector3.zero;
-    protected float inner_radius = 0.02795f;
+    protected float inner_radius = 0.027f;
     protected float outer_radius = 1.0f;
 
     private Vector3 m_bound_UppL;

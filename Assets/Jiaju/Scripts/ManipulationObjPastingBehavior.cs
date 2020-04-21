@@ -33,11 +33,20 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
         _animCount = 0;
         _transStep = 0;
 
+        string currName = _data.CurrentSelectionObj.name.Replace("(Clone)", "").Trim();
 
-        _copiedObj = Instantiate(_data.CurrentSelectionObj.transform, _data.ObjCreatedPos, Quaternion.identity);
+        if (currName == "FoamCone")
+        {
+            _copiedObj = Instantiate(_data.ConeDummyPrefab.transform, _data.ObjCreatedPos, Quaternion.identity);
+
+        }
+        else
+        {
+            _copiedObj = Instantiate(_data.CurrentSelectionObj.transform, _data.ObjCreatedPos, Quaternion.identity);
+
+        }
+
         _copiedObj.gameObject.name = _copiedObj.gameObject.name.Replace("(Clone)", "").Trim();
-
-        // grabbing stuff?
 
         _copiedRenderer = _copiedObj.gameObject.GetComponent<Renderer>();
         _copiedRenderer.material.color = _data.ObjManiOGColor;
@@ -74,15 +83,18 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
             if (_data.ActiveGC.bufferedGesture() == "pinch")
             {
                 _isReleased = true;
-                Debug.Log("copied-------------" + _copiedObj.gameObject.name);
 
-                if (_copiedObj.gameObject.name == "FoamCone")
+                _copiedObj.gameObject.name = _copiedObj.gameObject.name.Replace("(Clone)", "").Trim();
+                if (_copiedObj.gameObject.name == "FoamCone_Dummy")
                 {
                     GameObject.Destroy(_copiedObj.gameObject);
                     _copiedObj = Instantiate(_data.ConePrefab, _data.ObjCreatedPos, Quaternion.identity);
                 }
 
+                _copiedObj.gameObject.name = _copiedObj.gameObject.name.Replace("(Clone)", "").Trim();
                 _copiedRenderer.material.color = _copiedOGColor;
+                Debug.Log("copied-------------" + _copiedObj.gameObject.name);
+
                 //grabbing stuff?
 
                 //_data.SceneObjs.Add(_copiedObj.gameObject);

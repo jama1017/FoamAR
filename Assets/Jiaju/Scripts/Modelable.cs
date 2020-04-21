@@ -23,6 +23,11 @@ public class Modelable : MonoBehaviour
         _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
         _renderer = this.GetComponent<Renderer>();
         _originalColor = _renderer.material.color;
+
+        if (this.gameObject.name == "FoamCone" || this.gameObject.name == "FoamCone(Clone)")
+        {
+            _dwellThreshold = 170;
+        }
     }
 
     // Update is called once per frame
@@ -90,7 +95,9 @@ public class Modelable : MonoBehaviour
         {
             _indexDwellCount++;
 
-            //Debug.Log("ICONN obj self stay count: " + _indexDwellCount);
+            Debug.Log("------!!! threshold" + _dwellThreshold);
+            Debug.Log("------!!! obj num" + _data.SceneObjs.Count);
+
         }
     }
 
@@ -108,6 +115,10 @@ public class Modelable : MonoBehaviour
             {
                 _indexColliderCount = 0;
                 _indexDwellCount = 0;
+                if(_isBeingSelected)
+                {
+                    _renderer.material.color = FoamUtils.ObjManiSelectedColor;
+                }
             }
         }
         //Debug.Log("MODELABLE index count: " + _indexColliderCount);

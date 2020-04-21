@@ -4225,6 +4225,8 @@ MonoBehaviour:
     type: 3}
   ConePrefab: {fileID: 4068709197770029280, guid: bf4617e78a0ca4e5b972e81b5bdbdbf5,
     type: 3}
+  ConeDummyPrefab: {fileID: 4068709197770029280, guid: 13f146828dc4a40a08929d4a48adaa1d,
+    type: 3}
 --- !u!4 &1069181528
 Transform:
   m_ObjectHideFlags: 0

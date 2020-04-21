@@ -49,7 +49,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
             case CreateMenuItem.CONE:
                 //Debug.Log("FOAMFILTER CONE ITEM CREATED");
-                m_prim = Instantiate(m_data.ConePrefab, m_data.ObjCreatedPos, Quaternion.identity);
+                m_prim = Instantiate(m_data.ConeDummyPrefab, m_data.ObjCreatedPos, Quaternion.identity);
                 break;
 
             default:
@@ -58,13 +58,6 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 
         if (m_prim)
         {
-            m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
-            //Debug.Log("-------------" + m_prim.gameObject.name);
-
-            //m_prim.gameObject.GetComponent<Grabable>().enabled = false; // grabbing?
-            //m_prim_child = m_prim.GetChild(0);
-            //m_prim_child.gameObject.SetActive(false); // is it for grabbing??
-
             _primRenderer = m_prim.gameObject.GetComponent<Renderer>();
             _primOGColor = _primRenderer.material.color;
 
@@ -107,15 +100,18 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
             {
                 m_isReleased = true;
 
-                if (m_prim.gameObject.name == "FoamCone")
+                m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
+                if (m_prim.gameObject.name == "FoamCone_Dummy")
                 {
                     GameObject.Destroy(m_prim.gameObject);
                     m_prim = Instantiate(m_data.ConePrefab, m_data.ObjCreatedPos, Quaternion.identity);
                 }
 
+                m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
+                Debug.Log("-------------" + m_prim.gameObject.name);
+
                 _primRenderer.material.color = _primOGColor;
 
-                //m_data.SceneObjs.Add(m_prim.gameObject);
                 FoamUtils.CreateObjData(m_data, m_prim.gameObject);
 
                 animator.SetBool(m_hash_actionBool, true);

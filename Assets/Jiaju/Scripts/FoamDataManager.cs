@@ -47,6 +47,7 @@ public class FoamDataManager : MonoBehaviour
     public Transform SpherePrefab;
     public Transform CylinderPrefab;
     public Transform ConePrefab;
+    public Transform ConeDummyPrefab;
     private CreateMenuItem _selected_createItem = CreateMenuItem.NULL;
     private ManiMenuItem _selected_maniItem = ManiMenuItem.NULL;
 

@@ -17,6 +17,7 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
         _data.ManiMenu.SetActive(true);
         _data.CreateMenu.SetActive(false);
 
+        _data.ManiMenuParent.InitiateIcons();
         _data.ManiMenuParent.RecordPalmPosInit(_data.ActivePalm.transform.position);
 
         Debug.Log("FOAMFILTER Mani Menu Open State entered");

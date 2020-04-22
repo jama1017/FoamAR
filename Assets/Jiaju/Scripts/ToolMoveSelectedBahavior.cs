@@ -13,6 +13,7 @@ public class ToolMoveSelectedBahavior : StateMachineBehaviour
     {
         _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
+        _data.ManiMenuParent.SetToolOptionInUse(1);
         _data.StateIndicator.GetComponent<Text>().text = "Edit: Move";
 
         FoamUtils.IsGlobalGrabbing = true;

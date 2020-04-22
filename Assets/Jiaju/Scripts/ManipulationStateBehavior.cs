@@ -23,6 +23,7 @@ public class ManipulationStateBehavior : StateMachineBehaviour
         animator.SetBool(_hash_objMenuClosedBool, false);
         animator.SetInteger(_hash_toolSelectedInt, 0);
 
+        _data.ManiMenuParent.SetToolOptionInUse(0);
         _data.StateIndicator.GetComponent<Text>().text = "Edit: Selection";
     }
 

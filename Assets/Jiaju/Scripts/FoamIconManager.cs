@@ -6,12 +6,12 @@ public class FoamIconManager : MonoBehaviour
 {
 
     public FoamDataManager m_data;
-    public Sprite m_bg_highlightSprite;
+    //public Sprite m_bg_highlightSprite;
     public Sprite m_rippleSprite;
     public SpriteRenderer m_bg_spriteRenderer;
     public GameObject m_ripple;
 
-    private Sprite _bg_originalSprite;
+    //private Sprite _bg_originalCol;
     private int _indexDwellCount = 0;
     private int _indexColliderCount = 0;
     private int _dwellThreshold = 70;
@@ -23,8 +23,8 @@ public class FoamIconManager : MonoBehaviour
     protected virtual void Start()
     {
         //_spriteRenderer = this.GetComponent<SpriteRenderer>();
-        m_bg_spriteRenderer.color = FoamUtils.IconNormalColor;
-        _bg_originalSprite = m_bg_spriteRenderer.sprite;
+        m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
+        //_bg_originalSprite = m_bg_spriteRenderer.sprite;
     }
 
 
@@ -33,7 +33,7 @@ public class FoamIconManager : MonoBehaviour
     {
         if (_indexColliderCount == 0)
         {
-            m_bg_spriteRenderer.sprite = _bg_originalSprite;
+            m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
         }
 
         if (_isActive && _indexDwellCount > 10)
@@ -62,8 +62,8 @@ public class FoamIconManager : MonoBehaviour
 
             if (_isActive)
             {
-                m_bg_spriteRenderer.sprite = m_bg_highlightSprite;
-            }      
+                m_bg_spriteRenderer.color = FoamUtils.RadialIconBGHighlightColor;
+            }
         }
     }
 
@@ -89,7 +89,7 @@ public class FoamIconManager : MonoBehaviour
         {
             if (_isActive)
             {
-                m_bg_spriteRenderer.sprite = _bg_originalSprite;
+                m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
             }
 
             _indexColliderCount--;
@@ -107,7 +107,7 @@ public class FoamIconManager : MonoBehaviour
     {
         if (!m_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationObjMenuOpen")) { return; }
 
-        m_bg_spriteRenderer.sprite = _bg_originalSprite;
+        m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
         _indexDwellCount = 0;
         _indexColliderCount = 0;
 
@@ -131,7 +131,7 @@ public class FoamIconManager : MonoBehaviour
         _isActive = true;
         if (_indexColliderCount > 0)
         {
-            m_bg_spriteRenderer.sprite = m_bg_highlightSprite;
+            m_bg_spriteRenderer.color = FoamUtils.RadialIconBGHighlightColor;
         }
     }
 
@@ -139,7 +139,7 @@ public class FoamIconManager : MonoBehaviour
     public void DeactivateIcon()
     {
         _isActive = false;
-        m_bg_spriteRenderer.sprite = _bg_originalSprite;
+        m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
         _indexDwellCount = 0;
         _indexColliderCount = 0;
     }

@@ -47,6 +47,8 @@ public static class FoamUtils
 
     public static int CurrentSelectionObjID = 0;
 
+    public static float ScaleTabOffset = 0.06f;
+
     public static bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
     {
         float as_x = s.x - a.x;

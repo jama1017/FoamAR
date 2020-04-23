@@ -15,6 +15,7 @@ public class ToolScaleSelectedBehavior : StateMachineBehaviour
         _data.ManiMenuParent.SetToolOptionInUse(2);
         _data.StateIndicator.GetComponent<Text>().text = "Edit: Scale";
 
+        FoamUtils.IsGlobalGrabbing = true;
 
         // to move?
         if (!_data.CurrentSelectionObj) return;
@@ -29,10 +30,20 @@ public class ToolScaleSelectedBehavior : StateMachineBehaviour
     //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        _data.FoamScaleTool.DestroyTabs();
+        FoamUtils.IsGlobalGrabbing = false;
+        if (_data.CurrentSelectionObj)
+        {
+            Portalble.Functions.Grab.GrabCollider curGC = _data.CurrentSelectionObj.transform.GetChild(0).GetComponent<Portalble.Functions.Grab.GrabCollider>();
+            if (curGC)
+            {
+                Debug.Log("____exiting selection tool degrabbed");
+                curGC.DeGrab();
+            }
+        }
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

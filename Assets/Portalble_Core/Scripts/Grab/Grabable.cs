@@ -262,6 +262,13 @@ namespace Portalble.Functions.Grab {
                     GetComponent<Renderer>().materials = new Material[] { m_selectedMaterial };
                 }
             }
+
+            //Jiaju change
+            FoamScaleTab tab = this.GetComponent<FoamScaleTab>();
+            if (tab)
+            {
+                tab.OnGrabStop();
+            }
         }
 
         /// <summary>

@@ -142,17 +142,22 @@ namespace Portalble.Functions.Grab {
 
             if (m_leftHandFingerIn >= FINGER_THRESHOLD) {
 
-                _parentGameObject.GetComponent<Modelable>().SetAsSelected();  // Jiaju, maybe need to restrict to move tool
-                // Tell it to be grabbed
-                if (m_grabObj != null) {
-                    m_grabObj.OnGrabTriggerEnter(this, true);
-                    m_entered = true;
-                    Expand(other.transform.parent.parent);
+                // Jiaju
+                Modelable model = _parentGameObject.GetComponent<Modelable>();
+                if (model)
+                {
+                    model.SetAsSelected();
                 }
             }
             else if (m_rightHandFingerIn >= FINGER_THRESHOLD) {
 
-                _parentGameObject.GetComponent<Modelable>().SetAsSelected();  // Jiaju
+                // Jiaju
+                Modelable model = _parentGameObject.GetComponent<Modelable>();
+                if (model)
+                {
+                    model.SetAsSelected();  
+                }
+
                 // Tell it to be grabbed
                 if (m_grabObj != null) {
                     m_grabObj.OnGrabTriggerEnter(this, false);

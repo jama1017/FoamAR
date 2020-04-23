@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 617008717414071199}
   - component: {fileID: 617008717414071198}
   - component: {fileID: 617008717414071197}
+  - component: {fileID: 4759737150328400265}
   m_Layer: 11
   m_Name: FoamScaleTab
   m_TagString: InteractableObj
@@ -107,7 +108,7 @@ Transform:
   m_GameObject: {fileID: 617008717414071196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.13687724, y: 0.3153448, z: 0.061157227}
-  m_LocalScale: {x: 0.05, y: 0.03, z: 0.05}
+  m_LocalScale: {x: 0.06, y: 0.035, z: 0.06}
   m_Children:
   - {fileID: 617008716306386196}
   m_Father: {fileID: 0}
@@ -200,9 +201,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_initialLock: 0
-  m_selectedOutlineColor: {r: 0, g: 0, b: 0, a: 0}
-  m_grabbedOutlineColor: {r: 0, g: 0, b: 0, a: 0}
+  m_selectedOutlineColor: {r: 0, g: 0.783, b: 0, a: 0}
+  m_grabbedOutlineColor: {r: 0, g: 0, b: 0.839, a: 0}
   m_useOutlineMaterial: 1
   m_selectedMaterial: {fileID: 2100000, guid: d4dcff38c4c58624ebf541cb3cf8825f, type: 2}
   m_grabbedMaterial: {fileID: 0}
   m_throwPower: 5
+--- !u!114 &4759737150328400265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617008717414071196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7fd9afabfbbc4042b06f69dd5a5e52e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_targetTrans: {fileID: 0}

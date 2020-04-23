@@ -6791,9 +6791,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c26d493a8a634849a6654af0778b7dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_data: {fileID: 1069181527}
   m_scaleTabPrefab: {fileID: 617008717414071186, guid: ef28e3cf13f2b4bd18e49512b8eb5994,
     type: 3}
-  m_targetTrans: {fileID: 0}
 --- !u!4 &1558452903
 Transform:
   m_ObjectHideFlags: 0

@@ -48,7 +48,7 @@ MeshCollider:
   serializedVersion: 3
   m_Convex: 1
   m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: af6d827018a574cc6970174bec2ceff2, type: 2}
+  m_Mesh: {fileID: 0}
 --- !u!54 &6807151188378628796
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -79,6 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_automaticExpand: 1
   m_grabObj: {fileID: 5248201979277865907}
+  IsFingerInObj: 0
 --- !u!114 &9067016337383511783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,7 +217,7 @@ MeshCollider:
   serializedVersion: 3
   m_Convex: 1
   m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: af6d827018a574cc6970174bec2ceff2, type: 2}
+  m_Mesh: {fileID: 0}
 --- !u!114 &5248201979277865907
 MonoBehaviour:
   m_ObjectHideFlags: 0

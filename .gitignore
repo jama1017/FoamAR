@@ -70,5 +70,7 @@ Assets/DestPrimitives.meta
 Assets/DestPrimitives/
 Assets/Plugins/macOS/
 Assets/Plugins/macOS.meta
+Assets/Plugins/AdjustPivot.meta
+Assets/Plugins/AdjustPivot/
 # mono crash
 mono_crash.*

@@ -39,6 +39,7 @@ public class ManipulationMenuOpenBehavior : StateMachineBehaviour
                 break;
 
             case MenuRegion.LOWER:
+                animator.SetInteger(_hash_toolSelectedInt, 2);
                 break;
 
             case MenuRegion.LEFT:

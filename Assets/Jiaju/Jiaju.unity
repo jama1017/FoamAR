@@ -5211,6 +5211,7 @@ MonoBehaviour:
     type: 3}
   ConeDummyPrefab: {fileID: 4068709197770029280, guid: 13f146828dc4a40a08929d4a48adaa1d,
     type: 3}
+  FoamScaleTool: {fileID: 1558452902}
 --- !u!4 &1069181528
 Transform:
   m_ObjectHideFlags: 0
@@ -6761,6 +6762,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1514781018}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1558452901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1558452903}
+  - component: {fileID: 1558452902}
+  m_Layer: 0
+  m_Name: FoamScaleParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1558452902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558452901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c26d493a8a634849a6654af0778b7dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_scaleTabPrefab: {fileID: 617008717414071186, guid: ef28e3cf13f2b4bd18e49512b8eb5994,
+    type: 3}
+  m_targetTrans: {fileID: 0}
+--- !u!4 &1558452903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558452901}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.13687724, y: 0.3153448, z: 0.061157227}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1595389695
 PrefabInstance:
   m_ObjectHideFlags: 0

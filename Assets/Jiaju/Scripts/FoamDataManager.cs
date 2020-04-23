@@ -60,6 +60,8 @@ public class FoamDataManager : MonoBehaviour
 
     private Vector3 _objCreatedPos;
 
+    public FoamScaleParent FoamScaleTool;
+
 
     // Start is called before the first frame update
     void Start()

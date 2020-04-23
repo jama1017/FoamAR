@@ -59,7 +59,8 @@ namespace Portalble.Functions.Grab {
         /// </summary>
         private bool m_ableToExpand = true;
 
-
+        // Jiaju change
+        [HideInInspector]
         public bool IsFingerInObj;
         private GameObject _parentGameObject;
 
@@ -141,7 +142,7 @@ namespace Portalble.Functions.Grab {
 
             if (m_leftHandFingerIn >= FINGER_THRESHOLD) {
 
-                _parentGameObject.GetComponent<Modelable>().SetAsSelected();  // Jiaju
+                _parentGameObject.GetComponent<Modelable>().SetAsSelected();  // Jiaju, maybe need to restrict to move tool
                 // Tell it to be grabbed
                 if (m_grabObj != null) {
                     m_grabObj.OnGrabTriggerEnter(this, true);

@@ -202,7 +202,7 @@ public class Modelable : MonoBehaviour
         float offset = 0.05f;
 
         // placement algorithms
-        Gizmos.DrawCube(transform.position + transform.up * (transform.localScale[1] * curBound.size.y / 2 + offset), new Vector3(0.03f, 0.03f, 0.03f));
+        Gizmos.DrawCube(transform.position + transform.up * (transform.localScale[1] * curBound.size.y / 2 + offset), new Vector3(0.06f, 0.03f, 0.06f));
         Gizmos.DrawCube(transform.position - transform.up * (transform.localScale[1] * curBound.size.y / 2 + offset), new Vector3(0.03f, 0.03f, 0.03f));
         Gizmos.DrawCube(transform.position + transform.right * (transform.localScale[0] * curBound.size.x / 2 + offset), new Vector3(0.03f, 0.03f, 0.03f));
         Gizmos.DrawCube(transform.position - transform.right * (transform.localScale[0] * curBound.size.x / 2 + offset), new Vector3(0.03f, 0.03f, 0.03f));

@@ -228,6 +228,13 @@ namespace Portalble.Functions.Grab {
             foreach(GrabCollider gc in m_grabColliders) {
                 gc.SetLock(true);
             }
+
+            //Jiaju change
+            FoamScaleTab tab = this.GetComponent<FoamScaleTab>();
+            if (tab)
+            {
+                tab.OnGrabStart();
+            }
         }
 
         /// <summary>

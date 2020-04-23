@@ -16,8 +16,8 @@ public class ToolScaleSelectedBehavior : StateMachineBehaviour
         _data.StateIndicator.GetComponent<Text>().text = "Edit: Scale";
 
         FoamUtils.IsGlobalGrabbing = true;
+        FoamUtils.IsExcludingSelectedObj = true;
 
-        // to move?
         if (!_data.CurrentSelectionObj) return;
         _data.FoamScaleTool.SetTarget(_data.CurrentSelectionObj.transform);
         _data.FoamScaleTool.SetUpTabs();
@@ -34,6 +34,7 @@ public class ToolScaleSelectedBehavior : StateMachineBehaviour
     {
         _data.FoamScaleTool.DestroyTabs();
         FoamUtils.IsGlobalGrabbing = false;
+        FoamUtils.IsExcludingSelectedObj = false;
         if (_data.CurrentSelectionObj)
         {
             Portalble.Functions.Grab.GrabCollider curGC = _data.CurrentSelectionObj.transform.GetChild(0).GetComponent<Portalble.Functions.Grab.GrabCollider>();

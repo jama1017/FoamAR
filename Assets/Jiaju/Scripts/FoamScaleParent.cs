@@ -8,9 +8,6 @@ public class FoamScaleParent : MonoBehaviour
     public Transform m_scaleTabPrefab;
     private Transform m_targetTrans = null;
 
-    private FoamScaleTab upTab;
-    private FoamScaleTab downTab;
-
     private List<FoamScaleTab> _tabs = new List<FoamScaleTab>();
 
     // Start is called before the first frame update
@@ -22,9 +19,7 @@ public class FoamScaleParent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!upTab) return;
-        upTab.TabUpdate();
-        downTab.TabUpdate();
+
     }
 
     public void SetTarget(Transform tar)
@@ -39,17 +34,34 @@ public class FoamScaleParent : MonoBehaviour
         Bounds curBound = m_targetTrans.GetComponent<MeshFilter>().sharedMesh.bounds; // or just mesh?
 
         // up
-        upTab = Instantiate(m_scaleTabPrefab, m_targetTrans.position + m_targetTrans.up * (m_targetTrans.localScale[1] * curBound.size.y / 2 + FoamUtils.ScaleTabOffset), Quaternion.Euler(m_targetTrans.up.x, m_targetTrans.up.y, m_targetTrans.up.z)).GetComponent<FoamScaleTab>();
-        upTab.SetTarget(m_targetTrans, m_targetTrans.up, 1, 1);
-        FoamUtils.CreateObjData(m_data, upTab.gameObject);
+        _tabs.Add(Instantiate(m_scaleTabPrefab, m_targetTrans.position + m_targetTrans.up * (m_targetTrans.localScale[1] * curBound.size[1] / 2 + FoamUtils.ScaleTabOffset), Quaternion.identity).GetComponent<FoamScaleTab>());
+        _tabs[_tabs.Count-1].SetTarget(this, 0, m_targetTrans, m_targetTrans.up, 1, 1);
+        FoamUtils.CreateObjData(m_data, _tabs[_tabs.Count - 1].gameObject);
 
         // down
-        downTab = Instantiate(m_scaleTabPrefab, m_targetTrans.position - m_targetTrans.up * (m_targetTrans.localScale[1] * curBound.size.y / 2 + FoamUtils.ScaleTabOffset), Quaternion.Euler(-m_targetTrans.up.x, -m_targetTrans.up.y, -m_targetTrans.up.z)).GetComponent<FoamScaleTab>();
-        downTab.SetTarget(m_targetTrans, m_targetTrans.up, 1, -1);
-        FoamUtils.CreateObjData(m_data, downTab.gameObject);
+        _tabs.Add(Instantiate(m_scaleTabPrefab, m_targetTrans.position - m_targetTrans.up * (m_targetTrans.localScale[1] * curBound.size[1] / 2 + FoamUtils.ScaleTabOffset), Quaternion.identity).GetComponent<FoamScaleTab>());
+        _tabs[_tabs.Count - 1].SetTarget(this, 1, m_targetTrans, m_targetTrans.up, 1, -1);
+        FoamUtils.CreateObjData(m_data, _tabs[_tabs.Count - 1].gameObject);
 
-        _tabs.Add(upTab);
-        _tabs.Add(downTab);
+        // right
+        _tabs.Add(Instantiate(m_scaleTabPrefab, m_targetTrans.position + m_targetTrans.right * (m_targetTrans.localScale[0] * curBound.size[0]/ 2 + FoamUtils.ScaleTabOffset), Quaternion.identity).GetComponent<FoamScaleTab>());
+        _tabs[_tabs.Count - 1].SetTarget(this, 2, m_targetTrans, m_targetTrans.right, 0, 1);
+        FoamUtils.CreateObjData(m_data, _tabs[_tabs.Count - 1].gameObject);
+
+        // left
+        _tabs.Add(Instantiate(m_scaleTabPrefab, m_targetTrans.position - m_targetTrans.right * (m_targetTrans.localScale[0] * curBound.size[0] / 2 + FoamUtils.ScaleTabOffset), Quaternion.identity).GetComponent<FoamScaleTab>());
+        _tabs[_tabs.Count - 1].SetTarget(this, 3, m_targetTrans, m_targetTrans.right, 0, -1);
+        FoamUtils.CreateObjData(m_data, _tabs[_tabs.Count - 1].gameObject);
+
+        // forward
+        _tabs.Add(Instantiate(m_scaleTabPrefab, m_targetTrans.position + m_targetTrans.forward * (m_targetTrans.localScale[2] * curBound.size[2] / 2 + FoamUtils.ScaleTabOffset), Quaternion.identity).GetComponent<FoamScaleTab>());
+        _tabs[_tabs.Count - 1].SetTarget(this, 4, m_targetTrans, m_targetTrans.forward, 2, 1);
+        FoamUtils.CreateObjData(m_data, _tabs[_tabs.Count - 1].gameObject);
+
+        // back
+        _tabs.Add(Instantiate(m_scaleTabPrefab, m_targetTrans.position - m_targetTrans.forward * (m_targetTrans.localScale[2] * curBound.size[2] / 2 + FoamUtils.ScaleTabOffset), Quaternion.identity).GetComponent<FoamScaleTab>());
+        _tabs[_tabs.Count - 1].SetTarget(this, 5, m_targetTrans, m_targetTrans.forward, 2, -1);
+        FoamUtils.CreateObjData(m_data, _tabs[_tabs.Count - 1].gameObject);
     }
 
     public void DestroyTabs()
@@ -61,5 +73,17 @@ public class FoamScaleParent : MonoBehaviour
             FoamUtils.RemoveObjData(m_data, _tabs[i].gameObject);
             GameObject.Destroy(_tabs[i].gameObject);
         }
+    }
+
+    public void UpdateTabsLocation(Bounds curBound, int index)
+    {
+        if (_tabs.Count != 6) return;
+
+        if (index !=0) _tabs[0].transform.position = m_targetTrans.position + m_targetTrans.up * (m_targetTrans.localScale[1] * curBound.size[1] / 2 + FoamUtils.ScaleTabOffset);
+        if (index !=1) _tabs[1].transform.position = m_targetTrans.position - m_targetTrans.up * (m_targetTrans.localScale[1] * curBound.size[1] / 2 + FoamUtils.ScaleTabOffset);
+        if (index !=2) _tabs[2].transform.position = m_targetTrans.position + m_targetTrans.right * (m_targetTrans.localScale[0] * curBound.size[0] / 2 + FoamUtils.ScaleTabOffset);
+        if (index !=3) _tabs[3].transform.position = m_targetTrans.position - m_targetTrans.right * (m_targetTrans.localScale[0] * curBound.size[0] / 2 + FoamUtils.ScaleTabOffset);
+        if (index !=4) _tabs[4].transform.position = m_targetTrans.position + m_targetTrans.forward * (m_targetTrans.localScale[2] * curBound.size[2] / 2 + FoamUtils.ScaleTabOffset);
+        if (index !=5) _tabs[5].transform.position = m_targetTrans.position - m_targetTrans.forward * (m_targetTrans.localScale[2] * curBound.size[2] / 2 + FoamUtils.ScaleTabOffset);
     }
 }

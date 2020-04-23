@@ -22,6 +22,7 @@ TagManager:
   - ARPlane
   - selectionDM
   - stateIndicator
+  - ScaleTab
   layers:
   - Default
   - TransparentFX

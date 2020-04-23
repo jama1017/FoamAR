@@ -46,6 +46,7 @@ public static class FoamUtils
     public static bool IsGlobalFingerInObject = false;
 
     public static int CurrentSelectionObjID = 0;
+    public static bool IsExcludingSelectedObj = false;
 
     public static float ScaleTabOffset = 0.06f;
 
@@ -162,5 +163,18 @@ public static class FoamUtils
         DM.SceneObjs.Remove(obj);
         DM.SceneObjGCs.Remove(obj.transform.GetChild(0).GetComponent<Portalble.Functions.Grab.GrabCollider>());
 
+    }
+
+
+    public static bool ShouldStopGrabCollider(GameObject obj)
+    {
+        if (IsExcludingSelectedObj && obj.tag != "ScaleTab") // should chnage to only allow the six tabs to be grabbed
+        {
+            return true;
+        }
+
+        if (!FoamUtils.IsGlobalGrabbing) return true;
+
+        return false;
     }
 }

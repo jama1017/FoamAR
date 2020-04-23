@@ -137,7 +137,8 @@ namespace Portalble.Functions.Grab {
                 return;
 
             // Jiaju FoamAR addition
-            if (!FoamUtils.IsGlobalGrabbing) return;
+            //if (!FoamUtils.IsGlobalGrabbing) return;
+            if (FoamUtils.ShouldStopGrabCollider(this.transform.parent.gameObject)) return;
 
 
             if (m_leftHandFingerIn >= FINGER_THRESHOLD) {
@@ -193,7 +194,8 @@ namespace Portalble.Functions.Grab {
                 return;
 
             // Jiaju FoamAR addition
-            if (!FoamUtils.IsGlobalGrabbing) return;
+            //if (!FoamUtils.IsGlobalGrabbing) return;
+            if (FoamUtils.ShouldStopGrabCollider(this.transform.parent.gameObject)) return;
 
 
             if (m_leftHandFingerIn < FINGER_THRESHOLD && m_rightHandFingerIn < FINGER_THRESHOLD) {

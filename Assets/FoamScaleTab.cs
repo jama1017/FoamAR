@@ -9,6 +9,11 @@ public class FoamScaleTab : MonoBehaviour
     private Vector3 _scaleDir;
     private int _coord;
     private int _dirInt;
+    private Quaternion _initRot;
+
+    private FoamScaleParent _parent;
+    private bool _isBeingGrabbed = false;
+    private int _index = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -19,15 +24,8 @@ public class FoamScaleTab : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-
-    public void TabUpdate()
-    {
-
         Vector3 _currPos = transform.position;
-        if (_currPos != _prevPos && m_targetTrans)
+        if (_currPos != _prevPos && m_targetTrans && _isBeingGrabbed)
         {
             Bounds curBound = m_targetTrans.GetComponent<MeshFilter>().sharedMesh.bounds; // or just mesh?
 
@@ -45,25 +43,48 @@ public class FoamScaleTab : MonoBehaviour
             float ratio = newY / curBound.size[_coord]; // ratio for scale
 
             // update target transform. need to extend this line
-            m_targetTrans.localScale = new Vector3(m_targetTrans.localScale[0], ratio, m_targetTrans.localScale[2]);
+            Vector3 newScale = m_targetTrans.localScale;
+            for (int i = 0; i < 3; i++)
+            {
+                if (i == _coord)
+                {
+                    newScale[i] = ratio;
+                }
+            }
+            m_targetTrans.localScale = newScale;
+            m_targetTrans.position += _dirInt * _scaleDir * delta / 2;
 
-            m_targetTrans.position = m_targetTrans.position + _dirInt * _scaleDir * delta / 2;
-
+            // update location of other tabs
+            _parent.UpdateTabsLocation(curBound, _index);
         }
         _prevPos = _currPos;
     }
 
-    public void SetTarget(Transform tar, Vector3 scaleDir, int coord, int dirInt)
+    public void SetTarget(FoamScaleParent p, int index, Transform tar, Vector3 scaleDir, int coord, int dirInt)
     {
         m_targetTrans = tar;
         _scaleDir = scaleDir;
         _coord = coord;
         _dirInt = dirInt;
+        transform.rotation = Quaternion.FromToRotation(transform.up, dirInt * scaleDir);
+        _initRot = transform.rotation;
+        _index = index;
+        _parent = p;
+    }
+
+    public void OnGrabStart()
+    {
+        _isBeingGrabbed = true;
+
     }
 
     public void OnGrabStop()
     {
         Bounds curBound = m_targetTrans.GetComponent<MeshFilter>().sharedMesh.bounds; // or just mesh?
         transform.position = m_targetTrans.position + _dirInt * _scaleDir * (m_targetTrans.localScale[_coord] * curBound.size[_coord] / 2 + FoamUtils.ScaleTabOffset);
+        transform.rotation = _initRot;
+
+        //_parent.UpdateTabsLocation(curBound, _index);
+        _isBeingGrabbed = false;
     }
 }

@@ -10,6 +10,7 @@ public class FoamIconManager : MonoBehaviour
     public Sprite m_rippleSprite;
     public SpriteRenderer m_bg_spriteRenderer;
     public GameObject m_ripple;
+    public GameObject m_text;
 
     //private Sprite _bg_originalCol;
     private int _indexDwellCount = 0;
@@ -24,6 +25,7 @@ public class FoamIconManager : MonoBehaviour
     {
         //_spriteRenderer = this.GetComponent<SpriteRenderer>();
         m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
+        m_text.SetActive(false);
         //_bg_originalSprite = m_bg_spriteRenderer.sprite;
     }
 
@@ -34,6 +36,7 @@ public class FoamIconManager : MonoBehaviour
         if (_indexColliderCount == 0)
         {
             m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
+            m_text.SetActive(false);
         }
 
         if (_isActive && _indexDwellCount > 10)
@@ -63,6 +66,7 @@ public class FoamIconManager : MonoBehaviour
             if (_isActive)
             {
                 m_bg_spriteRenderer.color = FoamUtils.RadialIconBGHighlightColor;
+                m_text.SetActive(true);
             }
         }
     }
@@ -90,6 +94,8 @@ public class FoamIconManager : MonoBehaviour
             if (_isActive)
             {
                 m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
+                m_text.SetActive(false);
+
             }
 
             _indexColliderCount--;
@@ -108,6 +114,7 @@ public class FoamIconManager : MonoBehaviour
         if (!m_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ManipulationObjMenuOpen")) { return; }
 
         m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
+        m_text.SetActive(false);
         _indexDwellCount = 0;
         _indexColliderCount = 0;
 
@@ -132,6 +139,7 @@ public class FoamIconManager : MonoBehaviour
         if (_indexColliderCount > 0)
         {
             m_bg_spriteRenderer.color = FoamUtils.RadialIconBGHighlightColor;
+            m_text.SetActive(true);
         }
     }
 
@@ -140,6 +148,7 @@ public class FoamIconManager : MonoBehaviour
     {
         _isActive = false;
         m_bg_spriteRenderer.color = FoamUtils.RadialIconBGNormalColor;
+        m_text.SetActive(false);
         _indexDwellCount = 0;
         _indexColliderCount = 0;
     }

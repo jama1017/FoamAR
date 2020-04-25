@@ -16,7 +16,8 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
 
     private int _animCount = 0;
     private int _transStep = 0;
-    private Vector3 _initalScale;
+    private Vector3 _initialScale;
+    private Quaternion _initialRot;
 
     private int _hash_objMenuClosedBool = Animator.StringToHash("ObjMenuClosedBool");
 
@@ -52,8 +53,11 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
         _copiedRenderer.material.color = _data.ObjManiOGColor;
         _copiedOGColor = _copiedRenderer.material.color;
 
-        _initalScale = _copiedObj.transform.localScale;
+        _initialScale = _data.CurrentSelectionObj.transform.localScale;
+        _initialRot = _data.CurrentSelectionObj.transform.rotation;
+
         _copiedObj.transform.localScale = Vector3.zero;
+        _copiedObj.transform.rotation = _initialRot;
 
         _isReleased = false;
     }
@@ -69,7 +73,7 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
         // play scale animation first
         if (_copiedObj && _animCount < FoamUtils.ObjCreatedAnimTime)
         {
-            _animCount = FoamUtils.AnimateGrowSize(_animCount, _initalScale, _copiedObj, _data.ObjCreatedPos);
+            _animCount = FoamUtils.AnimateGrowSize(_animCount, _initialScale, _copiedObj, _data.ObjCreatedPos);
             return;
         }
 
@@ -89,6 +93,8 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
                 {
                     GameObject.Destroy(_copiedObj.gameObject);
                     _copiedObj = Instantiate(_data.ConePrefab, _data.ObjCreatedPos, Quaternion.identity);
+                    _copiedObj.transform.localScale = _initialScale;
+                    _copiedObj.transform.rotation = _initialRot;
                 }
 
                 _copiedObj.gameObject.name = _copiedObj.gameObject.name.Replace("(Clone)", "").Trim();

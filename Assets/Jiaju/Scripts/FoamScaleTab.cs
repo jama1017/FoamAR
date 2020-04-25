@@ -110,6 +110,9 @@ public class FoamScaleTab : MonoBehaviour
 
     public void CleanUp()
     {
-        GameObject.Destroy(_line.gameObject);
+        if (_line && _line.gameObject)
+        {
+            GameObject.Destroy(_line.gameObject);
+        }
     }
 }

@@ -37,7 +37,7 @@ public static class FoamUtils
     public static readonly Color RadialIconBGHighlightColor = new Color(0.2470588f, 0.2470588f, 0.2470588f, 0.80f); // #3f3f3f
     public static readonly Color IconNormalColor = new Color(1f, 1f, 1f, 0.80f); // for radial centers. To rename
 
-    public static readonly float ObjCreatedOffset = 0.13f;
+    public static readonly float ObjCreatedOffset = 0.08f;
     public static readonly int ObjCreatedAnimTime = 40;
 
     public static bool IsGlobalGrabbing = false;

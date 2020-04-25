@@ -17,7 +17,6 @@ public class FoamScaleTab : MonoBehaviour
     private int _index = -1;
 
     private LineRenderer _line = null;
-    private MeshFilter _mesh = null;
 
     // Start is called before the first frame update
     void Start()
@@ -77,7 +76,7 @@ public class FoamScaleTab : MonoBehaviour
         _scaleDir = scaleDir;
         _coord = coord;
         _dirInt = dirInt;
-        transform.rotation = Quaternion.FromToRotation(transform.up, 1 * dirInt * scaleDir);
+        transform.rotation = Quaternion.FromToRotation(transform.up, dirInt * scaleDir);
         _initRot = transform.rotation;
         _index = index;
         _parent = p;

@@ -108,7 +108,7 @@ Transform:
   m_GameObject: {fileID: 617008717414071196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.13687724, y: 0.3153448, z: 0.061157227}
-  m_LocalScale: {x: 0.06, y: 0.035, z: 0.06}
+  m_LocalScale: {x: 0.05, y: 0.03, z: 0.05}
   m_Children:
   - {fileID: 617008716306386196}
   m_Father: {fileID: 0}
@@ -201,8 +201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_initialLock: 0
-  m_selectedOutlineColor: {r: 0, g: 0.783, b: 0, a: 0}
-  m_grabbedOutlineColor: {r: 0, g: 0, b: 0.839, a: 0}
+  m_selectedOutlineColor: {r: 0, g: 1, b: 0.10980392, a: 0}
+  m_grabbedOutlineColor: {r: 0, g: 0.23921569, b: 1, a: 0}
   m_useOutlineMaterial: 1
   m_selectedMaterial: {fileID: 2100000, guid: d4dcff38c4c58624ebf541cb3cf8825f, type: 2}
   m_grabbedMaterial: {fileID: 0}

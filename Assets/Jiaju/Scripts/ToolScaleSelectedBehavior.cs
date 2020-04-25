@@ -13,6 +13,7 @@ public class ToolScaleSelectedBehavior : StateMachineBehaviour
         _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
         _data.ManiMenuParent.SetToolOptionInUse(2);
+        _data.ManiMenu.SetActive(false);
         _data.StateIndicator.GetComponent<Text>().text = "Edit: Scale";
 
         FoamUtils.IsGlobalGrabbing = true;

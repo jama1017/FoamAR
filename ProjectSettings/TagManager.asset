@@ -69,3 +69,6 @@ TagManager:
   - name: icon_close
     uniqueID: 2702878109
     locked: 0
+  - name: scaleGuideline
+    uniqueID: 189458357
+    locked: 0

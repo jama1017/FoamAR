@@ -6954,6 +6954,8 @@ MonoBehaviour:
   m_data: {fileID: 1069181527}
   m_scaleTabPrefab: {fileID: 617008717414071186, guid: ef28e3cf13f2b4bd18e49512b8eb5994,
     type: 3}
+  m_linePrefab: {fileID: 1428036001793559725, guid: ab2b3c86d7c9c4ad999c68d5d7cf17a2,
+    type: 3}
 --- !u!4 &1558452903
 Transform:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 public class FoamScaleTab : MonoBehaviour
 {
     private Vector3 _prevPos;
+    [HideInInspector]
     public Transform m_targetTrans;
     private Vector3 _scaleDir;
     private int _coord;
@@ -14,6 +15,9 @@ public class FoamScaleTab : MonoBehaviour
     private FoamScaleParent _parent;
     private bool _isBeingGrabbed = false;
     private int _index = -1;
+
+    private LineRenderer _line = null;
+    private MeshFilter _mesh = null;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +29,13 @@ public class FoamScaleTab : MonoBehaviour
     void Update()
     {
         Vector3 _currPos = transform.position;
+
+        if (_currPos != _prevPos && _line)
+        {
+            _line.SetPosition(0, m_targetTrans.transform.position);
+            _line.SetPosition(1, this.transform.position - this.transform.up * this.transform.localScale[1] / 2);
+        }
+
         if (_currPos != _prevPos && m_targetTrans && _isBeingGrabbed)
         {
             Bounds curBound = m_targetTrans.GetComponent<MeshFilter>().sharedMesh.bounds; // or just mesh?
@@ -66,10 +77,14 @@ public class FoamScaleTab : MonoBehaviour
         _scaleDir = scaleDir;
         _coord = coord;
         _dirInt = dirInt;
-        transform.rotation = Quaternion.FromToRotation(transform.up, dirInt * scaleDir);
+        transform.rotation = Quaternion.FromToRotation(transform.up, 1 * dirInt * scaleDir);
         _initRot = transform.rotation;
         _index = index;
         _parent = p;
+
+        _line = Instantiate(_parent.m_linePrefab).GetComponent<LineRenderer>();
+        _line.SetPosition(0, m_targetTrans.transform.position);
+        _line.SetPosition(1, this.transform.position - this.transform.up * this.transform.localScale[1] / 2);
     }
 
     public void OnGrabStart()
@@ -86,5 +101,10 @@ public class FoamScaleTab : MonoBehaviour
 
         //_parent.UpdateTabsLocation(curBound, _index);
         _isBeingGrabbed = false;
+    }
+
+    public void CleanUp()
+    {
+        GameObject.Destroy(_line.gameObject);
     }
 }

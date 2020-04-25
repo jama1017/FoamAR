@@ -6,6 +6,7 @@ public class FoamScaleParent : MonoBehaviour
 {
     public FoamDataManager m_data;
     public Transform m_scaleTabPrefab;
+    public Transform m_linePrefab;
     private Transform m_targetTrans = null;
 
     private List<FoamScaleTab> _tabs = new List<FoamScaleTab>();
@@ -70,6 +71,7 @@ public class FoamScaleParent : MonoBehaviour
 
         for (int i = 0; i < num; i++)
         {
+            _tabs[i].CleanUp();
             FoamUtils.RemoveObjData(m_data, _tabs[i].gameObject);
             GameObject.Destroy(_tabs[i].gameObject);
         }

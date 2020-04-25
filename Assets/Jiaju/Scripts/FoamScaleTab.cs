@@ -76,7 +76,13 @@ public class FoamScaleTab : MonoBehaviour
         _scaleDir = scaleDir;
         _coord = coord;
         _dirInt = dirInt;
-        transform.rotation = Quaternion.FromToRotation(transform.up, dirInt * scaleDir);
+        //transform.rotation = Quaternion.FromToRotation(transform.up, dirInt * scaleDir);
+
+        transform.rotation = m_targetTrans.rotation;
+        if (coord == 1 && dirInt == -1) { transform.Rotate(Vector3.right, 180, Space.Self); }
+        if (coord == 0) { transform.Rotate(Vector3.back, 90 * dirInt, Space.Self); }
+        if (coord == 2) { transform.Rotate(Vector3.right, 90 * dirInt, Space.Self); }
+
         _initRot = transform.rotation;
         _index = index;
         _parent = p;

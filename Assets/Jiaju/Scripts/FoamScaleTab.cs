@@ -52,20 +52,23 @@ public class FoamScaleTab : MonoBehaviour
             float newY = curBound.size[_coord] * m_targetTrans.localScale[_coord] + delta; // new Height of target transform
             float ratio = newY / curBound.size[_coord]; // ratio for scale
 
-            // update target transform. need to extend this line
-            Vector3 newScale = m_targetTrans.localScale;
-            for (int i = 0; i < 3; i++)
+            if (ratio > 0.01f) // only update object scale if not too small
             {
-                if (i == _coord)
+                // update target transform. need to extend this line
+                Vector3 newScale = m_targetTrans.localScale;
+                for (int i = 0; i < 3; i++)
                 {
-                    newScale[i] = ratio;
+                    if (i == _coord)
+                    {
+                        newScale[i] = ratio;
+                    }
                 }
-            }
-            m_targetTrans.localScale = newScale;
-            m_targetTrans.position += _dirInt * _scaleDir * delta / 2;
+                m_targetTrans.localScale = newScale;
+                m_targetTrans.position += _dirInt * _scaleDir * delta / 2;
 
-            // update location of other tabs
-            _parent.UpdateTabsLocation(curBound, _index);
+                // update location of other tabs
+                _parent.UpdateTabsLocation(curBound, _index);
+            }
         }
         _prevPos = _currPos;
     }

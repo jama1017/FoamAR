@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.iOS;
 using Portalble.Functions.Grab;
+using UnityEngine.EventSystems;
 
 public enum FoamState
 {
@@ -13,7 +14,8 @@ public enum FoamState
     STATE_BUSY
 }
 
-public class JUIController : MonoBehaviour {
+public class JUIController : MonoBehaviour
+{
 
     public GameObject m_dot;
     public FoamDataManager m_data;
@@ -22,11 +24,10 @@ public class JUIController : MonoBehaviour {
     public Text m_stateIndicator;
     private FoamState _foamState = FoamState.STATE_IDLE;
 
-    public GameObject m_undoButton;
-    public GameObject m_redoButton;
-
     private int _hash_creBool = Animator.StringToHash("creBool");
     private int _hash_maniBool = Animator.StringToHash("maniBool");
+
+    public Canvas m_canvas;
 
     public FoamState FoamState
     {
@@ -43,7 +44,8 @@ public class JUIController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > 0) {
+        if (Input.touchCount > 0)
+        {
             Touch touch = Input.GetTouch(0);
             Debug.Log(touch.position);
         }
@@ -52,8 +54,6 @@ public class JUIController : MonoBehaviour {
 
         if (info.IsName("dot_fan") || info.IsName("dot_cre") || info.IsName("dot_mani"))
         {
-            m_redoButton.SetActive(true);
-            m_undoButton.SetActive(true);
             AnimatorStateInfo appInfo = m_data.StateMachine.GetCurrentAnimatorStateInfo(0);
             //if (appInfo.IsName("IdleState") || appInfo.IsName("ManipulationState") || appInfo.IsName("CreationState"))
             if (appInfo.IsTag("Switchable") && !Grab.Instance.IsGrabbing)
@@ -62,19 +62,14 @@ public class JUIController : MonoBehaviour {
                 checkMouseClick();
             }
         }
-        else
-        {
-            m_redoButton.SetActive(false);
-            m_undoButton.SetActive(false);
-        }
     }
 
     private void checkTouch()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             Vector3 touchPos = Input.GetTouch(0).position;
-            checkTouchRegion(touchPos);
+            checkTouchRegion(touchPos, Input.GetTouch(0).fingerId);
         }
     }
 
@@ -83,11 +78,11 @@ public class JUIController : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 touchPos = Input.mousePosition;
-            checkTouchRegion(touchPos);
+            checkTouchRegion(touchPos, -999);
         }
     }
 
-    private void checkTouchRegion(Vector3 touchPos)
+    private void checkTouchRegion(Vector3 touchPos, int id)
     {
         Vector3[] corners = new Vector3[4];
         m_dot.GetComponent<RectTransform>().GetWorldCorners(corners);
@@ -112,16 +107,34 @@ public class JUIController : MonoBehaviour {
             _foamState = FoamState.STATE_MANIPULATE;
 
         }
-        //else
-        //{
-        //    m_stateIndicator.text = "Idle";
-
-        //    m_dotAnimator.SetBool(_hash_creBool, false);
-        //    m_dotAnimator.SetBool(_hash_maniBool, false);
-
-        //    _foamState = FoamState.STATE_IDLE;
-        //}
+        else
+        {
+            if (id != -999)
+            {
+                //if (!EventSystem.current.IsPointerOverGameObject(fingerID))
+                if (!IsPointerOverUIObject(m_canvas, touchPos))
+                {
+                    TriggerFanClose();
+                }
+            }
+            else
+            {
+                //if (!EventSystem.current.IsPointerOverGameObject(fingerID))
+                if (!IsPointerOverUIObject(m_canvas, touchPos))
+                {
+                    Debug.Log("MOUSE HERE");
+                    TriggerFanClose();
+                }
+            }
+        }
     }
+
+
+    private void TriggerFanClose()
+    {
+        m_dotAnimator.SetTrigger("fanCloseTrigger");
+    }
+
 
     private bool isInsideTri(Vector3 s, Vector3 a, Vector3 b, Vector3 c)
     {
@@ -135,6 +148,29 @@ public class JUIController : MonoBehaviour {
         if ((c.x - b.x) * (s.y - b.y) - (c.y - b.y) * (s.x - b.x) > 0 != s_ab) return false;
 
         return true;
+    }
+
+
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
+    }
+
+    private bool IsPointerOverUIObject(Canvas canvas, Vector2 screenPosition)
+    {
+        // Referencing this code for GraphicRaycaster https://gist.github.com/stramit/ead7ca1f432f3c0f181f
+        // the ray cast appears to require only eventData.position.
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = screenPosition;
+
+        GraphicRaycaster uiRaycaster = canvas.gameObject.GetComponent<GraphicRaycaster>();
+        List<RaycastResult> results = new List<RaycastResult>();
+        uiRaycaster.Raycast(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 }
 

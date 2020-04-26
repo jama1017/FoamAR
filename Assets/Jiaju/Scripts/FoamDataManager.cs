@@ -62,6 +62,8 @@ public class FoamDataManager : MonoBehaviour
 
     public FoamScaleParent FoamScaleTool;
 
+    public GameObject UndoButton;
+    public GameObject RedoButton;
 
     // Start is called before the first frame update
     void Start()

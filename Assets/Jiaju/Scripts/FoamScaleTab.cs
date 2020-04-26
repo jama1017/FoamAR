@@ -18,6 +18,8 @@ public class FoamScaleTab : MonoBehaviour
 
     private LineRenderer _line = null;
 
+    private Vector3 _prevScale; // for undo redo
+
     // Start is called before the first frame update
     void Start()
     {
@@ -99,6 +101,7 @@ public class FoamScaleTab : MonoBehaviour
     {
         _isBeingGrabbed = true;
 
+        _prevScale = transform.localScale; // undo redo;
     }
 
     public void OnGrabStop()
@@ -109,6 +112,11 @@ public class FoamScaleTab : MonoBehaviour
 
         //_parent.UpdateTabsLocation(curBound, _index);
         _isBeingGrabbed = false;
+
+        // undo redo
+        ICommand scaleAction = new CommandScale(m_targetTrans.gameObject, _prevScale, transform.localScale);
+        UndoRedoManager.URMgr.AddNewAction(scaleAction);
+        
     }
 
     public void CleanUp()

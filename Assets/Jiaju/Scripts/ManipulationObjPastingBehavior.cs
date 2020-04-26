@@ -99,14 +99,15 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
 
                 _copiedObj.gameObject.name = _copiedObj.gameObject.name.Replace("(Clone)", "").Trim();
                 _copiedRenderer.material.color = _copiedOGColor;
-                Debug.Log("copied-------------" + _copiedObj.gameObject.name);
-
-                //grabbing stuff?
 
                 //_data.SceneObjs.Add(_copiedObj.gameObject);
                 FoamUtils.CreateObjData(_data, _copiedObj.gameObject);
+                _copiedObj.GetComponent<Modelable>().SetAsSelected();
 
-                //Debug.Log("!!--!! num obj in scene: " + _data.SceneObjs.Count);
+                // undo redo
+                ICommand copyAction = new CommandCreateCopy(_copiedObj.gameObject, _data);
+                UndoRedoManager.URMgr.AddNewAction(copyAction);
+
                 animator.SetBool(_hash_objMenuClosedBool, true);
             }
         }

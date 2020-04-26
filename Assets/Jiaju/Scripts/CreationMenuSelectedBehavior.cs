@@ -108,11 +108,15 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
                 }
 
                 m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
-                Debug.Log("-------------" + m_prim.gameObject.name);
 
                 _primRenderer.material.color = _primOGColor;
 
                 FoamUtils.CreateObjData(m_data, m_prim.gameObject);
+                m_prim.GetComponent<Modelable>().SetAsSelected();
+
+                // undo redo
+                ICommand createAction = new CommandCreateCopy(m_prim.gameObject, m_data);
+                UndoRedoManager.URMgr.AddNewAction(createAction);
 
                 animator.SetBool(m_hash_actionBool, true);
             }   

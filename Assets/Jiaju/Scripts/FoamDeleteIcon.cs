@@ -19,12 +19,19 @@ public class FoamDeleteIcon : FoamIconManager
     public override void PerformAction()
     {
         base.PerformAction();
-        //m_data.SceneObjs.Remove(m_data.CurrentSelectionObj);
-        FoamUtils.RemoveObjData(m_data, m_data.CurrentSelectionObj);
 
-        GameObject.Destroy(m_data.CurrentSelectionObj);
+        // undo redo
+        ICommand deleteAction = new CommandDelete(m_data.CurrentSelectionObj, m_data);
+        UndoRedoManager.URMgr.AddNewAction(deleteAction);
+
+        m_data.CurrentSelectionObj.SetActive(false);
+        m_data.CurrentSelectionObj.GetComponent<Modelable>().Deselect(); // deselect obj
+        FoamUtils.RemoveObjData(m_data, m_data.CurrentSelectionObj);
+        //GameObject.Destroy(m_data.CurrentSelectionObj);
 
         m_data.CurrentSelectionObj = null;
         FoamUtils.CurrentSelectionObjID = 0;
+
+        
     }
 }

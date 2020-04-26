@@ -22,6 +22,9 @@ public class JUIController : MonoBehaviour {
     public Text m_stateIndicator;
     private FoamState _foamState = FoamState.STATE_IDLE;
 
+    public GameObject m_undoButton;
+    public GameObject m_redoButton;
+
     private int _hash_creBool = Animator.StringToHash("creBool");
     private int _hash_maniBool = Animator.StringToHash("maniBool");
 
@@ -49,6 +52,8 @@ public class JUIController : MonoBehaviour {
 
         if (info.IsName("dot_fan") || info.IsName("dot_cre") || info.IsName("dot_mani"))
         {
+            m_redoButton.SetActive(true);
+            m_undoButton.SetActive(true);
             AnimatorStateInfo appInfo = m_data.StateMachine.GetCurrentAnimatorStateInfo(0);
             //if (appInfo.IsName("IdleState") || appInfo.IsName("ManipulationState") || appInfo.IsName("CreationState"))
             if (appInfo.IsTag("Switchable") && !Grab.Instance.IsGrabbing)
@@ -56,6 +61,11 @@ public class JUIController : MonoBehaviour {
                 checkTouch();
                 checkMouseClick();
             }
+        }
+        else
+        {
+            m_redoButton.SetActive(false);
+            m_undoButton.SetActive(false);
         }
     }
 

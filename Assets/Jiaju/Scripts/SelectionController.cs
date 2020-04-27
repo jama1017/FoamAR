@@ -66,6 +66,9 @@ public class SelectionController : PortalbleGeneralController
         // marks where the highestRankedObj is
         m_highestRankedObjMarker = Instantiate(prefab_marker, Vector3.zero, Quaternion.identity, m_canvas.transform);
         m_highestRankedObjMarker.SetActive(false);
+
+        FoamUtils.IsExcludingSelectedObj = false;
+        FoamUtils.IsGlobalGrabbing = true;
     }
 
     private void SetupServer()

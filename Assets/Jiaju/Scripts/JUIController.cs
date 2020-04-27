@@ -172,5 +172,32 @@ public class JUIController : MonoBehaviour
         uiRaycaster.Raycast(eventDataCurrentPosition, results);
         return results.Count > 0;
     }
+
+    public void UndoAction()
+    {
+        if (!CanPerformUndoRedo()) return;
+        UndoRedoManager.UndoAction();
+    }
+
+    public void RedoAction()
+    {
+        if (!CanPerformUndoRedo()) return;
+        UndoRedoManager.RedoAction();
+    }
+
+    private bool CanPerformUndoRedo()
+    {
+        if (Grab.Instance.IsGrabbing)
+        {
+            return false;
+        }
+
+        if (!m_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsTag("Switchable"))
+        {
+            return false;
+        }
+
+        return true;
+    }
 }
 

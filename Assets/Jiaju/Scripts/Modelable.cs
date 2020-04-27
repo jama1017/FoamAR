@@ -138,7 +138,7 @@ public class Modelable : MonoBehaviour
 
     public void SetAsSelected()
     {
-        if (_data.CurrentSelectionObj)
+        if (_data && _data.CurrentSelectionObj)
         {
             _data.CurrentSelectionObj.GetComponent<Modelable>().Deselect();
         }
@@ -203,7 +203,7 @@ public class Modelable : MonoBehaviour
         if (_targetPrevPos != this.transform.position && _targetPrevRot != this.transform.rotation)
         {
             ICommand moveAction = new CommandMove(this.gameObject, _targetPrevPos, _targetPrevRot, this.transform.position, this.transform.rotation);
-            UndoRedoManager.URMgr.AddNewAction(moveAction);
+            UndoRedoManager.AddNewAction(moveAction);
 
         }
     }

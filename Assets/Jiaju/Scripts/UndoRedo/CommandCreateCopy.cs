@@ -30,6 +30,7 @@ public class CommandCreateCopy : ICommand
 
     public void Redo()
     {
+        _target.GetComponent<Modelable>().Deselect();
         _target.SetActive(true);
         FoamUtils.CreateObjData(_data, _target);
     }

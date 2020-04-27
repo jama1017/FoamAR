@@ -8,6 +8,7 @@ public class FoamScaleParent : MonoBehaviour
     public Transform m_scaleTabPrefab;
     public Transform m_linePrefab;
     private Transform m_targetTrans = null;
+    [HideInInspector]
     public Vector3 m_targetTransPosDueToScaling;
 
     private List<FoamScaleTab> _tabs = new List<FoamScaleTab>();
@@ -21,6 +22,9 @@ public class FoamScaleParent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!m_targetTrans) return;
+        if (!m_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ToolScaleSelected")) return;
+
         if (m_targetTransPosDueToScaling != m_targetTrans.position)
         {
             DestroyTabs();
@@ -87,6 +91,8 @@ public class FoamScaleParent : MonoBehaviour
             FoamUtils.RemoveObjData(m_data, _tabs[i].gameObject);
             GameObject.Destroy(_tabs[i].gameObject);
         }
+
+        _tabs = new List<FoamScaleTab>();
     }
 
     public void UpdateTabsLocation(Bounds curBound, int index)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Portalble.Functions.Grab;
 
 public class CreationMenuSelectedBehavior : StateMachineBehaviour
@@ -23,6 +24,7 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
         m_data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
+        m_data.StateIndicator.GetComponent<Text>().text = "Pinch to Place";
 
         //Debug.Log("FOAMFILTER MENU ITEM SELECTED IS: " + m_data.Selected_createItem);
 
@@ -101,22 +103,16 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
                 m_isReleased = true;
 
                 m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
-                if (m_prim.gameObject.name == "FoamCone_Dummy")
+                if (m_prim.gameObject.tag == "DummyCone")
                 {
                     GameObject.Destroy(m_prim.gameObject);
                     m_prim = Instantiate(m_data.ConePrefab, m_data.ObjCreatedPos, Quaternion.identity);
                 }
 
                 m_prim.gameObject.name = m_prim.gameObject.name.Replace("(Clone)", "").Trim();
-
                 _primRenderer.material.color = _primOGColor;
 
                 FoamUtils.CreateObjData(m_data, m_prim.gameObject);
-                m_prim.GetComponent<Modelable>().SetAsSelected();
-
-                // undo redo
-                ICommand createAction = new CommandCreateCopy(m_prim.gameObject, m_data);
-                UndoRedoManager.URMgr.AddNewAction(createAction);
 
                 animator.SetBool(m_hash_actionBool, true);
             }   
@@ -131,6 +127,17 @@ public class CreationMenuSelectedBehavior : StateMachineBehaviour
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
         //Debug.Log("EXITING CREATION MENU SELECTED STATE");
+
+        Modelable model = m_prim.gameObject.GetComponent<Modelable>();
+        if (model)
+        {
+            model.SetAsSelected();
+        }
+
+        // undo redo
+        ICommand createAction = new CommandCreateCopy(m_prim.gameObject, m_data);
+        UndoRedoManager.AddNewAction(createAction);
+
         animator.SetBool(m_hash_itemSelectedBool, false);
         m_prim = null;
     }

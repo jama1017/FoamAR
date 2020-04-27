@@ -23,6 +23,7 @@ TagManager:
   - selectionDM
   - stateIndicator
   - ScaleTab
+  - DummyCone
   layers:
   - Default
   - TransparentFX

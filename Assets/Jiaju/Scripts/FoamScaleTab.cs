@@ -122,7 +122,7 @@ public class FoamScaleTab : MonoBehaviour
         if (_targetPrevPos != m_targetTrans.position && _targetPrevScale != m_targetTrans.localScale)
         {
             ICommand scaleAction = new CommandScale(m_targetTrans.gameObject, _targetPrevScale, _targetPrevPos, m_targetTrans.localScale, m_targetTrans.position);
-            UndoRedoManager.URMgr.AddNewAction(scaleAction);
+            UndoRedoManager.AddNewAction(scaleAction);
         }
         
     }

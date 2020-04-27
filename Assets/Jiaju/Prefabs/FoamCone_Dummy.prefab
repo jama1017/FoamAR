@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4068709197770029282}
   m_Layer: 11
   m_Name: FoamCone_Dummy
-  m_TagString: InteractableObj
+  m_TagString: DummyCone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -89,7 +89,7 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
                 _isReleased = true;
 
                 _copiedObj.gameObject.name = _copiedObj.gameObject.name.Replace("(Clone)", "").Trim();
-                if (_copiedObj.gameObject.name == "FoamCone_Dummy")
+                if (_copiedObj.gameObject.tag == "DummyCone")
                 {
                     GameObject.Destroy(_copiedObj.gameObject);
                     _copiedObj = Instantiate(_data.ConePrefab, _data.ObjCreatedPos, Quaternion.identity);
@@ -102,11 +102,6 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
 
                 //_data.SceneObjs.Add(_copiedObj.gameObject);
                 FoamUtils.CreateObjData(_data, _copiedObj.gameObject);
-                _copiedObj.GetComponent<Modelable>().SetAsSelected();
-
-                // undo redo
-                ICommand copyAction = new CommandCreateCopy(_copiedObj.gameObject, _data);
-                UndoRedoManager.URMgr.AddNewAction(copyAction);
 
                 animator.SetBool(_hash_objMenuClosedBool, true);
             }
@@ -118,10 +113,18 @@ public class ManipulationObjPastingBehavior : StateMachineBehaviour
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        Modelable model = _copiedObj.GetComponent<Modelable>();
+        if (model)
+        {
+            model.SetAsSelected();
+        }
+
+        // undo redo
+        ICommand copyAction = new CommandCreateCopy(_copiedObj.gameObject, _data);
+        UndoRedoManager.AddNewAction(copyAction);
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -22,7 +22,7 @@ public class FoamDeleteIcon : FoamIconManager
 
         // undo redo
         ICommand deleteAction = new CommandDelete(m_data.CurrentSelectionObj, m_data);
-        UndoRedoManager.URMgr.AddNewAction(deleteAction);
+        UndoRedoManager.AddNewAction(deleteAction);
 
         m_data.CurrentSelectionObj.SetActive(false);
         m_data.CurrentSelectionObj.GetComponent<Modelable>().Deselect(); // deselect obj

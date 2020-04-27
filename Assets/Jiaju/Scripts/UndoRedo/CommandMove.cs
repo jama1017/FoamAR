@@ -10,9 +10,13 @@ public class CommandMove : ICommand
     private Vector3 _afterPos;
     private Quaternion _afterRot;
 
-    public CommandMove(GameObject target)
+    public CommandMove(GameObject target, Vector3 prevPos, Quaternion prevRot, Vector3 afterPos, Quaternion afterRot)
     {
         _target = target;
+        _prevPos = prevPos;
+        _prevRot = prevRot;
+        _afterPos = afterPos;
+        _afterRot = afterRot;
     }
 
     public void Undo()

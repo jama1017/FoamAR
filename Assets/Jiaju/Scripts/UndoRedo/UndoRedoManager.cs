@@ -24,6 +24,11 @@ public class UndoRedoManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(this);
+
+        if (GameObject.Find(gameObject.name) && GameObject.Find(gameObject.name) != this.gameObject)
+        {
+            Destroy(GameObject.Find(gameObject.name));
+        }
     }
 
     public void AddNewAction(ICommand newAction)

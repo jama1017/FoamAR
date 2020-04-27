@@ -8,6 +8,7 @@ public class FoamScaleParent : MonoBehaviour
     public Transform m_scaleTabPrefab;
     public Transform m_linePrefab;
     private Transform m_targetTrans = null;
+    public Vector3 m_targetTransPosDueToScaling;
 
     private List<FoamScaleTab> _tabs = new List<FoamScaleTab>();
 
@@ -20,12 +21,23 @@ public class FoamScaleParent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (m_targetTransPosDueToScaling != m_targetTrans.position)
+        {
+            DestroyTabs();
+            SetUpTabs();
+        }
 
+        if (m_targetTrans.gameObject.activeInHierarchy == false || m_data.CurrentSelectionObj == null)
+        {
+            m_targetTrans = null;
+            DestroyTabs();
+        }
     }
 
     public void SetTarget(Transform tar)
     {
         m_targetTrans = tar;
+        m_targetTransPosDueToScaling = tar.position;
     }
 
     public void SetUpTabs()

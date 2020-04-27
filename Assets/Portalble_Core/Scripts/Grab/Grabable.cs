@@ -235,6 +235,12 @@ namespace Portalble.Functions.Grab {
             {
                 tab.OnGrabStart();
             }
+
+            Modelable modelable = this.GetComponent<Modelable>();
+            if (modelable)
+            {
+                modelable.OnGrabStart();
+            }
         }
 
         /// <summary>
@@ -275,6 +281,12 @@ namespace Portalble.Functions.Grab {
             if (tab)
             {
                 tab.OnGrabStop();
+            }
+
+            Modelable modelable = this.GetComponent<Modelable>();
+            if (modelable)
+            {
+                modelable.OnGrabStop();
             }
         }
 

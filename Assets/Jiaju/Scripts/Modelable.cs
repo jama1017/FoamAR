@@ -17,6 +17,10 @@ public class Modelable : MonoBehaviour
     private float _lowAlpha = 0.5f;
     private int _dwellEffectLowCutoff = 30;
 
+    // for undo redo
+    private Vector3 _targetPrevPos;
+    private Quaternion _targetPrevRot;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -186,6 +190,22 @@ public class Modelable : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void OnGrabStart()
+    {
+        _targetPrevPos = this.transform.position;
+        _targetPrevRot = this.transform.rotation;
+    }
+
+    public void OnGrabStop()
+    {
+        if (_targetPrevPos != this.transform.position && _targetPrevRot != this.transform.rotation)
+        {
+            ICommand moveAction = new CommandMove(this.gameObject, _targetPrevPos, _targetPrevRot, this.transform.position, this.transform.rotation);
+            UndoRedoManager.URMgr.AddNewAction(moveAction);
+
+        }
     }
 
 

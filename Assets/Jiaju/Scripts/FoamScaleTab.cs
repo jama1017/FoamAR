@@ -18,7 +18,9 @@ public class FoamScaleTab : MonoBehaviour
 
     private LineRenderer _line = null;
 
-    private Vector3 _prevScale; // for undo redo
+    // for undo redo
+    private Vector3 _targetPrevScale; 
+    private Vector3 _targetPrevPos;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +70,7 @@ public class FoamScaleTab : MonoBehaviour
                 m_targetTrans.localScale = newScale;
                 m_targetTrans.position += _dirInt * _scaleDir * delta / 2;
 
+                _parent.m_targetTransPosDueToScaling = m_targetTrans.position;
                 // update location of other tabs
                 _parent.UpdateTabsLocation(curBound, _index);
             }
@@ -101,7 +104,8 @@ public class FoamScaleTab : MonoBehaviour
     {
         _isBeingGrabbed = true;
 
-        _prevScale = transform.localScale; // undo redo;
+        _targetPrevScale = m_targetTrans.localScale; // undo redo;
+        _targetPrevPos = m_targetTrans.position;
     }
 
     public void OnGrabStop()
@@ -114,8 +118,12 @@ public class FoamScaleTab : MonoBehaviour
         _isBeingGrabbed = false;
 
         // undo redo
-        ICommand scaleAction = new CommandScale(m_targetTrans.gameObject, _prevScale, transform.localScale);
-        UndoRedoManager.URMgr.AddNewAction(scaleAction);
+        Debug.Log("Scaling added to stack");
+        if (_targetPrevPos != m_targetTrans.position && _targetPrevScale != m_targetTrans.localScale)
+        {
+            ICommand scaleAction = new CommandScale(m_targetTrans.gameObject, _targetPrevScale, _targetPrevPos, m_targetTrans.localScale, m_targetTrans.position);
+            UndoRedoManager.URMgr.AddNewAction(scaleAction);
+        }
         
     }
 

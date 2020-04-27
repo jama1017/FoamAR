@@ -147,7 +147,7 @@ public class Modelable : MonoBehaviour
         _renderer.material.color = FoamUtils.ObjManiSelectedColor;
         _data.CurrentSelectionObj = this.gameObject;
 
-        FoamUtils.CurrentSelectionObjID = this.gameObject.GetInstanceID();
+        //FoamUtils.CurrentSelectionObjID = this.gameObject.GetInstanceID();
     }
 
 

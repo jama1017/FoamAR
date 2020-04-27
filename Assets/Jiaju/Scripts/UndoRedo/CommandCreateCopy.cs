@@ -17,11 +17,11 @@ public class CommandCreateCopy : ICommand
     // *delete* the object
     public void Undo()
     {
-        if (_target.GetInstanceID() == FoamUtils.CurrentSelectionObjID)
+        if (_data.CurrentSelectionObj && _target.GetInstanceID() == _data.CurrentSelectionObj.GetInstanceID())
         {
             _target.GetComponent<Modelable>().Deselect();
             _data.CurrentSelectionObj = null;
-            FoamUtils.CurrentSelectionObjID = 0;
+            //FoamUtils.CurrentSelectionObjID = 0;
         }
 
         _target.SetActive(false);

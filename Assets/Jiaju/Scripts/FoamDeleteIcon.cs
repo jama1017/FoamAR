@@ -30,7 +30,7 @@ public class FoamDeleteIcon : FoamIconManager
         //GameObject.Destroy(m_data.CurrentSelectionObj);
 
         m_data.CurrentSelectionObj = null;
-        FoamUtils.CurrentSelectionObjID = 0;
+        //FoamUtils.CurrentSelectionObjID = 0;
 
         
     }

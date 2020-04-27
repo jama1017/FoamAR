@@ -22,15 +22,17 @@ public class FoamScaleParent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!m_targetTrans) return;
         if (!m_data.StateMachine.GetCurrentAnimatorStateInfo(0).IsName("ToolScaleSelected")) return;
+        if (!m_targetTrans) return;
 
+        // if target obj is moved externally, reset tabs
         if (m_targetTransPosDueToScaling != m_targetTrans.position)
         {
             DestroyTabs();
             SetUpTabs();
         }
 
+        // if target obj is no longer active, destroy tabs
         if (m_targetTrans.gameObject.activeInHierarchy == false || m_data.CurrentSelectionObj == null)
         {
             m_targetTrans = null;

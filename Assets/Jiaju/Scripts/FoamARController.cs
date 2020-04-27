@@ -74,6 +74,9 @@ public class FoamARController : PortalbleGeneralController
         m_uiState_hashes.Add(m_hash_maniBool);
 
         m_data.StateMachine = m_stateMachine;
+
+        FoamUtils.IsExcludingSelectedObj = false;
+        FoamUtils.IsGlobalGrabbing = false;
     }
 
     protected override void Update()

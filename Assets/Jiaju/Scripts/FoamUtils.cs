@@ -45,7 +45,7 @@ public static class FoamUtils
     // to stop pinch bool from updating if finger in collider
     public static bool IsGlobalFingerInObject = false;
 
-    public static int CurrentSelectionObjID = 0;
+    //public static int CurrentSelectionObjID = 0;
     public static bool IsExcludingSelectedObj = false;
 
     public static float ScaleTabOffset = 0.06f;

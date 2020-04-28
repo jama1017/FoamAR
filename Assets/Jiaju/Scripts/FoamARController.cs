@@ -10,6 +10,7 @@ public class FoamARController : PortalbleGeneralController
 	public Transform placePrefab;
 	public float offset = 0.01f;
 	public GameObject JUIController;
+    private Animator _JUIGestureAnimator;
     public GameObject m_leftHand;
     public GameObject m_rightHand;
     public GameObject m_createMenu;
@@ -39,6 +40,9 @@ public class FoamARController : PortalbleGeneralController
     private int _hash_palmBool = Animator.StringToHash("PalmBool");
     private List<int> m_uiState_hashes = new List<int>();
 
+    private int _hash_gesturePinchBool = Animator.StringToHash("gesturePinchBool");
+    private int _hash_gesturePalmBool = Animator.StringToHash("gesturePalmBool");
+    
 
     public override void OnARPlaneHit(PortalbleHitResult hit)
 	{
@@ -77,6 +81,8 @@ public class FoamARController : PortalbleGeneralController
 
         FoamUtils.IsExcludingSelectedObj = false;
         FoamUtils.IsGlobalGrabbing = false;
+
+        _JUIGestureAnimator = JUIController.GetComponent<Animator>();
     }
 
     protected override void Update()
@@ -185,20 +191,25 @@ public class FoamARController : PortalbleGeneralController
             if (m_activeGC.bufferedGesture() == "pinch" && !FoamUtils.IsGlobalFingerInObject && dis < 0.035f)
             {
                 m_stateMachine.SetBool(m_hash_pinchBool, true);
+                _JUIGestureAnimator.SetBool(_hash_gesturePinchBool, true);
             }
             else
             {
                 m_stateMachine.SetBool(m_hash_pinchBool, false);
+                _JUIGestureAnimator.SetBool(_hash_gesturePinchBool, false);
             }
 
 
             if (m_activeGC.bufferedGesture() == "palm") // or include more gestures
             {
                 m_stateMachine.SetBool(_hash_palmBool, true);
+                _JUIGestureAnimator.SetBool(_hash_gesturePalmBool, true);
+
             }
             else
             {
                 m_stateMachine.SetBool(_hash_palmBool, false);
+                _JUIGestureAnimator.SetBool(_hash_gesturePalmBool, false);
             }
         }
     }

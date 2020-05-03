@@ -111,6 +111,36 @@ public static class FoamUtils
     }
 
 
+
+    public static MenuRegion checkMenuRegionTri(Vector3 currPos, Vector3 initPos, Vector3 UppL, Vector3 UppR, Vector3 Low, float middleRadius)
+    {
+        if (Vector3.Distance(currPos, initPos) > middleRadius)
+        {
+            if (isInsideTri(currPos, UppL, UppR, initPos))
+            {
+                //Debug.Log("FOAMFILTER INSIDE UPPER TRI");
+                return MenuRegion.UPPER;
+
+            }
+            else if (isInsideTri(currPos, UppR, Low, initPos))
+            {
+                //Debug.Log("FOAMFILTER INSIDE RIGHT TRI");
+                return MenuRegion.RIGHT;
+
+            }
+            else
+            {
+                //Debug.Log("FOAMFILTER INSIDE LOWER TRI");
+                return MenuRegion.LOWER;
+            }
+        }
+
+        return MenuRegion.MIDDLE;
+    }
+
+
+
+
     public static float LinearMap(float input, float ogMin, float ogMax, float tarMin, float tarMax)
     {
         float t = Mathf.Abs(input-ogMin) / Mathf.Abs(ogMax - ogMin);

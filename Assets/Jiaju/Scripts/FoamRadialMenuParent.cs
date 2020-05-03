@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class FoamRadialMenuParent : MonoBehaviour
 {
-    [HideInInspector]
-    public bool IsToolMenu;
 
-    [HideInInspector]
+    public bool IsToolMenu;
     public int m_defaultOption; // maybe don't need this
 
     protected FoamRadialCenterManager m_optionCenter;
@@ -22,8 +20,8 @@ public class FoamRadialMenuParent : MonoBehaviour
     protected Vector3 m_palmPos_init = Vector3.zero; // projected space
     protected Vector3 m_menu_center = Vector3.zero;
 
-    private float inner_radius = 0.027f;
-    private float outer_radius = 1.0f;
+    protected float inner_radius = 0.027f;
+    protected float outer_radius = 1.0f;
 
     private Vector3 m_bound_UppL;
     private Vector3 m_bound_UppR;
@@ -31,7 +29,7 @@ public class FoamRadialMenuParent : MonoBehaviour
     private Vector3 m_bound_LowR;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         m_options.Add(this.transform.GetChild(0).GetComponent<FoamRadialManager>());
         m_options.Add(this.transform.GetChild(1).GetComponent<FoamRadialManager>());
@@ -61,7 +59,7 @@ public class FoamRadialMenuParent : MonoBehaviour
         }
     }
 
-    public MenuRegion RegionDetection(Vector3 palmPos_curr)
+    public virtual MenuRegion RegionDetection(Vector3 palmPos_curr)
     {
         Vector3 local_curr = Vector3.ProjectOnPlane(this.transform.InverseTransformPoint(palmPos_curr), Vector3.forward) - m_palmPos_init;
 
@@ -123,7 +121,7 @@ public class FoamRadialMenuParent : MonoBehaviour
 
 
 
-    public void RecordPalmPosInit(Vector3 init)
+    public virtual void RecordPalmPosInit(Vector3 init)
     {
         m_palmPos_init = Vector3.ProjectOnPlane(this.transform.InverseTransformPoint(init), Vector3.forward);
         m_menu_center = Vector3.ProjectOnPlane(this.transform.InverseTransformPoint(this.transform.position), Vector3.forward);

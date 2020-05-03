@@ -136,7 +136,8 @@ public class FoamRadialMenuParent : MonoBehaviour
 
     public void SetToolOptionInUse(int which)
     {
-        m_toolOptionInUse.SetIconOG();
+        if (m_toolOptionInUse) m_toolOptionInUse.SetIconOG();
+        if (m_options.Count == 0) this.Start();
         m_toolOptionInUse = m_options[which];
     }
 }

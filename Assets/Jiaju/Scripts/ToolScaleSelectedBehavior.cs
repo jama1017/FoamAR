@@ -14,7 +14,7 @@ public class ToolScaleSelectedBehavior : StateMachineBehaviour
 
         _data.ManiMenuParent.SetToolOptionInUse(2);
         _data.ManiMenu.SetActive(false);
-        _data.StateIndicator.GetComponent<Text>().text = "Edit: Scale";
+        _data.StateIndicator.GetComponent<Text>().text = "Scale";
 
         FoamUtils.IsGlobalGrabbing = true;
         FoamUtils.IsExcludingSelectedObj = true;

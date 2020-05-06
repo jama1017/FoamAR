@@ -14,7 +14,7 @@ public class ToolMoveSelectedBahavior : StateMachineBehaviour
         _data = GameObject.FindGameObjectWithTag("foamDM").GetComponent<FoamDataManager>();
 
         _data.ManiMenuParent.SetToolOptionInUse(1);
-        _data.StateIndicator.GetComponent<Text>().text = "Edit: Move";
+        _data.StateIndicator.GetComponent<Text>().text = "Move & Rotate";
 
         FoamUtils.IsGlobalGrabbing = true;
     }

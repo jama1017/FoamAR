@@ -24,7 +24,7 @@ public class ManipulationStateBehavior : StateMachineBehaviour
         animator.SetInteger(_hash_toolSelectedInt, 0);
 
         _data.ManiMenuParent.SetToolOptionInUse(0);
-        _data.StateIndicator.GetComponent<Text>().text = "Edit: Selection";
+        _data.StateIndicator.GetComponent<Text>().text = "Select";
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

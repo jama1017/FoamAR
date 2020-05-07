@@ -28,7 +28,7 @@ public class SelectionController : PortalbleGeneralController
     private GameObject m_highestRankedObjMarker;
     private GameObject m_highestRankedObj;
     private bool m_isSnapped = false;
-    private float m_maxSnapDis = 0.05f;
+    private float m_maxSnapDis = 0.025f;
 
 
     // websocket
@@ -404,10 +404,12 @@ public class SelectionController : PortalbleGeneralController
         if (isBig)
         {
             placePrefab = m_bigFocusObj;
+            m_maxSnapDis = 0.05f;
         }
         else
         {
             placePrefab = m_smallFocusObj;
+            m_maxSnapDis = 0.025f;
         }
     }
 
@@ -422,26 +424,26 @@ public class SelectionController : PortalbleGeneralController
             cen.gameObject.GetComponent<Renderer>().material.color = FocusUtils.ObjNormalColor;
             m_sDM.SceneObjects.Add(cen.gameObject);
 
-            //List<Transform> cens = new List<Transform>();
+            List<Transform> cens = new List<Transform>();
 
-            //// for focus center test purposes
-            //int num = 4; // change this number to change number of prefabs
-            //float offset_test = placePrefab.transform.localScale[0] * 1.2f;
+            // for focus center test purposes
+            int num = 3; // change this number to change number of prefabs
+            float offset_test = placePrefab.transform.localScale[0] * 1.2f;
 
-            //for (int i = -num; i < num + 1; i++)
-            //{
-            //    for (int j = -num; j < num + 1; j++)
-            //    {
-            //        if (i == 0 && j == 0) continue;
-            //        Transform obj = Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation);
-            //        obj.gameObject.GetComponent<Renderer>().material.color = FocusUtils.ObjNormalColor;
-            //        cens.Add(obj);
-            //        m_sDM.SceneObjects.Add(obj.gameObject);
-            //    }
-            //}
+            for (int i = -num; i < num + 1; i++)
+            {
+                for (int j = -num; j < num + 1; j++)
+                {
+                    if (i == 0 && j == 0) continue;
+                    Transform obj = Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation);
+                    obj.gameObject.GetComponent<Renderer>().material.color = FocusUtils.ObjNormalColor;
+                    cens.Add(obj);
+                    m_sDM.SceneObjects.Add(obj.gameObject);
+                }
+            }
 
-            //int idx = Random.Range(0, cens.Count);
-            //cens[idx].gameObject.GetComponent<Selectable>().SetAsTarget();
+            int idx = Random.Range(0, cens.Count);
+            cens[idx].gameObject.GetComponent<Selectable>().SetAsTarget();
         }
     }
 

@@ -395,7 +395,7 @@ public class SelectionController : PortalbleGeneralController
             List<Transform> cens = new List<Transform>();
 
             // for focus center test purposes
-            int num = 2;
+            int num = 4; // change this number to change number of prefabs
             float offset_test = placePrefab.transform.localScale[0] * 1.2f;
 
             for (int i = -num; i < num + 1; i++)

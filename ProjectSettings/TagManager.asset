@@ -24,6 +24,7 @@ TagManager:
   - stateIndicator
   - ScaleTab
   - DummyCone
+  - FocusSmall
   layers:
   - Default
   - TransparentFX

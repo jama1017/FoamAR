@@ -786,7 +786,7 @@ MonoBehaviour:
   m_ARSupport: {fileID: 678918255}
   m_RedScreen: {fileID: 0}
   m_planeTransparentMaterial: {fileID: 0}
-  placePrefab: {fileID: 3596028150467614126, guid: 0a698eb192a804cc1b9e2d38f1386c56,
+  placePrefab: {fileID: 79846350936735001, guid: 5d5d3a29deee2411484ac7e67b036026,
     type: 3}
   offset: 0.01
   m_canvas: {fileID: 1609952903}
@@ -3359,8 +3359,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   websocketServer: 192.168.0.153
   websocketPort: 9999
-  hand_l: {fileID: 1949621240}
-  hand_r: {fileID: 1614409302}
 --- !u!4 &1218827174
 Transform:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ namespace Portalble
         //private Material[] _normal_mats;
         private Material[] _outline_mats;
 
-        private float _outline_width = 0.003f;
+        public float _outline_width = 0.003f; // for regularly sized
 
         private Vector3 _preSnapPos = new Vector3(0.0f, 0.0f, 0.0f);
         private bool _isSnapped = false;

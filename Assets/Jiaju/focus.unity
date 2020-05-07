@@ -3359,7 +3359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb0d880e191a0e488efcb2b787f9a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  websocketServer: 192.168.0.153
+  websocketServer: 192.168.0.234
   websocketPort: 9999
 --- !u!4 &1218827174
 Transform:

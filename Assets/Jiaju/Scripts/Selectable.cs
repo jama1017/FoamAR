@@ -29,6 +29,8 @@ namespace Portalble
         private Transform _grabCollider;
         private Vector3 _grabColliderOGScale;
 
+        private bool _isDuringGrabbingProcess = false;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -59,6 +61,15 @@ namespace Portalble
             if (GetComponent<Grabable>().IsBeingGrabbed())
             {
                 RemoveHighestRankContour();
+            }
+
+            if (IsSmallObj && !_isDuringGrabbingProcess)
+            {
+                if (_grabCollider.localScale != _grabColliderOGScale)
+                {
+                    _grabCollider.localScale = _grabColliderOGScale;
+                }
+                Debug.Log("------DURING" + _grabCollider.localScale);
             }
         }
 
@@ -132,6 +143,7 @@ namespace Portalble
         public void SetSnapped()
         {
             _isSnapped = true;
+            _isDuringGrabbingProcess = true;
             _preSnapPos = this.transform.position;
 
             if (IsSmallObj)
@@ -185,18 +197,18 @@ namespace Portalble
         }
 
 
-        public void ResetColliderSize()
-        {
-            if (!Grab.Instance.IsGrabbing)
-            {
-                if (IsSmallObj && !IsColliderReset)
-                {
-                    Debug.Log("COLLIDERSIZE: called in select");
-                    _grabCollider.localScale = _grabColliderOGScale;
-                    IsColliderReset = true;
-                }
-            }
-        }
+        //public void ResetColliderSize()
+        //{
+        //    if (!Grab.Instance.IsGrabbing)
+        //    {
+        //        if (IsSmallObj && !IsColliderReset)
+        //        {
+        //            Debug.Log("COLLIDERSIZE: called in select");
+        //            _grabCollider.localScale = _grabColliderOGScale;
+        //            IsColliderReset = true;
+        //        }
+        //    }
+        //}
 
         public void ResetColliderSizeToOG()
         {
@@ -204,7 +216,7 @@ namespace Portalble
             {
                 Debug.Log("COLLIDERSIZE: called OG");
                 _grabCollider.localScale = _grabColliderOGScale;
-
+                _isDuringGrabbingProcess = false;
             }
         }
     }

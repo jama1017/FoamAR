@@ -144,6 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outline_width: 0.0004
   m_vertOutline: {fileID: 2100000, guid: faf302dbcb9e24641ab96dc61706d527, type: 2}
+  IsSmallObj: 1
 --- !u!1 &5785466925162193868
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +230,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5785466925162193868}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 096b1bd27961cb64b82cb6398027468b, type: 3}
   m_Name: 

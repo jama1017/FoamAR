@@ -22,7 +22,10 @@ public static class FocusUtils
     public static readonly Color ObjTargetColor = new Color(18f / 255f, 20f / 255f, 125f / 255f, FarAlpha);
     public static readonly Color ObjTargetFocusedColor = new Color(85f / 255f, 180f / 255f, 1f, FarAlpha);
 
-    public static readonly Color ObjRankedColor = new Color(0.3f, 0.3f, 0.3f, 1.0f);
+    //public static readonly Color ObjRankedColor = new Color(0.3f, 0.3f, 0.3f, 1.0f);
+    public static readonly Color ObjRankedColor = new Color(0.9f, 0.0f, 0.0f, 1.0f);
+
+    public static readonly Vector3 SmallObjSnapExpandedScale = new Vector3(0.06f / 0.01f, 0.06f / 0.007f, 0.06f / 0.01f);
 
 
     public static Vector3 WorldToScreenSpace(Vector3 worldPos)

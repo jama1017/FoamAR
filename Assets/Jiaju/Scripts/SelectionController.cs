@@ -7,7 +7,11 @@ using Portalble.Functions.Grab;
 
 public class SelectionController : PortalbleGeneralController
 {
-    public Transform placePrefab;
+    private Transform placePrefab;
+    public Transform m_bigFocusObj;
+    public Transform m_smallFocusObj;
+
+
     public float offset = 0.01f;
 
     public Canvas m_canvas;
@@ -42,13 +46,14 @@ public class SelectionController : PortalbleGeneralController
 
     // test distance calculation
     //private GameObject m_marker2;
-
+    private Portalble.Functions.Grab.Grabable _prevLastSelectedObj = null;
 
     protected override void Start()
     {
         base.Start();
         SetupServer();
 
+        placePrefab = m_smallFocusObj;
 
         // set up focus cylinder
         //m_focusCylinder = Instantiate(m_focusCylinderPrefab, m_FirstPersonCamera.transform.position + 0.2f * m_FirstPersonCamera.transform.forward, Quaternion.identity);
@@ -86,11 +91,11 @@ public class SelectionController : PortalbleGeneralController
 
         UpdateActiveHandData();
 
+        UpdateFocusCylinder();
         UpdateDepthCues();
 
-        RecordGrabLoc();
-        UpdateFocusCylinder();
         AidSelection();
+        RecordGrabLoc();
 
         ResetSelectionAid();
 
@@ -106,6 +111,21 @@ public class SelectionController : PortalbleGeneralController
         // usually hand is 0.3f in front of camera at most
         //Debug.Log("TRANSPP :" + Vector3.Distance(m_FirstPersonCamera.transform.position, ActiveHandTransform.position).ToString("F10"));
     }
+
+
+    //public void ResetHelperCollider()
+    //{
+    //    Portalble.Functions.Grab.Grabable grabable = Grab.Instance.LastGrabbedObject;
+    //    if (grabable)
+    //    {
+    //        Selectable select = grabable.gameObject.GetComponent<Selectable>();
+    //        if (select) select.ResetColliderSize();
+
+    //    }
+    //    //_prevLastSelectedObj = grabable;
+
+    //}
+
 
     /// <summary>
     /// Turn on the visuals of selection aid
@@ -216,11 +236,8 @@ public class SelectionController : PortalbleGeneralController
             {
                 if(!Grab.Instance.IsGrabbing && !m_isSnapped)
                 {
-                    //m_highestRankedObj.GetComponent<Selectable>().RemoveHighestRankContour();
                     m_highestRankedObj.GetComponent<Selectable>().SetSnapped();
-                    //Debug.Log("SNAPP -- pre: " + m_highestRankedObj.transform.position.ToString("F6"));
                     m_highestRankedObj.transform.position = indexThumbPos; // might need a different value to ensure collider trigger
-                    //Debug.Log("SNAPP -- after: " + m_highestRankedObj.transform.position.ToString("F6"));
                     m_isSnapped = true;
                 }
             }
@@ -245,6 +262,8 @@ public class SelectionController : PortalbleGeneralController
         {
             m_isSnapped = false;
         }
+
+        //ResetHelperCollider();
     }
 
 
@@ -380,6 +399,17 @@ public class SelectionController : PortalbleGeneralController
     }
 
 
+    public void TogglePrefabSize(bool isBig)
+    {
+        if (isBig)
+        {
+            placePrefab = m_bigFocusObj;
+        }
+        else
+        {
+            placePrefab = m_smallFocusObj;
+        }
+    }
 
 
     public override void OnARPlaneHit(PortalbleHitResult hit)
@@ -441,6 +471,9 @@ public class SelectionController : PortalbleGeneralController
         
         m_sDM.updateActiveObjects();
     }
+
+
+
 }
 
 

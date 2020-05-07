@@ -5,6 +5,7 @@ using Portalble.Functions.Grab;
 
 namespace Portalble
 {
+    [RequireComponent(typeof(Portalble.Functions.Grab.Grabable))]
     public class Selectable : MonoBehaviour
     {
 
@@ -21,6 +22,12 @@ namespace Portalble
         private bool _isSnapped = false;
 
         public Material m_vertOutline; // to make more permanent
+
+        public bool IsSmallObj = false;
+        private bool IsColliderReset = true;
+
+        private Transform _grabCollider;
+        private Vector3 _grabColliderOGScale;
 
         // Start is called before the first frame update
         void Start()
@@ -40,6 +47,9 @@ namespace Portalble
             _outline_mats = new Material[2];
             _outline_mats[0] = _renderer.materials[0];
             _outline_mats[1] = _outline_mat;
+
+            _grabCollider = this.transform.GetChild(0);
+            _grabColliderOGScale = _grabCollider.localScale;
         }
 
 
@@ -69,7 +79,7 @@ namespace Portalble
             }
             else
             {
-                _renderer.material.color = new Color(FocusUtils.ObjFocusedColor.r, FocusUtils.ObjFocusedColor.g, FocusUtils.ObjFocusedColor.b, _renderer.material.color.a); 
+                _renderer.material.color = new Color(FocusUtils.ObjFocusedColor.r, FocusUtils.ObjFocusedColor.g, FocusUtils.ObjFocusedColor.b, _renderer.material.color.a);
             }
         }
 
@@ -123,6 +133,12 @@ namespace Portalble
         {
             _isSnapped = true;
             _preSnapPos = this.transform.position;
+
+            if (IsSmallObj)
+            {
+                _grabCollider.transform.localScale = FocusUtils.SmallObjSnapExpandedScale;
+                IsColliderReset = false;
+            }
         }
 
 
@@ -167,5 +183,30 @@ namespace Portalble
 
             return res;
         }
+
+
+        public void ResetColliderSize()
+        {
+            if (!Grab.Instance.IsGrabbing)
+            {
+                if (IsSmallObj && !IsColliderReset)
+                {
+                    Debug.Log("COLLIDERSIZE: called in select");
+                    _grabCollider.localScale = _grabColliderOGScale;
+                    IsColliderReset = true;
+                }
+            }
+        }
+
+        public void ResetColliderSizeToOG()
+        {
+            if (IsSmallObj)
+            {
+                Debug.Log("COLLIDERSIZE: called OG");
+                _grabCollider.localScale = _grabColliderOGScale;
+
+            }
+        }
     }
+
 }

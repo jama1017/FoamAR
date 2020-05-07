@@ -458,8 +458,16 @@ namespace Portalble.Functions.Grab {
             m_isGrabbing = false;
             m_regrabCooldown = REGRAB_COOLDOWN;
 
-            OnRelease(m_selectObj.IsLeftHanded ? m_tLeftHand.Find("palm") : m_tRightHand.Find("palm"), m_selectObj);
+            //Jiaju change
+            if (m_selectObj)
+            {
+                Selectable select = m_selectObj.gameObject.GetComponent<Selectable>();
+                if (select) select.ResetColliderSizeToOG();
+            }
+            //Jiaju change end
+
             m_lastGrabObject = m_selectObj;
+            OnRelease(m_selectObj.IsLeftHanded ? m_tLeftHand.Find("palm") : m_tRightHand.Find("palm"), m_selectObj);
         }
 
         /// <summary>

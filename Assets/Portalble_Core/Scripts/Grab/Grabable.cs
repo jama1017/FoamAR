@@ -163,6 +163,15 @@ namespace Portalble.Functions.Grab {
                     }
 
                     // Jiaju change
+                    if (newInstance.HasProperty("_OutlineWidth"))
+                    {
+                        Selectable select = this.gameObject.GetComponent<Selectable>();
+                        if (select)
+                        {
+                            newInstance.SetFloat("_OutlineWidth", select._outline_width);
+                        }
+                    }
+
                     Material[] mats = new Material[2];
                     mats[0] = m_unselectedMaterial;
                     mats[1] = newInstance;
@@ -218,7 +227,6 @@ namespace Portalble.Functions.Grab {
                         mats[1].SetColor("_OutlineColor", m_grabbedOutlineColor);
                     }
                     renderer.materials = mats;
-                    Debug.Log("GRABBABLE OnGrabStart: " + GetComponent<Renderer>().materials[0].name); // jiaju change
                 }
                 else if (m_grabbedMaterial != null) {
                     GetComponent<Renderer>().material = m_grabbedMaterial;

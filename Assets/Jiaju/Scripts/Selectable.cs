@@ -66,7 +66,6 @@ namespace Portalble
             if (IsSmallObj && !_isDuringGrabbingProcess)
             {
                 _grabCollider.localScale = _grabColliderOGScale;
-                Debug.Log("------DURING" + _grabCollider.localScale);
             }
         }
 
@@ -75,7 +74,6 @@ namespace Portalble
         {
             _isTarget = true;
             _renderer.material.color = FocusUtils.ObjTargetColor;
-            Debug.Log("HIGHH target set: " + _renderer.material.color);
         }
 
 

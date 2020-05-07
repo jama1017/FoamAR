@@ -65,10 +65,7 @@ namespace Portalble
 
             if (IsSmallObj && !_isDuringGrabbingProcess)
             {
-                if (_grabCollider.localScale != _grabColliderOGScale)
-                {
-                    _grabCollider.localScale = _grabColliderOGScale;
-                }
+                _grabCollider.localScale = _grabColliderOGScale;
                 Debug.Log("------DURING" + _grabCollider.localScale);
             }
         }

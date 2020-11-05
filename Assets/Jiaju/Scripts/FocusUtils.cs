@@ -218,4 +218,14 @@ public static class FocusUtils
 
         return new Vector3(x, y, z);
     }
+
+    public static void SetObjsToAlpha(List<GameObject> objs, float alpha)
+    {
+        for (int i = 0; i < objs.Count; i++)
+        {
+            Color curr_color = objs[i].GetComponent<Renderer>().material.color;
+            curr_color = new Color(curr_color.r, curr_color.g, curr_color.b, alpha);
+            objs[i].GetComponent<Renderer>().material.color = curr_color;
+        }
+    }
 }

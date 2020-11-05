@@ -94,22 +94,13 @@ public class SelectionController : PortalbleGeneralController
         UpdateFocusCylinder();
         UpdateDepthCues();
 
+        AdjustSelectionAid();
+
         AidSelection();
         RecordGrabLoc();
 
         ResetSelectionAid();
 
-        if (!Grab.Instance.IsGrabbing && m_sDM.UseSelectionAid) // if not grabbing, enable focus cylinder
-        {
-            TurnOnSelectionAid();
-        }
-        else // if grabbing. do not detect candidate objects
-        {
-            TurnOffSelectionAid();
-        }
-
-        // usually hand is 0.3f in front of camera at most
-        //Debug.Log("TRANSPP :" + Vector3.Distance(m_FirstPersonCamera.transform.position, ActiveHandTransform.position).ToString("F10"));
     }
 
 
@@ -137,6 +128,8 @@ public class SelectionController : PortalbleGeneralController
             m_focusCylinderRenderer.enabled = true;
         }
         //m_guideLine.gameObject.SetActive(true);
+
+        FocusUtils.SetObjsToAlpha(m_sDM.SceneObjects, FocusUtils.FarAlpha);
     }
 
     /// <summary>
@@ -149,8 +142,18 @@ public class SelectionController : PortalbleGeneralController
             m_focusCylinderRenderer.enabled = false;
         }
         //m_guideLine.gameObject.SetActive(false);
+
+        FocusUtils.SetObjsToAlpha(m_sDM.SceneObjects, FocusUtils.NearAlpha);
     }
 
+    
+    private void AdjustSelectionAid()
+    {
+        if (!m_sDM.UseSelectionAid)
+        {
+            FocusUtils.SetObjsToAlpha(m_sDM.SceneObjects, FocusUtils.NearAlpha);
+        }
+    }
 
     /// <summary>
     /// updates the location, scale, and rotation of the focus cylinder
@@ -328,6 +331,10 @@ public class SelectionController : PortalbleGeneralController
 
     private void UpdateDepthCues()
     {
+
+        if (!m_sDM.UseSelectionAid) return;
+        Debug.Log("Depth Cue is in use");
+
         //List<GameObject> cuedObjs = m_sDM.SceneObjects;
         List<GameObject> cuedObjs = m_sDM.FocusedObjects;
 
@@ -396,6 +403,15 @@ public class SelectionController : PortalbleGeneralController
     public void ToggleUseSelectionAid()
     {
         m_sDM.UseSelectionAid = !m_sDM.UseSelectionAid;
+
+        if (!Grab.Instance.IsGrabbing && m_sDM.UseSelectionAid) // if not grabbing, enable focus cylinder
+        {
+            TurnOnSelectionAid();
+        }
+        else // if grabbing. do not detect candidate objects
+        {
+            TurnOffSelectionAid();
+        }
     }
 
 
@@ -437,6 +453,7 @@ public class SelectionController : PortalbleGeneralController
                     if (i == 0 && j == 0) continue;
                     Transform obj = Instantiate(placePrefab, cen.position + i * offset_test * cen.right - j * offset_test * cen.forward, cen.rotation);
                     obj.gameObject.GetComponent<Renderer>().material.color = FocusUtils.ObjNormalColor;
+
                     cens.Add(obj);
                     m_sDM.SceneObjects.Add(obj.gameObject);
                 }
